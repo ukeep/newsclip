@@ -1,0 +1,331 @@
+<html>
+
+<head>
+<!--    <link rel=stylesheet href="css/w3.css">-->
+    <link rel=stylesheet href="css/econews.css">
+    <title>SSEC Leader ecoNews</title>
+
+    <script type="text/javascript" src="js/infinite-scroll.js"></script>
+
+    <script>
+        var jsonUrl = "stories.txt";
+        var linkPrefix = "https://drive.google.com/uc?export=download&id=";
+        var sharePrefix = "https://drive.google.com/file/d/";
+        var shareSuffix = "/view?usp=sharing";
+
+        var onlinePrefix = "http://www.theleader.com.au/story/";
+        var paperName = "Sutherland Shire Leader";
+        var paperTwitterHandle = "@theleadernews";
+
+        var firstDate = "2013-01-01";
+        var searchHint = "Search title or author";
+
+        var next = 0; // Next story to display when scrolling to end of page 
+        var bucket = 6; // Number of stories loaded to page at a time
+        var headingHeight = 100; // Approx height of page heading
+
+        var filter = {};
+        var searchStart = true;
+
+        var stories = [];
+
+        var month = new Array("January", "February", "March",
+            "April", "May", "June",
+            "July", "August", "September",
+            "October", "November", "December");
+
+        var options = {
+            distance: 50,
+            callback: function(done) {
+                writeStories();
+                done();
+            }
+        }
+
+        // setup infinite scroll
+        infiniteScroll(options);
+
+        // Open JSON file containing stories
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                stories = JSON.parse(xmlhttp.responseText);
+                stories.sort(function(a, b) {
+                    if (a.date < b.date) return 1;
+                    if (a.date > b.date) return -1;
+                    return (a.page - b.page);
+                });
+                document.getElementById("loading").style.display = "none";
+                writeStories(true);
+            }
+        };
+        xmlhttp.open("GET", jsonUrl, true);
+        xmlhttp.send();
+
+        function clearFilter() {
+            filter.fromDate = firstDate;
+            filter.toDate = todayString();
+            filter.person = "";
+            filter.topics = "";
+            filter.search = "";
+            setInputs();
+
+        };
+
+        function setInputs() {
+            document.getElementById("fromDate").value = filter.fromDate;
+            document.getElementById("toDate").value = filter.toDate;
+            document.getElementById("topic").value = filter.topics;
+            document.getElementById("person").value = filter.person;
+            document.getElementById("search").value =
+                (searchStart) ? searchHint : filter.search;
+
+            document.getElementById("fromDate").style =
+                (filter.fromDate == firstDate) ? "color:grey; background-color:white" : "color:black; background-color:#ffff66";
+            document.getElementById("toDate").style =
+                (filter.toDate == todayString()) ? "color:grey; background-color:white" : "color:black; background-color:#ffff66";
+            document.getElementById("topic").style =
+                (filter.topics == "") ? "color:grey; background-color:white" : "color:black; background-color:#ffff66";
+            document.getElementById("person").style =
+                (filter.person == "") ? "color:grey; background-color:white" : "color:black; background-color:#ffff66";
+            document.getElementById("search").style =
+                (searchStart) ? "color:grey; background-color:white; font-style:italic" :
+                "color:black; background-color:#ffff66; font-style:normal";
+
+        }
+
+        function writeStories(reset) {
+            if (reset) {
+                next = 0;
+                document.getElementById("stories").innerHTML = "";
+                reset = false;
+                window.scrollTo(0, 0);
+            }
+            var j = 0;
+            for (var i = next; i < stories.length; i++) {
+                if (fitsThru(stories[i])) {
+                    document.getElementById("stories").innerHTML += formatStory(stories[i]);
+                    j++;
+                }
+                next++;
+                if (j > bucket) break;
+            }
+        }
+
+        function fitsThru(s) {
+            return s.date.substr(0, 10) >= filter.fromDate &&
+                s.date.substr(0, 10) <= filter.toDate &&
+                (filter.person == "" || s.person.search(filter.person) > -1) &&
+                (filter.topics == "" || s.topics.search(filter.topics) > -1) &&
+                (filter.search == "" ||
+                    s.title.search(filter.search) > -1 ||
+                    s.author.search(filter.search) > -1);
+        };
+
+        function formatStory(s) {
+
+            var storyDiv = "<div class='story'>";
+
+            storyDiv += "<h2>" + s.title + "</h2>";
+
+            storyDiv += "<p class='byline'>";
+
+            if (s.online != "") {
+                storyDiv += "<a href='" + onlinePrefix + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' height='22' width='auto' title='Read online'></a> ";
+            }
+
+            if (s.author != "") {
+                storyDiv += "<span class='bytext'>" + s.author + "</span>";
+            }
+            if (s.topics != "") {
+                storyDiv += " &bull;";
+                var topicList = s.topics.split(", ");
+                for (var i = 0; topicList[i] != null; i++) {
+                    storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
+                }
+            }
+            if (s.person != "") {
+                storyDiv += " &bull;";
+                var personList = s.person.split(", ");
+                for (var i = 0; personList[i] != null; i++) {
+                    storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
+                }
+            }
+
+            storyDiv += "</p>"
+
+            storyDiv += "<p class='cite'>" + paperName + ", ";
+
+            var d = new Date(s.date);
+            var dateString = month[d.getMonth()] + " " +
+                d.getDate() + " " +
+                d.getFullYear();
+
+            var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
+
+            storyDiv += "<a href='#top' onClick='clearFilter(); filter.fromDate=\"" +
+                s.date + "\"; filter.toDate=\"" +
+                s.date + "\"; setInputs(); writeStories(true)'>" +
+                dateString + "</a>";
+
+            storyDiv += " &ndash; page " + s.page;
+
+            var shareLink = encodeURIComponent(sharePrefix + s.link + shareSuffix);
+
+            storyDiv += " <a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' height='22' width='auto' title='Share on Facebook'></a>"
+
+            var tweet = s.title + " - " + s.author + " ";
+            tweet += (paperTwitterHandle == null) ? paperName : paperTwitterHandle;
+            tweet += " " + shortDate;
+            tweet = tweet.replace(/\'/g, "%27");
+
+            storyDiv += " <a class='textBtn' href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags=econews' target='_blank'><img class='textBtn' src='images/tweet.svg' height='22' width='auto' title='Tweet this story'></a>";
+
+            var body = '"' + s.title + '"\n' +
+                s.author + ", " + paperName + " " + dateString + "\n\n";
+            body = encodeURIComponent(body) +
+                linkPrefix.replace(/\&/g, "%26") + s.link;
+
+            var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
+                "&body=" + body;
+            storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' height='22' width='auto' title='Mail this story'></a>";
+
+            storyDiv += "</p>";
+
+            storyDiv += "<a href='javascript:;'><img class='thumb'";
+            storyDiv += "onClick=clickImg(this.src) src='" +
+                linkPrefix + s.link + "'></a>";
+
+            storyDiv += "</div>";
+
+            return storyDiv;
+        }
+
+        function clickImg(mySrc) {
+            if (document.getElementById("showImg").style.display === "initial") {
+                document.getElementById("showImg").style.display = "none";
+            } else {
+                document.getElementById("showImg").src = mySrc;
+                document.getElementById("showImg").style.display = "initial";
+            }
+        }
+
+        function todayString() {
+            var d = new Date();
+            var t = d.getFullYear() + "-";
+            t += (d.getMonth() < 9) ? "0" : "";
+            t += d.getMonth() + 1 + "-";
+            t += (d.getDate() < 10) ? "0" : "";
+            t += d.getDate();
+            return t
+
+        }
+
+        function yyyymmdd2ISO(s) {
+            var year = s.substring(0, 3);
+            var month = s.substring(5, 6);
+            var day = s.substring(8, 9);
+            return new Date(year, month - 1, day).toISOstring();
+        }
+
+        // Show filter/search tools when user scrolls up but not at top
+        var lastScrollTop = 0;
+        window.addEventListener("scroll", function() {
+            var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+            if (st < lastScrollTop) {
+                if (st > headingHeight) {
+                    document.getElementById("filterBlock").style =
+                        "display: initial; \
+                         position: fixed; \
+                         top: 0";
+                } else {
+                    document.getElementById("filterBlock").style =
+                        "display: initial; \
+                         position: static";
+                }
+            } else {
+                document.getElementById("filterBlock").style =
+                    "display:none";
+            }
+            lastScrollTop = st;
+        }, false);
+
+    </script>
+</head>
+
+<body onload="clearFilter()">
+    <a name="top"></a>
+    <h1>SSEC Leader ecoNews</h1>
+    <div id="filterBlock">
+        <div class="filterCell">
+            <label for="fromDate">From:</label>
+            <input type=date id="fromDate" value="2013-01-01" oninput="filter.fromDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == '2013-01-01') ? 'color:grey; background-color:white' : 'color:black; background-color:#ffff66'">
+        </div>
+        <div class="filterCell">
+            <label for="toDate">To:</label>
+            <input type=date id="toDate" oninput="filter.toDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == todayString()) ? 'color:grey; background-color:white' : 'color:black; background-color:#ffff66'">
+        </div>
+        <div class=" filterCell ">
+            <label for="topic ">Topic:</label>
+            <select id=topic style="height:25" oninput="filter.topics=this.value; writeStories(true)" onmouseout="this.style = (this.value == '') ? 'color:grey; background-color:white' : 'color:black; background-color:#ffff66'">
+                <option value="" selected>(all)</option>
+                <option value="Bushland">Bushland</option>
+                <option value="Climate">Climate</option>
+                <option value="Marine">Marine</option>
+                <option value="Planning">Planning</option>
+                <option value="Politics">Politics</option>
+                <option value="Refugees">Refugees</option>
+                <option value="Transport">Transport</option>
+                <option value="Vegetarianism">Vegetarianism</option>
+                <option value="Waste">Waste</option>
+                <option value="Water">Water</option>
+            </select>
+        </div>
+        <div class="filterCell">
+            <label for="person">People:</label>
+            <select id=person style="height:25" oninput="filter.person=this.value; writeStories(true)" onmouseout="this.style = (this.value == '') ? 'color:grey; background-color:white' : 'color:black; background-color:#ffff66'">
+                <option value="" selected>(all)</option>
+                <option value="AR">Anne Robinson</option>
+                <option value="BE">Brian Everingham</option>
+                <option value="BR">Bill Ryan</option>
+                <option value="BW">Bob Walshe</option>
+                <option value="CR">Colin Ryan</option>
+                <option value="GB">Gary Blaschke</option>
+                <option value="GH">Gordon Hocking</option>
+                <option value="GS">Gary Schoer</option>
+                <option value="JD">Jonathan Doig</option>
+                <option value="JF">Jenny Fitzgerald</option>
+                <option value="JG">Jenni Gormley</option>
+                <option value="JW">Judy Walker</option>
+                <option value="LH">Lloyd Hodges</option>
+                <option value="MS">Murray Scott</option>
+                <option value="PS">Phil Smith</option>
+                <option value="PT">Peter Turner</option>
+                <option value="RC">Rick Cavicchioli</option>
+                <option value="SM">Sue McKinnon</option>
+                <option value="SSEC">Suth Shire Envt Centre</option>
+                <option value="TK">Tassia Kolesnikow</option>
+            </select>
+        </div>
+        <div class="filterCell">
+            <input type=text id=search value="Search" onkeydown="if (event.keyCode == 13)
+                        document.getElementById('searchBtn').click()" onClick=" this.style='color:black; background-color:#ffff66; font-style:normal'; if(searchStart) {this.value=''; searchStart = false}">
+        </div>
+        <div class="filterCell">
+            <a href="javascript:;">
+                <img id=searchBtn src=images/search.svg width=25 height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="s = document.getElementById('search').value.trim(); if (!(searchStart) && s != null) {filter.search = RegExp(s,'i'); writeStories(true)}">
+            </a>
+        </div>
+        <div class="filterCell" style="margin-top: 10px;">
+            <a href="javascript:clearFilter(); writeStories(true)">Clear
+            </a>
+        </div>
+    </div>
+    <div id="loading">Loading...</div>
+    <img id="showImg" onClick=clickImg() title="Click to close">
+
+    <div id="stories"></div>
+
+</body>
+
+</html>

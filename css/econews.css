@@ -1,0 +1,146 @@
+body {
+    font-family: sans-serif;
+    background: #ccffff;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+h1 {
+    text-align: center;
+}
+
+#filterBlock {
+    padding: 5px;
+    background-color: lightgrey;
+    overflow: auto;
+}
+
+.filterCell {
+    float: left;
+    font-weight: bold;
+    font-size: small;
+    margin: 5px;
+    vertical-align: top;
+}
+
+#fromDate,
+#toDate,
+#topic,
+#person {
+    color: grey;
+    height: 25;
+}
+
+#search {
+    color: grey;
+    font-style: italic;
+    height: 25;
+    width: 148;
+}
+
+#showImg {
+    position: fixed;
+    top: 2%;
+    left: 2%;
+    border: medium solid darkgrey;
+    max-width: 96%;
+    max-height: 96%;
+    display: none;
+}
+
+.story {
+    clear: left;
+    margin-top: 10px;
+    border-top: 1px solid black;
+}
+
+h2 {
+    margin-bottom: 5;
+}
+
+.byline {
+    margin: 0;
+}
+
+.bytext {
+    font-style: italic;
+}
+
+.cite {
+    font-size: small;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.thumb {
+    max-width: 290px;
+    max-height: 145px;
+}
+
+.textBtn {
+    vertical-align: middle;
+}
+
+
+/* Animation for "Loading..." text */
+
+@keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#loading {
+    text-align: center;
+    line-height: 150px;
+    font-size: 20px;
+    font-style: italic;
+    color: darkgrey;
+    -webkit-animation: flickerAnimation 2s infinite;
+    -moz-animation: flickerAnimation 2s infinite;
+    -o-animation: flickerAnimation 2s infinite;
+    animation: flickerAnimation 2s infinite;
+}
