@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel=stylesheet href="css/econews.css">
+
     <title>SSEC Leader ecoNews</title>
 
     <script type="text/javascript" src="js/infinite-scroll.js"></script>
@@ -27,8 +29,8 @@
 
         var next = 0; // Next story to display when scrolling to end of page 
         var bucket = 6; // Number of stories loaded to page at a time
-        var headingHeight = 100; // Approx height of page heading
-
+        var headerHeight = 111; // Height of page header div
+        var scrollSensor = 50; // Add more content if within this distance of page end
         var filter = {};
         var searchStart = true;
 
@@ -38,17 +40,6 @@
             "April", "May", "June",
             "July", "August", "September",
             "October", "November", "December");
-
-        var options = {
-            distance: 50,
-            callback: function(done) {
-                writeStories();
-                done();
-            }
-        }
-
-        // setup infinite scroll
-        infiniteScroll(options);
 
         // Open JSON file containing stories
         var xmlhttp = new XMLHttpRequest();
@@ -62,10 +53,23 @@
                 });
                 document.getElementById("loadStories").style.display = "none";
                 writeStories(true);
+
+                infiniteScroll(scrollOptions); // setup infinite scroll
+
             }
         };
         xmlhttp.open("GET", jsonUrl, true);
         xmlhttp.send();
+
+        var scrollOptions = {
+            distance: scrollSensor + headerHeight,
+            callback: function(done) {
+                writeStories();
+                done();
+            }
+        }
+
+
 
         function clearFilter() {
             filter.fromDate = firstDate;
@@ -291,7 +295,7 @@
         window.addEventListener("scroll", function() {
             var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
             if (st < lastScrollTop) {
-                if (st > headingHeight) {
+                if (st > headerHeight) {
                     document.getElementById("filterBlock").style =
                         "display: initial; \
                          position: fixed; \
@@ -312,77 +316,79 @@
 </head>
 
 <body onload="clearFilter()">
-    <h1>SSEC Leader ecoNews</h1>
-    <div id="filterBlock">
-        <div class="filterCell">
-            <label for="fromDate">From:</label>
-            <input type=date id="fromDate" value="2013-01-01" onmouseover="this.style='color:black'"; oninput="filter.fromDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == '2013-01-01') ? inactiveStyle : activeStyle">
+    <div id="header">
+        <h1>SSEC Leader ecoNews</h1>
+        <div id="filterBlock">
+            <div class="filterCell">
+                <label for="fromDate">From:</label>
+                <input type=date id="fromDate" value="2013-01-01" onmouseover="this.style='color:black'" ; oninput="filter.fromDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == '2013-01-01') ? inactiveStyle : activeStyle">
+            </div>
+            <div class="filterCell">
+                <label for="toDate">To:</label>
+                <input type=date id="toDate" onmouseover="this.style='color:black'" ; oninput="filter.toDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == todayString()) ? inactiveStyle : activeStyle">
+            </div>
+            <div class=" filterCell ">
+                <label for="topic ">Topic:</label>
+                <select id=topic style="height:25" onmouseover="this.style='color:black'" ; oninput="filter.topics=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
+                    <option value="" selected>(all)</option>
+                    <option value="Bushland">Bushland</option>
+                    <option value="Climate">Climate</option>
+                    <option value="Marine">Marine</option>
+                    <option value="Planning">Planning</option>
+                    <option value="Politics">Politics</option>
+                    <option value="Refugees">Refugees</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Vegetarianism">Vegetarianism</option>
+                    <option value="Waste">Waste</option>
+                    <option value="Water">Water</option>
+                </select>
+            </div>
+            <div class="filterCell">
+                <label for="person">People:</label>
+                <select id=person style="height:25" onmouseover="this.style='color:black'" ; oninput="filter.person=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
+                    <option value="" selected>(all)</option>
+                    <option value="AR">Anne Robinson</option>
+                    <option value="BE">Brian Everingham</option>
+                    <option value="BR">Bill Ryan</option>
+                    <option value="BW">Bob Walshe</option>
+                    <option value="CR">Colin Ryan</option>
+                    <option value="GB">Gary Blaschke</option>
+                    <option value="GH">Gordon Hocking</option>
+                    <option value="GS">Gary Schoer</option>
+                    <option value="JD">Jonathan Doig</option>
+                    <option value="JF">Jenny Fitzgerald</option>
+                    <option value="JG">Jenni Gormley</option>
+                    <option value="JW">Judy Walker</option>
+                    <option value="LH">Lloyd Hodges</option>
+                    <option value="MS">Murray Scott</option>
+                    <option value="PS">Phil Smith</option>
+                    <option value="PT">Peter Turner</option>
+                    <option value="RC">Rick Cavicchioli</option>
+                    <option value="SM">Sue McKinnon</option>
+                    <option value="SSEC">Suth Shire Envt Centre</option>
+                    <option value="TK">Tassia Kolesnikow</option>
+                </select>
+            </div>
+            <div class="filterCell">
+                <input type=text id=search value="Search" onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style='color:black; font-style:normal'; if(searchStart) {this.value=''; searchStart = false}">
+            </div>
+            <div class="filterCell">
+                <a href="javascript:;">
+                    <img id=searchBtn src=images/search.svg width=25 height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="search()">
+                </a>
+            </div>
+            <div class="filterCell" style="margin-top: 10px;">
+                <a href="javascript:clearFilter(); writeStories(true)">Clear</a>
+            </div>
         </div>
-        <div class="filterCell">
-            <label for="toDate">To:</label>
-            <input type=date id="toDate" onmouseover="this.style='color:black'"; oninput="filter.toDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == todayString()) ? inactiveStyle : activeStyle">
-        </div>
-        <div class=" filterCell ">
-            <label for="topic ">Topic:</label>
-            <select id=topic style="height:25" onmouseover="this.style='color:black'"; oninput="filter.topics=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
-                <option value="" selected>(all)</option>
-                <option value="Bushland">Bushland</option>
-                <option value="Climate">Climate</option>
-                <option value="Marine">Marine</option>
-                <option value="Planning">Planning</option>
-                <option value="Politics">Politics</option>
-                <option value="Refugees">Refugees</option>
-                <option value="Transport">Transport</option>
-                <option value="Vegetarianism">Vegetarianism</option>
-                <option value="Waste">Waste</option>
-                <option value="Water">Water</option>
-            </select>
-        </div>
-        <div class="filterCell">
-            <label for="person">People:</label>
-            <select id=person style="height:25" onmouseover="this.style='color:black'"; oninput="filter.person=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
-                <option value="" selected>(all)</option>
-                <option value="AR">Anne Robinson</option>
-                <option value="BE">Brian Everingham</option>
-                <option value="BR">Bill Ryan</option>
-                <option value="BW">Bob Walshe</option>
-                <option value="CR">Colin Ryan</option>
-                <option value="GB">Gary Blaschke</option>
-                <option value="GH">Gordon Hocking</option>
-                <option value="GS">Gary Schoer</option>
-                <option value="JD">Jonathan Doig</option>
-                <option value="JF">Jenny Fitzgerald</option>
-                <option value="JG">Jenni Gormley</option>
-                <option value="JW">Judy Walker</option>
-                <option value="LH">Lloyd Hodges</option>
-                <option value="MS">Murray Scott</option>
-                <option value="PS">Phil Smith</option>
-                <option value="PT">Peter Turner</option>
-                <option value="RC">Rick Cavicchioli</option>
-                <option value="SM">Sue McKinnon</option>
-                <option value="SSEC">Suth Shire Envt Centre</option>
-                <option value="TK">Tassia Kolesnikow</option>
-            </select>
-        </div>
-        <div class="filterCell">
-            <input type=text id=search value="Search" onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style='color:black; font-style:normal'; if(searchStart) {this.value=''; searchStart = false}">
-        </div>
-        <div class="filterCell">
-            <a href="javascript:;">
-                <img id=searchBtn src=images/search.svg width=25 height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="search()">
-            </a>
-        </div>
-        <div class="filterCell" style="margin-top: 10px;">
-            <a href="javascript:clearFilter(); writeStories(true)">Clear</a>
-        </div>
+        <div id="loadStories">Loading...</div>
     </div>
-    <div id="loadStories">Loading...</div>
-
     <div id="stories"></div>
 
     <div id="show">
         <img id="showImg" onClick=clickImg() title="Click to close">
     </div>
+    <div id="footer"></div>
 </body>
 
 </html>

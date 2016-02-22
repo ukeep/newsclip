@@ -1,6 +1,11 @@
 body {
     font-family: sans-serif;
     /*    background: #ccffff;*/
+    overflow: hidden;
+}
+
+#header {
+    /*    height: 100px;*/
 }
 
 h1 {
@@ -48,6 +53,18 @@ h1 {
     overflow: auto;
     margin: auto;
     border: medium solid darkgrey;
+}
+
+@media screen and (min-height: 12cm) {
+    #stories {
+        position: absolute;
+        top: 111px;
+        bottom: 0px;
+        overflow-y: auto;
+    }
+    #stories::-webkit-scrollbar {
+        width: 0 !important;
+    }
 }
 
 @media screen and (min-width: 10cm) {

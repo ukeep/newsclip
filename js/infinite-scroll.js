@@ -9,7 +9,7 @@
     this.infiniteScroll = function (options) {
         var defaults = {
                 callback: function () {},
-                distance: 50
+                distance: 50 + 111
             }
             // Populate defaults
         for (var key in defaults) {
@@ -21,7 +21,8 @@
             updateInitiated: false
         }
 
-        window.onscroll = function (event) {
+        // window.onscroll = function (event) {
+        document.getElementById("stories").onscroll = function (event) {
                 handleScroll(scroller, event);
             }
             // For touch devices, try to detect scrolling by touching
