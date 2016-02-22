@@ -1,7 +1,8 @@
 <html>
 
 <head>
-<!--    <link rel=stylesheet href="css/w3.css">-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel=stylesheet href="css/econews.css">
     <title>SSEC Leader ecoNews</title>
 
@@ -19,6 +20,10 @@
 
         var firstDate = "2013-01-01";
         var searchHint = "Search title or author";
+        var inactiveStyle = "color:grey; background-color:white";
+        var activeStyle = "color:black; background-color:#ffff66";
+
+        var showMargin = 10; // Margin between edge of window and full size news image
 
         var next = 0; // Next story to display when scrolling to end of page 
         var bucket = 6; // Number of stories loaded to page at a time
@@ -55,7 +60,7 @@
                     if (a.date > b.date) return -1;
                     return (a.page - b.page);
                 });
-                document.getElementById("loading").style.display = "none";
+                document.getElementById("loadStories").style.display = "none";
                 writeStories(true);
             }
         };
@@ -81,16 +86,15 @@
                 (searchStart) ? searchHint : filter.search;
 
             document.getElementById("fromDate").style =
-                (filter.fromDate == firstDate) ? "color:grey; background-color:white" : "color:black; background-color:#ffff66";
+                (filter.fromDate != firstDate) ? activeStyle : inactiveStyle;
             document.getElementById("toDate").style =
-                (filter.toDate == todayString()) ? "color:grey; background-color:white" : "color:black; background-color:#ffff66";
+                (filter.toDate != todayString()) ? activeStyle : inactiveStyle;
             document.getElementById("topic").style =
-                (filter.topics == "") ? "color:grey; background-color:white" : "color:black; background-color:#ffff66";
+                (filter.topics) ? activeStyle : inactiveStyle;
             document.getElementById("person").style =
-                (filter.person == "") ? "color:grey; background-color:white" : "color:black; background-color:#ffff66";
+                (filter.person) ? activeStyle : inactiveStyle;
             document.getElementById("search").style =
-                (searchStart) ? "color:grey; background-color:white; font-style:italic" :
-                "color:black; background-color:#ffff66; font-style:normal";
+                (filter.search && !searchStart) ? activeStyle : inactiveStyle;
 
         }
 
@@ -126,87 +130,141 @@
 
             var storyDiv = "<div class='story'>";
 
-            storyDiv += "<h2>" + s.title + "</h2>";
+            detailsDiv: {
+                storyDiv += "<div class='details'>";
 
-            storyDiv += "<p class='byline'>";
+                storyDiv += "<h2>" + s.title + "</h2>";
 
-            if (s.online != "") {
-                storyDiv += "<a href='" + onlinePrefix + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' height='22' width='auto' title='Read online'></a> ";
-            }
-
-            if (s.author != "") {
-                storyDiv += "<span class='bytext'>" + s.author + "</span>";
-            }
-            if (s.topics != "") {
-                storyDiv += " &bull;";
-                var topicList = s.topics.split(", ");
-                for (var i = 0; topicList[i] != null; i++) {
-                    storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
+                byline: {
+                    if (s.author || s.online) {
+                        storyDiv += "<p class='byline'>";
+                        if (s.online != "") {
+                            storyDiv += "<a href='" + onlinePrefix + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' title='Read online'></a> ";
+                        }
+                        storyDiv += s.author + "</p>";
+                    }
                 }
-            }
-            if (s.person != "") {
-                storyDiv += " &bull;";
-                var personList = s.person.split(", ");
-                for (var i = 0; personList[i] != null; i++) {
-                    storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
+
+                tagline: {
+                    storyDiv += "<p class='tagline'>"
+                    if (s.topics != "") {
+                        storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this story'>";
+                        var topicList = s.topics.split(", ");
+                        for (var i = 0; topicList[i] != null; i++) {
+                            storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
+                        }
+                    }
+                    if (s.person != "") {
+                        storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this story'>";
+                        var personList = s.person.split(", ");
+                        for (var i = 0; personList[i] != null; i++) {
+                            storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
+                        }
+                    }
+
+                    storyDiv += "</p>"
                 }
+
+                citeline: {
+                    storyDiv += "<p class='citeline'>" + "<span class='noWrap'>" + paperName + ",</span> ";
+
+                    var d = new Date(s.date);
+                    var dateString = month[d.getMonth()] + " " +
+                        d.getDate() + " " +
+                        d.getFullYear();
+
+                    var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
+
+                    storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" +
+                        s.date + "\"; filter.toDate=\"" +
+                        s.date + "\"; setInputs(); writeStories(true)'>" +
+                        dateString + "</a></span>";
+
+                    storyDiv += " &ndash; page " + s.page + "</p>";
+                }
+
+                shareBtns: {
+                    var shareLink = encodeURIComponent(sharePrefix + s.link + shareSuffix);
+
+                    storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
+
+                    var tweet = s.title + " - " + s.author + " ";
+                    tweet += (paperTwitterHandle == null) ? paperName : paperTwitterHandle;
+                    tweet += " " + shortDate;
+                    tweet = tweet.replace(/\'/g, "%27");
+
+                    storyDiv += " <a href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags=econews' target='_blank'><img class='textBtn' src='images/tweet.svg' title='Tweet this story'></a>";
+
+                    var body = '"' + s.title + '"\n' +
+                        s.author + ", " + paperName + " " + dateString + "\n\n";
+                    body = encodeURIComponent(body) +
+                        linkPrefix.replace(/\&/g, "%26") + s.link;
+
+                    var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
+                        "&body=" + body;
+                    storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
+
+                    storyDiv += "</div>";
+                }
+
+                storyDiv += "</div>";
             }
 
-            storyDiv += "</p>"
+            thumbDiv: {
+                storyDiv += "<div class='thumb'>";
 
-            storyDiv += "<p class='cite'>" + paperName + ", ";
+                storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
-            var d = new Date(s.date);
-            var dateString = month[d.getMonth()] + " " +
-                d.getDate() + " " +
-                d.getFullYear();
+                storyDiv += "<a href='javascript:;'>";
+                storyDiv += "<img class='thumbImg' onclick=clickImg(this) src='" +
+                    linkPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
 
-            var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
-
-            storyDiv += "<a href='#top' onClick='clearFilter(); filter.fromDate=\"" +
-                s.date + "\"; filter.toDate=\"" +
-                s.date + "\"; setInputs(); writeStories(true)'>" +
-                dateString + "</a>";
-
-            storyDiv += " &ndash; page " + s.page;
-
-            var shareLink = encodeURIComponent(sharePrefix + s.link + shareSuffix);
-
-            storyDiv += " <a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' height='22' width='auto' title='Share on Facebook'></a>"
-
-            var tweet = s.title + " - " + s.author + " ";
-            tweet += (paperTwitterHandle == null) ? paperName : paperTwitterHandle;
-            tweet += " " + shortDate;
-            tweet = tweet.replace(/\'/g, "%27");
-
-            storyDiv += " <a class='textBtn' href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags=econews' target='_blank'><img class='textBtn' src='images/tweet.svg' height='22' width='auto' title='Tweet this story'></a>";
-
-            var body = '"' + s.title + '"\n' +
-                s.author + ", " + paperName + " " + dateString + "\n\n";
-            body = encodeURIComponent(body) +
-                linkPrefix.replace(/\&/g, "%26") + s.link;
-
-            var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
-                "&body=" + body;
-            storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' height='22' width='auto' title='Mail this story'></a>";
-
-            storyDiv += "</p>";
-
-            storyDiv += "<a href='javascript:;'><img class='thumb'";
-            storyDiv += "onClick=clickImg(this.src) src='" +
-                linkPrefix + s.link + "'></a>";
+                storyDiv += "</div>";
+            }
 
             storyDiv += "</div>";
 
             return storyDiv;
         }
 
-        function clickImg(mySrc) {
-            if (document.getElementById("showImg").style.display === "initial") {
-                document.getElementById("showImg").style.display = "none";
+        function search() {
+            var s = document.getElementById('search').value.trim().replace('\n', '');
+            if (!searchStart) {
+                filter.search = RegExp(s, 'i');
+                writeStories(true)
+            }
+            if (s && !searchStart) {
+                document.getElementById('search').style = 'color:black; font-style:normal; background-color:#ffff66'
             } else {
-                document.getElementById("showImg").src = mySrc;
-                document.getElementById("showImg").style.display = "initial";
+                document.getElementById('search').style = 'background-color:#white'
+            }
+        }
+
+        function clickImg(thumb) {
+            if (document.getElementById("show").style.display === "initial") {
+                document.getElementById("show").style.display = "none";
+            } else {
+                document.getElementById("showImg").src = thumb.src;
+
+                var wView = Math.max(document.body.clientWidth, window.innerWidth || 0);
+                var hView = Math.max(document.body.clientHeight, window.innerHeight || 0);
+
+                var w = document.getElementById("showImg").width;
+                var thumbCentreX = thumb.x + thumb.width / 2;
+                var l = thumbCentreX - w / 2;
+                l = Math.max(showMargin, Math.min(l, wView - w - showMargin));
+                l += window.pageXOffset || document.documentElement.scrollLeft;
+
+                var h = document.getElementById("showImg").height;
+                var thumbCentreY = thumb.y + thumb.height / 2;
+                var t = thumbCentreY - h / 2;
+                t = Math.max(showMargin, Math.min(t, hView - h - showMargin));
+                t += window.pageYOffset || document.documentElement.scrollTop;
+
+                document.getElementById("show").style =
+                    "top:" + t + "; " +
+                    "left:" + l + "; " +
+                    "display:initial";
             }
         }
 
@@ -254,20 +312,19 @@
 </head>
 
 <body onload="clearFilter()">
-    <a name="top"></a>
     <h1>SSEC Leader ecoNews</h1>
     <div id="filterBlock">
         <div class="filterCell">
             <label for="fromDate">From:</label>
-            <input type=date id="fromDate" value="2013-01-01" oninput="filter.fromDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == '2013-01-01') ? 'color:grey; background-color:white' : 'color:black; background-color:#ffff66'">
+            <input type=date id="fromDate" value="2013-01-01" onmouseover="this.style='color:black'"; oninput="filter.fromDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == '2013-01-01') ? inactiveStyle : activeStyle">
         </div>
         <div class="filterCell">
             <label for="toDate">To:</label>
-            <input type=date id="toDate" oninput="filter.toDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == todayString()) ? 'color:grey; background-color:white' : 'color:black; background-color:#ffff66'">
+            <input type=date id="toDate" onmouseover="this.style='color:black'"; oninput="filter.toDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == todayString()) ? inactiveStyle : activeStyle">
         </div>
         <div class=" filterCell ">
             <label for="topic ">Topic:</label>
-            <select id=topic style="height:25" oninput="filter.topics=this.value; writeStories(true)" onmouseout="this.style = (this.value == '') ? 'color:grey; background-color:white' : 'color:black; background-color:#ffff66'">
+            <select id=topic style="height:25" onmouseover="this.style='color:black'"; oninput="filter.topics=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
                 <option value="" selected>(all)</option>
                 <option value="Bushland">Bushland</option>
                 <option value="Climate">Climate</option>
@@ -283,7 +340,7 @@
         </div>
         <div class="filterCell">
             <label for="person">People:</label>
-            <select id=person style="height:25" oninput="filter.person=this.value; writeStories(true)" onmouseout="this.style = (this.value == '') ? 'color:grey; background-color:white' : 'color:black; background-color:#ffff66'">
+            <select id=person style="height:25" onmouseover="this.style='color:black'"; oninput="filter.person=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
                 <option value="" selected>(all)</option>
                 <option value="AR">Anne Robinson</option>
                 <option value="BE">Brian Everingham</option>
@@ -308,24 +365,24 @@
             </select>
         </div>
         <div class="filterCell">
-            <input type=text id=search value="Search" onkeydown="if (event.keyCode == 13)
-                        document.getElementById('searchBtn').click()" onClick=" this.style='color:black; background-color:#ffff66; font-style:normal'; if(searchStart) {this.value=''; searchStart = false}">
+            <input type=text id=search value="Search" onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style='color:black; font-style:normal'; if(searchStart) {this.value=''; searchStart = false}">
         </div>
         <div class="filterCell">
             <a href="javascript:;">
-                <img id=searchBtn src=images/search.svg width=25 height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="s = document.getElementById('search').value.trim(); if (!(searchStart) && s != null) {filter.search = RegExp(s,'i'); writeStories(true)}">
+                <img id=searchBtn src=images/search.svg width=25 height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="search()">
             </a>
         </div>
         <div class="filterCell" style="margin-top: 10px;">
-            <a href="javascript:clearFilter(); writeStories(true)">Clear
-            </a>
+            <a href="javascript:clearFilter(); writeStories(true)">Clear</a>
         </div>
     </div>
-    <div id="loading">Loading...</div>
-    <img id="showImg" onClick=clickImg() title="Click to close">
+    <div id="loadStories">Loading...</div>
 
     <div id="stories"></div>
 
+    <div id="show">
+        <img id="showImg" onClick=clickImg() title="Click to close">
+    </div>
 </body>
 
 </html>
