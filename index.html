@@ -154,14 +154,14 @@
                     if (s.topics != "") {
                         storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this story'>";
                         var topicList = s.topics.split(", ");
-                        for (var i = 0; topicList[i] != null; i++) {
+                        for (var i = 0; topicList[i]; i++) {
                             storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
                         }
                     }
                     if (s.person != "") {
                         storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this story'>";
                         var personList = s.person.split(", ");
-                        for (var i = 0; personList[i] != null; i++) {
+                        for (var i = 0; personList[i]; i++) {
                             storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
                         }
                     }
@@ -193,7 +193,7 @@
                     storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
 
                     var tweet = s.title + " - " + s.author + " ";
-                    tweet += (paperTwitterHandle == null) ? paperName : paperTwitterHandle;
+                    tweet += paperTwitterHandle || paperName;
                     tweet += " " + shortDate;
                     tweet = tweet.replace(/\'/g, "%27");
 
