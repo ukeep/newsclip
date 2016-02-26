@@ -55,11 +55,6 @@
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 stories = JSON.parse(xmlhttp.responseText);
-                stories.sort(function(a, b) {
-                    if (a.date < b.date) return 1;
-                    if (a.date > b.date) return -1;
-                    return (a.page - b.page);
-                });
                 document.getElementById("loadStories").style.display = "none";
                 writeStories(true);
             }
