@@ -16,6 +16,8 @@
         var thumbPrefix = "https://drive.google.com/thumbnail?sz=h200&id=";
         var sharePrefix = "https://drive.google.com/file/d/";
         var shareSuffix = "/view?usp=sharing";
+        var maxheaderPercent = 0.10; // 0.07;
+        var headerHeight, hideHeader, lastScrollTop;
 
         var onlinePrefix = "http://www.theleader.com.au/story/";
         var paperName = "Sutherland Shire Leader";
@@ -32,7 +34,6 @@
 
         var next = 0; // Next story to display when scrolling to end of page 
         var bucket = 6; // Number of stories loaded to page at a time
-        var headerHeight = 111; // Height of page header div
         var scrollSensor = 50; // Add more content if within this distance of page end
         var filter = {};
         var searchStart = true;
@@ -57,24 +58,21 @@
                 document.getElementById("loadStories").style.display = "none";
                 writeStories(true);
 
-                infiniteScroll(scrollOptions); // setup infinite scroll
+                var scrollOptions = {
+                    //            distance: scrollSensor + headerHeight,
+                    distance: scrollSensor,
+                    callback: function(done) {
+                        console.log('writeStories');
+                        writeStories();
+                        done();
+                    }
+                }
 
+                infiniteScroll(scrollOptions); // setup infinite scroll
             }
         };
         xmlhttp.open("GET", jsonUrl, true);
         xmlhttp.send();
-
-        var scrollOptions = {
-//            distance: scrollSensor + headerHeight,
-            distance: scrollSensor,
-            callback: function(done) {
-                console.log('writeStories');
-                writeStories();
-                done();
-            }
-        }
-
-
 
         function clearFilter() {
             filter.fromDate = firstDate;
@@ -253,7 +251,7 @@
             if (document.getElementById("show").style.display === "initial") {
                 document.getElementById("show").style.display = "none";
             } else {
-                document.getElementById("showImg").src = thumb.src.replace(thumbPrefix,linkPrefix);
+                document.getElementById("showImg").src = thumb.src.replace(thumbPrefix, linkPrefix);
 
                 var wView = Math.max(document.body.clientWidth, window.innerWidth || 0);
                 var hView = Math.max(document.body.clientHeight, window.innerHeight || 0);
@@ -287,39 +285,56 @@
 
         }
 
-        function yyyymmdd2ISO(s) {
-            var year = s.substring(0, 3);
-            var month = s.substring(5, 6);
-            var day = s.substring(8, 9);
-            return new Date(year, month - 1, day).toISOstring();
+        // Show filter/search tools when user scrolls up but not at top
+        function checkHeight() {
+            headerHeight = document.getElementById("header").scrollHeight;
+            hideHeader = headerHeight > window.innerHeight * maxheaderPercent;
+            console.clear();
+            console.log("Header is " + headerHeight * 100 / window.innerHeight + "% of window height. Hide header? " + hideHeader);
+
+            // Show filter/search tools when user scrolls up but not at top
+            if (hideHeader) {
+                lastScrollTop = 0;
+                window.addEventListener("scroll", scrollHeader, false);
+            } else {
+                window.removeEventListener("scroll", scrollHeader);
+                document.getElementById("header").style.position = "fixed";
+                document.getElementById("header").style.width = document.body.clientWidth; // Recover width lost by position fixed
+                document.getElementById("stories").style.top = headerHeight;
+            }
         }
 
-        // Show filter/search tools when user scrolls up but not at top
-        var lastScrollTop = 0;
-        window.addEventListener("scroll", function() {
-            var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
-            if (st < lastScrollTop) {
+        window.addEventListener("resize", checkHeight, false);
+
+        function scrollHeader() {
+            var st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st < lastScrollTop) { // Scroll up
+                document.getElementById("header").style.position = "fixed";
+                document.getElementById("header").style.width = document.body.clientWidth; // Recover width lost by position fixed
+                document.getElementById("stories").style.top = headerHeight;
+
+                // Dropped transform: not supported by Safari 6
+                // document.getElementById("header").style.transform = "translateY(0)";
+                document.getElementById("header").style.top = 0;
+
+            } else { // Scroll down
                 if (st > headerHeight) {
-                    document.getElementById("filterBlock").style =
-                        "display: initial; \
-                         position: fixed; \
-                         top: 0";
+
+                    // Dropped transform: not supported by Sarafi 6
+                    //                    document.getElementById("header").style.transform = "translateY(-100%)";
+                    document.getElementById("header").style.top = -headerHeight;
+
                 } else {
-                    document.getElementById("filterBlock").style =
-                        "display: initial; \
-                         position: static";
+                    document.getElementById("header").style.position = "static";
                 }
-            } else {
-                document.getElementById("filterBlock").style =
-                    "display:none";
             }
             lastScrollTop = st;
-        }, false);
+        }
 
     </script>
 </head>
 
-<body onload="clearFilter()">
+<body onload="clearFilter(); checkHeight()">
     <div id="header">
         <h1>SSEC Leader ecoNews</h1>
         <div id="filterBlock">
@@ -385,9 +400,10 @@
                 <a href="javascript:clearFilter(); writeStories(true)">Clear</a>
             </div>
         </div>
+    </div>
+    <div id="stories">
         <div id="loadStories">Loading...</div>
     </div>
-    <div id="stories"></div>
 
     <div id="show">
         <img id="showImg" onClick=clickImg() title="Click to close">

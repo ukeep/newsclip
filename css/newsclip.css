@@ -1,21 +1,28 @@
 body {
+    margin: 0;
     font-family: sans-serif;
     /*    background: #ccffff;*/
+    width: 100%;
 }
 
-header {
-    /*    height: 100px;*/
+#header {
+    width: 100%;
+    transition: top 200ms linear;
+    margin: auto;
 }
 
 h1 {
     text-align: center;
-    margin 10px 0;
+    /*    margin 10px 0;*/
+    margin: 0;
+    background-color: lightgrey;
+/*    from testheader.css*/
 }
 
 #filterBlock {
-    z-index: 2;
-    padding: 5px;
     background-color: lightgrey;
+    padding: 5px;
+    margin: auto;
     overflow: auto;
 }
 
@@ -58,19 +65,9 @@ h1 {
 
 /* Desktop */
 
-@media screen and (min-height: 18cm) {
-    body {
-        overflow: hidden;
-    }
-    #stories {
-        position: absolute;
-        top: 111px;
-        bottom: 0px;
-        overflow-y: auto;
-    }
-    #stories::-webkit-scrollbar {
-        width: 0 !important;
-    }
+#stories {
+    position: absolute;
+    z-index: -1;
 }
 
 
