@@ -21,27 +21,23 @@
             updateInitiated: false
         }
 
-        // window.onscroll = function (event) {
-        document.getElementById("stories").onscroll = function (event) {
+         window.onscroll = function (event) {
                 handleScroll(scroller, event);
             }
             // For touch devices, try to detect scrolling by touching
-//        document.ontouchmove = function (event) {
-        document.getElementById("stories").ontouchmove = function (event) {
+        document.ontouchmove = function (event) {
             handleScroll(scroller, event);
         }
     }
 
     function getScrollPos() {
         // Handle scroll position in case of IE differently
-        //        if (isIE) {
-        //            return document.body.scrollTop;
-        //        } else {
-        //            return window.pageYOffset;
-        var t = (document.getElementById("stories")) ? document.getElementById("stories").scrollTop : 0;
-        return t;
+                if (isIE) {
+                    return document.body.scrollTop;
+                } else {
+                    return window.pageYOffset;
 
-        //        }
+                }
     }
 
     var prevScrollPos = getScrollPos();
@@ -57,10 +53,8 @@
         }
 
         // Find the pageHeight and clientHeight (the no. of pixels to scroll to make the scrollbar reach max pos)
-//        var pageHeight = document.body.scrollHeight;
-//        var clientHeight = document.body.clientHeight;
-        var pageHeight = document.getElementById("stories").scrollHeight;
-        var clientHeight = document.getElementById("stories").clientHeight;
+        var pageHeight = document.body.scrollHeight;
+        var clientHeight = document.body.clientHeight;
 
         // Check if scroll bar position is just 50px above the max, if yes, initiate an update
         if (pageHeight - (scrollPos + clientHeight) < scroller.options.distance) {

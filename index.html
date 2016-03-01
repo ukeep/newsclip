@@ -18,6 +18,7 @@
         var shareSuffix = "/view?usp=sharing";
         var maxheaderPercent = 0.10; // 0.07;
         var headerHeight, hideHeader, lastScrollTop;
+        var headerShown = true;
 
         var onlinePrefix = "http://www.theleader.com.au/story/";
         var paperName = "Sutherland Shire Leader";
@@ -288,19 +289,17 @@
         // Show filter/search tools when user scrolls up but not at top
         function checkHeight() {
             headerHeight = document.getElementById("header").scrollHeight;
+            document.getElementById("stories").style.top = headerHeight;
             hideHeader = headerHeight > window.innerHeight * maxheaderPercent;
-            console.clear();
-            console.log("Header is " + headerHeight * 100 / window.innerHeight + "% of window height. Hide header? " + hideHeader);
 
-            // Show filter/search tools when user scrolls up but not at top
+            // Show filter/search tools when user scrolls up
             if (hideHeader) {
                 lastScrollTop = 0;
                 window.addEventListener("scroll", scrollHeader, false);
             } else {
                 window.removeEventListener("scroll", scrollHeader);
-                document.getElementById("header").style.position = "fixed";
+                document.getElementById("header").style.top = 0;
                 document.getElementById("header").style.width = document.body.clientWidth; // Recover width lost by position fixed
-                document.getElementById("stories").style.top = headerHeight;
             }
         }
 
@@ -309,23 +308,14 @@
         function scrollHeader() {
             var st = window.pageYOffset || document.documentElement.scrollTop;
             if (st < lastScrollTop) { // Scroll up
-                document.getElementById("header").style.position = "fixed";
-                document.getElementById("header").style.width = document.body.clientWidth; // Recover width lost by position fixed
-                document.getElementById("stories").style.top = headerHeight;
-
-                // Dropped transform: not supported by Safari 6
-                // document.getElementById("header").style.transform = "translateY(0)";
-                document.getElementById("header").style.top = 0;
-
+                if (!headerShown) {
+                    document.getElementById("header").style.top = 0;
+                    headerShown = true;
+                }
             } else { // Scroll down
-                if (st > headerHeight) {
-
-                    // Dropped transform: not supported by Sarafi 6
-                    //                    document.getElementById("header").style.transform = "translateY(-100%)";
+                if (headerShown) {
                     document.getElementById("header").style.top = -headerHeight;
-
-                } else {
-                    document.getElementById("header").style.position = "static";
+                    headerShown = false;
                 }
             }
             lastScrollTop = st;

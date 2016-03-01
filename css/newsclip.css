@@ -9,14 +9,14 @@ body {
     width: 100%;
     transition: top 200ms linear;
     margin: auto;
+    background-color: lightgrey;
+    position: fixed;
 }
 
 h1 {
     text-align: center;
-    /*    margin 10px 0;*/
     margin: 0;
     background-color: lightgrey;
-/*    from testheader.css*/
 }
 
 #filterBlock {
