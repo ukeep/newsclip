@@ -1,0 +1,235 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    /*    background: #ccffff;*/
+    width: 100%;
+}
+
+#header {
+    width: 100%;
+    transition: top 200ms linear;
+    margin: auto;
+    background-color: lightgrey;
+    position: fixed;
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+    background-color: lightgrey;
+}
+
+#filterBlock {
+    background-color: lightgrey;
+    padding: 5px;
+    margin: auto;
+    overflow: auto;
+}
+
+.filterCell {
+    float: left;
+    font-weight: bold;
+    font-size: small;
+    margin: 5px;
+    vertical-align: top;
+}
+
+#fromDate,
+#toDate,
+#topic,
+#person {
+    color: grey;
+    height: 25;
+}
+
+#search {
+    color: grey;
+    font-style: italic;
+    height: 25;
+    width: 148;
+}
+
+#show {
+    position: absolute;
+    margin: 2%;
+    display: none;
+    width: 100%;
+}
+
+#showImg {
+    overflow: auto;
+    margin: auto;
+    border: medium solid darkgrey;
+}
+
+
+/* Desktop */
+
+#stories {
+    position: absolute;
+    z-index: -1;
+}
+
+
+/* Desktop or landscape mobile */
+
+@media screen and (min-width: 10cm) {
+    #stories {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+    .story {
+        clear: left;
+        position: relative;
+    }
+    .details,
+    .thumb {
+        width: 48%;
+        padding: 10px 0;
+    }
+    .thumb {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+    }
+    .thumb img {
+        max-height: 100%;
+    }
+}
+
+
+/* Portrait mobile */
+
+@media not screen and (min-width: 10cm) {
+    .thumb img {
+        max-height: 200px;
+    }
+    .story {
+        padding: 10px 0;
+    }
+    .thumb {
+        padding: 10px 0 0 0;
+        position: relative;
+        min-height: 130px;
+    }
+}
+
+.loadImg {
+    position: absolute;
+    top: 60px;
+    left: 50px;
+}
+
+.thumbImg {
+    /*    position: absolute;*/
+    top: 10px;
+    left: 0;
+    max-width: 100%;
+}
+
+.story {
+    border-bottom: 1px solid grey;
+}
+
+h2 {
+    margin: 0 0 5px 0;
+}
+
+.byline {
+    margin: 0;
+    font-style: italic;
+}
+
+.tagline {
+    margin: 5px 0;
+    font-size: small;
+}
+
+.citeline {
+    font-size: small;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.noWrap {
+    display: inline-block;
+}
+
+.textIcon {
+    vertical-align: middle;
+    height: 15px;
+}
+
+.textBtn {
+    vertical-align: middle;
+    height: 22px;
+}
+
+
+/* Animation for "Loading..." text */
+
+@keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#loadStories {
+    text-align: center;
+    line-height: 150px;
+    font-size: 20px;
+    font-style: italic;
+    color: darkgrey;
+}
+
+#loadStories,
+.loadImg {
+    -webkit-animation: flickerAnimation 2s infinite;
+    -moz-animation: flickerAnimation 2s infinite;
+    -o-animation: flickerAnimation 2s infinite;
+    animation: flickerAnimation 2s infinite;
+}

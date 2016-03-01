@@ -21,7 +21,7 @@
             updateInitiated: false
         }
 
-        window.onscroll = function (event) {
+         window.onscroll = function (event) {
                 handleScroll(scroller, event);
             }
             // For touch devices, try to detect scrolling by touching
@@ -32,11 +32,12 @@
 
     function getScrollPos() {
         // Handle scroll position in case of IE differently
-        if (isIE) {
-            return document.body.scrollTop;
-        } else {
-            return window.pageYOffset;
-        }
+                if (isIE) {
+                    return document.body.scrollTop;
+                } else {
+                    return window.pageYOffset;
+
+                }
     }
 
     var prevScrollPos = getScrollPos();
@@ -51,7 +52,7 @@
             return; // nothing to do
         }
 
-        // Find the pageHeight and clientHeight(the no. of pixels to scroll to make the scrollbar reach max pos)
+        // Find the pageHeight and clientHeight (the no. of pixels to scroll to make the scrollbar reach max pos)
         var pageHeight = document.body.scrollHeight;
         var clientHeight = document.body.clientHeight;
 
