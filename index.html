@@ -118,6 +118,10 @@
                 next++;
                 if (j > bucket) break;
             }
+            if (j == 0) {
+                document.getElementById("stories").innerHTML =
+                    "<p>Your search or filter did not match any news items. <a href='javascript:clearFilter(); writeStories(true)'>Clear search/filter.</a></p>";
+            }
         }
 
         function fitsThru(s) {
