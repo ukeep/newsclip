@@ -199,6 +199,8 @@
                     var tweet = s.title + " - " + s.author + " ";
                     tweet += paperTwitterHandle || paperName;
                     tweet += " " + shortDate;
+                    tweet += (d.getFullYear() ==  new Date().getFullYear()) ?
+                        "" : " " + d.getFullYear(); // Add year if not this year
                     tweet = tweet.replace(/\'/g, "%27");
 
                     storyDiv += " <a href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags='" + hashtag + "' target='_blank'><img class='textBtn' src='images/tweet.svg' title='Tweet this story'></a>";
