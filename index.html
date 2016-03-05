@@ -11,41 +11,45 @@
     <script type="text/javascript" src="js/infinite-scroll.js"></script>
 
     <script>
-        var jsonUrl = "stories.txt";
-        var linkPrefix = "https://drive.google.com/uc?export=download&id=";
-        //        var thumbPrefix = "https://drive.google.com/thumbnail?sz=h200&id=";
-        var thumbPrefix = linkPrefix;
-        var sharePrefix = "https://drive.google.com/file/d/";
-        var shareSuffix = "/view?usp=sharing";
-        var maxheaderPercent = 0.10; // 0.07;
-        var headerHeight, hideHeader, lastScrollTop;
-        var headerShown = true;
+        initVars: {
+            var jsonUrl = "stories.txt";
+            var linkPrefix = "https://drive.google.com/uc?export=download&id=";
+            //        var thumbPrefix = "https://drive.google.com/thumbnail?sz=h200&id=";
+            var thumbPrefix = linkPrefix;
+            var sharePrefix = "https://drive.google.com/file/d/";
+            var shareSuffix = "/view?usp=sharing";
+            var maxheaderPercent = 0.10; // 0.07;
+            var headerHeight, hideHeader, lastScrollTop;
+            var headerShown = true;
 
-        var onlinePrefix = "http://www.theleader.com.au/story/";
-        var paperName = "Sutherland Shire Leader";
-        var paperTwitterHandle = "@theleadernews";
-        var hashtag = "econews";
+            var onlinePrefix = "http://www.theleader.com.au/story/";
+            var paperName = "Sutherland Shire Leader";
+            var paperTwitterHandle = "@theleadernews";
+            var hashtag = "econews";
 
-        var firstDate = "2013-01-01";
-        var lastDate = dayString(new Date()); // If a fixed last date, use "yyyy-mm-dd"
-        var searchHint = "Search title or author";
-        var inactiveStyle = "color:grey; background-color:white";
-        var activeStyle = "color:black; background-color:#ffff66";
+            var firstDate = "2013-01-01";
+            var lastDate = dayString(new Date()); // If a fixed last date, use "yyyy-mm-dd"
+            var searchHint = "Search title or author";
+            var inactiveStyle = "color:grey; background-color:white";
+            var activeStyle = "color:black; background-color:#ffff66";
 
-        var showMargin = 10; // Margin between edge of window and full size news image
+            var showMargin = 10; // Margin between edge of window and full size news image
 
-        var next = 0; // Next story to display when scrolling to end of page 
-        var bucket = 6; // Number of stories loaded to page at a time
-        var scrollSensor = 50; // Add more content if within this distance of page end
-        var filter = {};
-        var searchStart = true;
+            var next = 0; // Next story to display when scrolling to end of page 
+            var bucket = 6; // Number of stories loaded to page at a time
+            var scrollSensor = 50; // Add more content if within this distance of page end
+            var filter = {};
+            var searchStart = true;
 
-        var stories = [];
+            var stories = [];
 
-        var month = new Array("January", "February", "March",
-            "April", "May", "June",
-            "July", "August", "September",
-            "October", "November", "December");
+            var month = new Array("January", "February", "March",
+                "April", "May", "June",
+                "July", "August", "September",
+                "October", "November", "December");
+
+            var scrollbarWidth = 17;
+        }
 
         // Open JSON file containing stories
         var xmlhttp = new XMLHttpRequest();
@@ -199,7 +203,7 @@
                     var tweet = s.title + " - " + s.author + " ";
                     tweet += paperTwitterHandle || paperName;
                     tweet += " " + shortDate;
-                    tweet += (d.getFullYear() ==  new Date().getFullYear()) ?
+                    tweet += (d.getFullYear() == new Date().getFullYear()) ?
                         "" : " " + d.getFullYear(); // Add year if not this year
                     tweet = tweet.replace(/\'/g, "%27");
 
@@ -251,30 +255,36 @@
         }
 
         function clickImg(thumb) {
+            var imgBox = document.getElementById("imgBox");
+
             if (document.getElementById("show").style.display === "initial") {
+                document.body.style.overflow = "auto";
                 document.getElementById("show").style.display = "none";
+                imgBox.style.width = "auto";
+                imgBox.style.opacity = 0;
+                window.removeEventListener("resize", vscrollOutside);
             } else {
-                document.getElementById("showImg").src = thumb.src.replace(thumbPrefix, linkPrefix);
+                document.getElementById("show").style.display = "initial";
+                document.body.style.overflow = "hidden";
+                document.getElementById("showImg").src =
+                    thumb.src.replace(thumbPrefix, linkPrefix);
 
-                var wView = Math.max(document.body.clientWidth, window.innerWidth || 0);
-                var hView = Math.max(document.body.clientHeight, window.innerHeight || 0);
+                vscrollOutside();
 
-                var w = document.getElementById("showImg").width;
-                var thumbCentreX = thumb.x + thumb.width / 2;
-                var l = thumbCentreX - w / 2;
-                l = Math.max(showMargin, Math.min(l, wView - w - showMargin));
-                l += window.pageXOffset || document.documentElement.scrollLeft;
+                imgBox.scrollTop = 0;
+                imgBox.scrollLeft = 0;
 
-                var h = document.getElementById("showImg").height;
-                var thumbCentreY = thumb.y + thumb.height / 2;
-                var t = thumbCentreY - h / 2;
-                t = Math.max(showMargin, Math.min(t, hView - h - showMargin));
-                t += window.pageYOffset || document.documentElement.scrollTop;
+                imgBox.style.opacity = 1;
+                window.addEventListener("resize", vscrollOutside, false);
+            }
+        }
 
-                document.getElementById("show").style =
-                    "top:" + t + "; " +
-                    "left:" + l + "; " +
-                    "display:initial";
+        // If only vertical scrollbar on image, put it outside
+        function vscrollOutside() {
+            var imgBox = document.getElementById("imgBox");
+            if (imgBox.scrollHeight > imgBox.offsetHeight &&
+                imgBox.scrollWidth == imgBox.offsetWidth) {
+                imgBox.style.width = imgBox.offsetWidth + scrollbarWidth;
             }
         }
 
@@ -409,8 +419,10 @@
         <div id="loadStories">Loading...</div>
     </div>
 
-    <div id="show">
-        <img id="showImg" onClick=clickImg() title="Click to close">
+    <div id="show" onClick=clickImg() title="Click anywhere to close">
+        <div id="imgBox">
+            <img id="showImg">
+        </div>
     </div>
     <div id="footer"></div>
 </body>
