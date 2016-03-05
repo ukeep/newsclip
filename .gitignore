@@ -5,9 +5,5 @@
 stories.json
 *.xlsx#
 *.docx
-css/testheader.css
-testheadroom.html
-testheader.html
-css/testheadroom.css
-testheader - broken.html
-testGthumb.html
+css/test*.css
+test*.html
