@@ -143,8 +143,8 @@
             var storyDiv = "<div class='story'>";
 
             // Paper border around each story - dropped in favour of thumb border
-            // storyDiv += "<div class='paper-shadow paper-shadow-top-z-1'></div>";
-            // storyDiv += "<div class='paper-shadow paper-shadow-bottom-z-1'></div>";
+            // storyDiv += "<div class='paper-shadow paper-shadow-top'></div>";
+            // storyDiv += "<div class='paper-shadow paper-shadow-bottom'></div>";
 
             detailsDiv: {
                 storyDiv += "<div class='details'>";
@@ -230,18 +230,20 @@
 
             thumbDiv: {
                 storyDiv += "<div class='thumb'>";
-                storyDiv += "<div class='paper-shadow paper-shadow-top-z-1'></div>";
-                storyDiv += "<div class='paper-shadow paper-shadow-bottom-z-1'></div>";
 
-                storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
+                storyDiv += "<div class='paper-shadow paper-shadow-top' onmouseover='console.log(\"hover paper shadow top\")'></div>";
+                storyDiv += "<div class='paper-shadow paper-shadow-bottom' onmouseover='console.log(\"hover paper shadow tbottom\")'></div>";
+
+                // Drop loadImg: not appearing till main image loads anyway
+                // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
                 storyDiv += "<a href='javascript:;'>";
-                storyDiv += "<img class='thumbImg' onclick=clickImg(this) src='" +
+                storyDiv += "<img class='thumbImg'  onmouseover='console.log(\"hover thumb img\")' onclick=clickImg(this) src='" +
                     thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
 
                 storyDiv += "</div>";
             }
-            
+
             storyDiv += "</div>";
 
             storyDiv += "<hr>";
