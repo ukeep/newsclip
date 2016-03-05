@@ -7,7 +7,7 @@ body {
 
 #header {
     width: 100%;
-    transition: top 200ms linear;
+    transition: top 200ms ease-out;
     margin: auto;
     background-color: lightgrey;
     position: fixed;
@@ -67,68 +67,17 @@ h1 {
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    
     -webkit-transition: opacity 300ms ease-out;
     transition: opacity 300ms ease-out;
     opacity: 0;
     overflow: auto;
-
     max-width: 100%;
     max-height: 100%;
 }
 
-
-/* Desktop */
-
 #stories {
     position: absolute;
-    /*    z-index: -1;*/
-}
-
-
-/* Desktop or landscape mobile */
-
-@media screen and (min-width: 10cm) {
-    #stories {
-        width: 90%;
-        margin-left: 5%;
-        margin-right: 5%;
-    }
-    .story {
-        clear: left;
-        position: relative;
-    }
-    .details,
-    .thumb {
-        width: 48%;
-        padding: 10px 0;
-    }
-    .thumb {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-    }
-    .thumb img {
-        max-height: 100%;
-    }
-}
-
-
-/* Portrait mobile */
-
-@media not screen and (min-width: 10cm) {
-    .thumb img {
-        max-height: 200px;
-    }
-    .story {
-        padding: 10px 0;
-    }
-    .thumb {
-        padding: 10px 0 0 0;
-        position: relative;
-        min-height: 130px;
-    }
+    width: 100%;
 }
 
 .loadImg {
@@ -137,15 +86,56 @@ h1 {
     left: 50px;
 }
 
-.thumbImg {
-    /*    position: absolute;*/
-    top: 10px;
+.thumb {
+    background-color: white;
+}
+
+.thumb:hover {
+    background-color: black;
+}
+
+.thumb img {
     left: 0;
     max-width: 100%;
+    background-color: white;
+}
+
+.thumb img:hover {
+    opacity: 0.9;
+    background-color: black;
+}
+
+hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 0;
 }
 
 .story {
-    border-bottom: 1px solid grey;
+    border-radius: 2px;
+    /*    padding: 10px;*/
+    overflow: visible;
+    position: relative;
+}
+
+.paper-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.paper-shadow-top {
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+}
+
+.paper-shadow-bottom {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 
 h2 {
@@ -180,6 +170,48 @@ h2 {
 .textBtn {
     vertical-align: middle;
     height: 22px;
+}
+
+
+/* Desktop or landscape mobile */
+
+@media screen and (min-width: 10cm) {
+    .story {
+        clear: left;
+        width: 85%;
+        margin: 10px auto;
+    }
+    .details {
+        width: 48%;
+    }
+    .thumb {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        bottom: 0;
+    }
+    .thumb img {
+        max-height: 100%;
+    }
+}
+
+
+/* Portrait mobile */
+
+@media not screen and (min-width: 10cm) {
+    .thumb img {
+        max-height: 200px;
+    }
+    .story {
+        margin: 10px;
+        /*        padding: 10px;*/
+    }
+    .thumb {
+        margin: 10px 0;
+        position: relative;
+        min-height: 130px;
+        display: inline-block;
+    }
 }
 
 

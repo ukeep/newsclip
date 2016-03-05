@@ -5,5 +5,4 @@
 stories.json
 *.xlsx#
 *.docx
-css/test*.css
-test*.html
+test/
