@@ -142,8 +142,9 @@
 
             var storyDiv = "<div class='story'>";
 
-            storyDiv += "<div class='paper-shadow paper-shadow-top-z-1'></div>";
-            storyDiv += "<div class='paper-shadow paper-shadow-bottom-z-1'></div>";
+            // Paper border around each story - dropped in favour of thumb border
+            // storyDiv += "<div class='paper-shadow paper-shadow-top-z-1'></div>";
+            // storyDiv += "<div class='paper-shadow paper-shadow-bottom-z-1'></div>";
 
             detailsDiv: {
                 storyDiv += "<div class='details'>";
@@ -229,6 +230,8 @@
 
             thumbDiv: {
                 storyDiv += "<div class='thumb'>";
+                storyDiv += "<div class='paper-shadow paper-shadow-top-z-1'></div>";
+                storyDiv += "<div class='paper-shadow paper-shadow-bottom-z-1'></div>";
 
                 storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
@@ -238,8 +241,10 @@
 
                 storyDiv += "</div>";
             }
-
+            
             storyDiv += "</div>";
+
+            storyDiv += "<hr>";
 
             return storyDiv;
         }
