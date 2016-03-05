@@ -138,6 +138,9 @@
 
             var storyDiv = "<div class='story'>";
 
+            storyDiv += "<div class='paper-shadow paper-shadow-top-z-1'></div>";
+            storyDiv += "<div class='paper-shadow paper-shadow-bottom-z-1'></div>";
+
             detailsDiv: {
                 storyDiv += "<div class='details'>";
 
@@ -199,7 +202,7 @@
                     var tweet = s.title + " - " + s.author + " ";
                     tweet += paperTwitterHandle || paperName;
                     tweet += " " + shortDate;
-                    tweet += (d.getFullYear() ==  new Date().getFullYear()) ?
+                    tweet += (d.getFullYear() == new Date().getFullYear()) ?
                         "" : " " + d.getFullYear(); // Add year if not this year
                     tweet = tweet.replace(/\'/g, "%27");
 
