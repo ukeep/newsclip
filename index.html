@@ -50,21 +50,27 @@
 
             var scrollbarWidth = 17;
             var justShown = false;
+
+            var timeout;
+            if (navigator.userAgent.search("Firefox") > 0 ||
+                navigator.userAgent.search("Chrome/18") > 0 ||
+//                navigator.userAgent.search("Edge") > 0 ||
+                false) {
+                timeout = 1000;
+            } else {
+                timeout = 0;
+            }
         }
 
-        // Open JSON file containing stories
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
+        function handleJson() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 stories = JSON.parse(xmlhttp.responseText);
                 document.getElementById("loadStories").style.display = "none";
                 writeStories(true);
 
                 var scrollOptions = {
-                    //            distance: scrollSensor + headerHeight,
                     distance: scrollSensor,
                     callback: function(done) {
-                        console.log('writeStories');
                         writeStories();
                         done();
                     }
@@ -72,7 +78,11 @@
 
                 infiniteScroll(scrollOptions); // setup infinite scroll
             }
-        };
+        }
+        // Open JSON file containing stories
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = (timeout > 0) ?
+            setTimeout(handleJson, timeout) : handleJson;
         xmlhttp.open("GET", jsonUrl, true);
         xmlhttp.send();
 
@@ -237,7 +247,7 @@
                 // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
                 storyDiv += "<a href='#" + s.link + "'>";
-                storyDiv += "<img class='thumbImg'  onmouseover='console.log(\"hover thumb img\")' onclick=clickImg(this) src='" +
+                storyDiv += "<img class='thumbImg'  onclick=clickImg(this) src='" +
                     thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
 
                 storyDiv += "<div class='paper-shadow paper-shadow-top'></div>";
