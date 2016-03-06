@@ -49,6 +49,7 @@
                 "October", "November", "December");
 
             var scrollbarWidth = 17;
+            var justShown = false;
         }
 
         // Open JSON file containing stories
@@ -230,11 +231,12 @@
 
             thumbDiv: {
                 storyDiv += "<div class='thumb'>";
+                storyDiv += "<a name='" + s.link + "'></a>";
 
                 // Drop loadImg: not appearing till main image loads anyway
                 // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
-                storyDiv += "<a href='#'>";
+                storyDiv += "<a href='#" + s.link + "'>";
                 storyDiv += "<img class='thumbImg'  onmouseover='console.log(\"hover thumb img\")' onclick=clickImg(this) src='" +
                     thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
 
@@ -268,11 +270,19 @@
             var imgBox = document.getElementById("imgBox");
 
             if (document.getElementById("show").style.display === "initial") {
+                if (justShown) {
+                    justShown = false;
+                    return;
+                }
                 document.body.style.overflow = "auto";
                 document.getElementById("show").style.display = "none";
                 imgBox.style.width = "auto";
                 imgBox.style.opacity = 0;
                 window.removeEventListener("resize", vscrollOutside);
+                window.removeEventListener("hashchange", clickImg);
+                if (location.hash) {
+                    history.back();
+                }
             } else {
                 document.getElementById("show").style.display = "initial";
                 document.body.style.overflow = "hidden";
@@ -286,6 +296,8 @@
 
                 imgBox.style.opacity = 1;
                 window.addEventListener("resize", vscrollOutside, false);
+                justShown = true;
+                window.addEventListener("hashchange", clickImg, false);
             }
         }
 
@@ -420,7 +432,7 @@
             </div>
             <div class="filterCell">
                 <a href="javascript:;">
-                    <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="search()"  title="Search">
+                    <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="search()" title="Search">
                 </a>
             </div>
             <div class="filterCell">
