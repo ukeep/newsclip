@@ -125,7 +125,7 @@
             }
             if (j == 0) {
                 document.getElementById("stories").innerHTML =
-                    "<p>Your search or filter did not match any news items. <a href='javascript:clearFilter(); writeStories(true)'>Clear search/filter.</a></p>";
+                    "<p>Your search or filter did not match any news items. <a href='javascript:clearFilter(); writeStories(true)'>Clear search/filter</a>.</p>";
             }
         }
 
@@ -379,15 +379,15 @@
             <span class="logo"><img src=images/logo.png width=auto height=35>SSEC Leader ecoNews</span>
             <div class="filterCell">
                 <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range"></label>
-                <input type=date id="fromDate" value="2013-01-01" onmouseover="this.style='color:black'" ; oninput="filter.fromDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == '2013-01-01') ? inactiveStyle : activeStyle">
+                <input type=date id="fromDate" value="2013-01-01" onmouseover="this.style='color:black'" ; onchange="filter.fromDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == '2013-01-01') ? inactiveStyle : activeStyle">
             </div>
             <div class="filterCell">
                 <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5></label>
-                <input type=date id="toDate" onmouseover="this.style='color:black'" ; oninput="filter.toDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == lastDate) ? inactiveStyle : activeStyle">
+                <input type=date id="toDate" onmouseover="this.style='color:black'" ; onchange="filter.toDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == lastDate) ? inactiveStyle : activeStyle">
             </div>
             <div class=" filterCell ">
                 <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
-                <select id=topic onmouseover="this.style='color:black'" ; oninput="filter.topics=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
+                <select id=topic onmouseover="this.style='color:black'" ; onchange="filter.topics=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
                     <option value="" selected>(all)</option>
                     <option value="Bushland">Bushland</option>
                     <option value="Climate">Climate</option>
@@ -403,7 +403,7 @@
             </div>
             <div class="filterCell">
                 <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by person"></label>
-                <select id=person onmouseover="this.style='color:black'" ; oninput="filter.person=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
+                <select id=person onmouseover="this.style='color:black'" ; onchange="filter.person=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
                     <option value="" selected>(all)</option>
                     <option value="AR">Anne Robinson</option>
                     <option value="BE">Brian Everingham</option>
