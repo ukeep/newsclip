@@ -231,15 +231,15 @@
             thumbDiv: {
                 storyDiv += "<div class='thumb'>";
 
-                storyDiv += "<div class='paper-shadow paper-shadow-top' onmouseover='console.log(\"hover paper shadow top\")'></div>";
-                storyDiv += "<div class='paper-shadow paper-shadow-bottom' onmouseover='console.log(\"hover paper shadow tbottom\")'></div>";
-
                 // Drop loadImg: not appearing till main image loads anyway
                 // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
-                storyDiv += "<a href='javascript:;'>";
+                storyDiv += "<a href='#'>";
                 storyDiv += "<img class='thumbImg'  onmouseover='console.log(\"hover thumb img\")' onclick=clickImg(this) src='" +
                     thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
+
+                storyDiv += "<div class='paper-shadow paper-shadow-top'></div>";
+                storyDiv += "<div class='paper-shadow paper-shadow-bottom'></div>";
 
                 storyDiv += "</div>";
             }
@@ -360,19 +360,22 @@
 
 <body onload="clearFilter(); checkHeight()">
     <div id="header">
-        <h1>SSEC Leader ecoNews</h1>
-        <div id="filterBlock">
+        <div class='paper-shadow paper-shadow-top'></div>
+        <div class='paper-shadow paper-shadow-bottom'></div>
+
+        <div id="headerBlock">
+            <span class="logo"><img src=images/logo.png width=auto height=35>SSEC Leader ecoNews</span>
             <div class="filterCell">
-                <label for="fromDate">From:</label>
+                <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range"></label>
                 <input type=date id="fromDate" value="2013-01-01" onmouseover="this.style='color:black'" ; oninput="filter.fromDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == '2013-01-01') ? inactiveStyle : activeStyle">
             </div>
             <div class="filterCell">
-                <label for="toDate">To:</label>
+                <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5></label>
                 <input type=date id="toDate" onmouseover="this.style='color:black'" ; oninput="filter.toDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == lastDate) ? inactiveStyle : activeStyle">
             </div>
             <div class=" filterCell ">
-                <label for="topic ">Topic:</label>
-                <select id=topic style="height:25" onmouseover="this.style='color:black'" ; oninput="filter.topics=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
+                <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
+                <select id=topic onmouseover="this.style='color:black'" ; oninput="filter.topics=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
                     <option value="" selected>(all)</option>
                     <option value="Bushland">Bushland</option>
                     <option value="Climate">Climate</option>
@@ -387,8 +390,8 @@
                 </select>
             </div>
             <div class="filterCell">
-                <label for="person">People:</label>
-                <select id=person style="height:25" onmouseover="this.style='color:black'" ; oninput="filter.person=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
+                <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by person"></label>
+                <select id=person onmouseover="this.style='color:black'" ; oninput="filter.person=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
                     <option value="" selected>(all)</option>
                     <option value="AR">Anne Robinson</option>
                     <option value="BE">Brian Everingham</option>
@@ -417,11 +420,13 @@
             </div>
             <div class="filterCell">
                 <a href="javascript:;">
-                    <img id=searchBtn src=images/search.svg width=25 height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="search()">
+                    <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="search()"  title="Search">
                 </a>
             </div>
-            <div class="filterCell" style="margin-top: 10px;">
-                <a href="javascript:clearFilter(); writeStories(true)">Clear</a>
+            <div class="filterCell">
+                <a href="javascript:clearFilter(); writeStories(true)">
+                    <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver=this.src='images/clearon.svg' onMouseOut=this.src='images/clear.svg' alt="Clear search/filter">
+                </a>
             </div>
         </div>
     </div>

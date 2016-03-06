@@ -1,7 +1,6 @@
 body {
     margin: 0;
     font-family: sans-serif;
-    /*    background: #ccffff;*/
     width: 100%;
 }
 
@@ -9,30 +8,46 @@ body {
     width: 100%;
     transition: top 200ms ease-out;
     margin: auto;
-    background-color: lightgrey;
+    background-image: url("../images/bg.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
     position: fixed;
     z-index: 1;
 }
 
-h1 {
-    text-align: center;
-    margin: 0;
-    background-color: lightgrey;
-}
 
-#filterBlock {
-    background-color: lightgrey;
-    padding: 5px;
+#headerBlock {
+    padding: 5px 5px 15px 5px;
     margin: auto;
     overflow: auto;
+    text-align: center;
+}
+
+.logo {
+    font: 25px "Pontano Sans", arial, sans-serif;
+    letter-spacing: -1px;
+    color: #405398;
+    margin: 5px 0;
+}
+
+.logo img {
+    vertical-align: bottom
 }
 
 .filterCell {
-    float: left;
+    display: inline-block;
     font-weight: bold;
     font-size: small;
-    margin: 5px;
-    vertical-align: top;
+    vertical-align: bottom;
+    margin-top: 10px;
+}
+
+label {
+    margin-left: 10px;
+}
+
+label.toDate {
+    margin-left: 0;
 }
 
 #fromDate,
@@ -41,14 +56,20 @@ h1 {
 #person {
     color: grey;
     height: 25;
+    vertical-align: bottom;
 }
 
 #search {
     color: grey;
     font-style: italic;
-    height: 25;
+    height: 24;
     width: 148;
+    margin-left: 10px;
+    vertical-align: bottom;
 }
+
+#searchBtn,
+#clearBtn {}
 
 #show {
     position: fixed;
