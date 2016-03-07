@@ -257,16 +257,18 @@
 
                 thumbDiv: {
                     storyDiv += "<div class='thumb'>";
-if (s.link) {                    storyDiv += "<a name='" + s.link + "'></a>";
+                    if (s.link) {
+                        storyDiv += "<a name='" + s.link + "'></a>";
 
-                    // Drop loadImg: not appearing till main image loads anyway
-                    // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
+                        // Drop loadImg: not appearing till main image loads anyway
+                        // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
-                    storyDiv += "<a href='#" + s.link + "'>";
-                    storyDiv += "<img onclick=clickImg(this) src='" +
-                        thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";} else {
-                            storyDiv += "<p class='note'>no image</p>"
-                        }
+                        storyDiv += "<a href='#" + s.link + "'>";
+                        storyDiv += "<img onclick=clickImg(this) src='" +
+                            thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
+                    } else {
+                        storyDiv += "<p class='note'>no image</p>"
+                    }
                     storyDiv += "</div>";
                 }
 
@@ -311,6 +313,7 @@ if (s.link) {                    storyDiv += "<a name='" + s.link + "'></a>";
                 document.getElementById("show").style.display = "none";
                 imgBox.style.width = "auto";
                 imgBox.style.opacity = 0;
+                window.removeEventListener("keyup", showKey);
                 window.removeEventListener("resize", vscrollOutside);
                 window.removeEventListener("hashchange", clickImg);
                 if (location.hash) {
@@ -328,7 +331,9 @@ if (s.link) {                    storyDiv += "<a name='" + s.link + "'></a>";
                 imgBox.scrollLeft = 0;
 
                 imgBox.style.opacity = 1;
-                window.addEventListener("resize", vscrollOutside, false);
+                window.addEventListener("keyup", showKey, false);
+                window.addEventListener("resize", checkHeight, false);
+
                 justShown = true;
                 window.addEventListener("hashchange", clickImg, false);
             }
@@ -341,6 +346,10 @@ if (s.link) {                    storyDiv += "<a name='" + s.link + "'></a>";
                 imgBox.scrollWidth == imgBox.offsetWidth) {
                 imgBox.style.width = imgBox.offsetWidth + scrollbarWidth;
             }
+        }
+
+        function showKey(e) {
+            if (e.keyCode == 27) clickImg();
         }
 
         function dayString(d) {
