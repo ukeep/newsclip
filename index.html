@@ -30,8 +30,12 @@
             var firstDate = "2013-01-01";
             var lastDate = dayString(new Date()); // If a fixed last date, use "yyyy-mm-dd"
             var searchHint = "Search title or author";
-            var inactiveStyle = "color:grey; background-color:white;";
-            var activeStyle = "color:black; background-color:#f8ecb9;";
+
+            var active = ["black", "#f8ecb9", "normal"];
+            var inactive = ["grey", "white", "italic"];
+            var col = 0,
+                bg = 1,
+                fs = 2;
 
             var showMargin = 10; // Margin between edge of window and full size news image
 
@@ -106,16 +110,27 @@
             document.getElementById("search").value =
                 (searchStart) ? searchHint : filter.search;
 
-            document.getElementById("fromDate").style =
-                (filter.fromDate != firstDate) ? activeStyle : inactiveStyle;
-            document.getElementById("toDate").style =
-                (filter.toDate != lastDate) ? activeStyle : inactiveStyle;
-            document.getElementById("topic").style =
-                (filter.topics) ? activeStyle : inactiveStyle;
-            document.getElementById("person").style =
-                (filter.person) ? activeStyle : inactiveStyle;
-            document.getElementById("search").style =
-                (filter.search && !searchStart) ? activeStyle : inactiveStyle;
+            document.getElementById("fromDate").style.color =
+                (filter.fromDate != firstDate) ? active[col] : inactive[col];
+            document.getElementById("fromDate").style.backgroundColor =
+                (filter.fromDate != firstDate) ? active[bg] : inactive[bg];
+
+            document.getElementById("toDate").style.color =
+                (filter.toDate != lastDate) ? active[col] : inactive[col];
+            document.getElementById("toDate").style.backgroundColor =
+                (filter.toDate != lastDate) ? active[bg] : inactive[bg];
+            document.getElementById("topic").style.color =
+                (filter.topics) ? active[col] : inactive[col];
+            document.getElementById("topic").style.backgroundColor =
+                (filter.topics) ? active[bg] : inactive[bg];
+            document.getElementById("person").style.color =
+                (filter.person) ? active[col] : inactive[col];
+            document.getElementById("person").style.backgroundColor =
+                (filter.person) ? active[bg] : inactive[bg];
+            document.getElementById("search").style.color =
+                (filter.search && !searchStart) ? active[col] : inactive[col];
+            document.getElementById("search").style.backgroundColor =
+                (filter.search && !searchStart) ? active[bg] : inactive[bg];
         }
 
         function writeStories(reset) {
@@ -287,16 +302,18 @@
 
         function search() {
             var s = document.getElementById('search').value.trim().replace('\n', '');
+            var sStyle = document.getElementById('search').style;
             if (!searchStart) {
                 filter.search = RegExp(s, 'i');
                 writeStories(true)
             }
             if (s && !searchStart) {
-                //                document.getElementById('search').style = 'color:black; font-style:normal; background-color:#ffff66';
-                document.getElementById('search').style = activeStyle + "font-style:normal;";
+                sStyle.backgroundColor = active[bg];
+                sStyle.color = active[col];
+                sStyle.fontStyle = active[fs];
             } else {
-                //                document.getElementById('search').style = 'background-color:#white';
-                document.getElementById('search').style = inactiveStyle;
+                sStyle.color = inactive[col];
+                sStyle.backgroundColor = inactive[bg];
             }
         }
 
@@ -411,17 +428,19 @@
 
         <div id="headerBlock">
             <span class="logo"><img src=images/logo.png width=auto height=35>SSEC Leader ecoNews</span>
-            <div class="filterCell">
-                <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range"></label>
-                <input type=date id="fromDate" value="2013-01-01" onmouseover="this.style='color:black'" ; onchange="filter.fromDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == '2013-01-01') ? inactiveStyle : activeStyle">
-            </div>
-            <div class="filterCell">
-                <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5></label>
-                <input type=date id="toDate" onmouseover="this.style='color:black'" ; onchange="filter.toDate=this.value; writeStories(true)" onmouseout="this.style = (this.value == lastDate) ? inactiveStyle : activeStyle">
-            </div>
+            <span class="noWrap">
+                <div class="filterCell">
+                    <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range"></label>
+                    <input type=date id="fromDate" value=firstDate onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(true); this.style.color = (this.value == firstDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == firstDate) ? inactive[bg] : active[bg];">
+                </div>
+                <div class="filterCell">
+                    <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5></label>
+                    <input type=date id="toDate" onmouseover="this.style.color=active[col]"  onmouseout="this.style.color = (this.value == lastDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=lastDate; filter.toDate=this.value; writeStories(true); this.style.color = (this.value == lastDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == lastDate) ? inactive[bg] : active[bg];">
+                </div>
+            </span>
             <div class=" filterCell ">
                 <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
-                <select id=topic onmouseover="this.style='color:black'" ; onchange="filter.topics=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
+                <select id=topic onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
                     <option value="" selected>(all)</option>
                     <option value="Bushland">Bushland</option>
                     <option value="Climate">Climate</option>
@@ -437,24 +456,22 @@
             </div>
             <div class="filterCell">
                 <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by person"></label>
-                <select id=person onmouseover="this.style='color:black'" ; onchange="filter.person=this.value; writeStories(true)" onmouseout="this.style = (this.value) ? activeStyle : inactiveStyle">
+                <select id=person onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
                     <option value="" selected>(all)</option>
                     <option value="AR">Anne Robinson</option>
-                    <option value="BE">Brian Everingham</option>
                     <option value="BR">Bill Ryan</option>
                     <option value="BW">Bob Walshe</option>
+                    <option value="BE">Brian Everingham</option>
                     <option value="CR">Colin Ryan</option>
-                    <option value="GB">Gary Blaschke</option>
-                    <option value="GH">Gordon Hocking</option>
                     <option value="GS">Gary Schoer</option>
-                    <option value="JD">Jonathan Doig</option>
-                    <option value="JF">Jenny Fitzgerald</option>
+                    <option value="GH">Gordon Hocking</option>
                     <option value="JG">Jenni Gormley</option>
+                    <option value="JF">Jenny Fitzgerald</option>
+                    <option value="JD">Jonathan Doig</option>
                     <option value="JW">Judy Walker</option>
                     <option value="LH">Lloyd Hodges</option>
                     <option value="MS">Murray Scott</option>
                     <option value="PS">Phil Smith</option>
-                    <option value="PT">Peter Turner</option>
                     <option value="RC">Rick Cavicchioli</option>
                     <option value="SM">Sue McKinnon</option>
                     <option value="SSEC">Suth Shire Envt Centre</option>
@@ -462,7 +479,7 @@
                 </select>
             </div>
             <div class="filterCell">
-                <input type=text id=search value="Search" onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style='color:black; font-style:normal'; if(searchStart) {this.value=''; searchStart = false}">
+                <input type=text id=search value="Search" onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style.color=active[col]; this.style.fontStyle=active[fs]; if(searchStart) {this.value=''; searchStart = false}">
             </div>
             <div class="filterCell">
                 <a href="javascript:;">
