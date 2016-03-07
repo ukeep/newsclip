@@ -127,14 +127,13 @@
                 window.scrollTo(0, 0);
                 reset = false;
             }
-            var j = 0;
-            for (; next < stories.length; next++) {
+            var j;
+            for (j = 0; next < stories.length && j <= bucket; next++) {
                 if (fitsThru(stories[next])) {
                     document.getElementById("stories").innerHTML +=
                         formatStory(stories[next]);
                     j++;
                 }
-                if (j >= bucket) break;
             }
             nStories += j;
             if (next == stories.length && writeNotice) {
