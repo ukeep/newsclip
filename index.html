@@ -8,11 +8,12 @@
 
     <title>SSEC Leader ecoNews</title>
 
+    <script type="text/javascript" src="https://googledrive.com/host/0B4rKiNtdxe1NZ1NKa3ItTXR0RkU/econews.js"></script>
+
     <script type="text/javascript" src="js/infinite-scroll.js"></script>
 
     <script>
         initVars: {
-            var jsonUrl = "stories.txt";
             var linkPrefix = "https://drive.google.com/uc?export=download&id=";
             //        var thumbPrefix = "https://drive.google.com/thumbnail?sz=h200&id=";
             var thumbPrefix = linkPrefix;
@@ -45,8 +46,6 @@
             var filter = {};
             var searchStart = true;
 
-            var stories = [];
-
             var month = new Array("January", "February", "March",
                 "April", "May", "June",
                 "July", "August", "September",
@@ -55,42 +54,28 @@
             var scrollbarWidth = 17;
             var justShown = false;
 
-            var timeout;
-            if (navigator.userAgent.search("Firefox") > 0 ||
-                navigator.userAgent.search("Chrome/18") > 0 ||
-                //                navigator.userAgent.search("Edge") > 0 ||
-                false) {
-                timeout = 1000;
-            } else {
-                timeout = 0;
-            }
-
             var writeNotice = true;
         }
 
-        function handleJson() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                stories = JSON.parse(xmlhttp.responseText);
-                document.getElementById("loadStories").style.display = "none";
-                writeStories(true);
+        function init() {
+            clearFilter();
+            checkHeight();
 
-                var scrollOptions = {
-                    distance: scrollSensor,
-                    callback: function(done) {
-                        writeStories();
-                        done();
-                    }
+            document.getElementById("loadStories").style.display = "none";
+            writeStories(true);
+
+            var scrollOptions = {
+                distance: scrollSensor,
+                callback: function(done) {
+                    writeStories();
+                    done();
                 }
-
-                infiniteScroll(scrollOptions); // setup infinite scroll
             }
+
+            infiniteScroll(scrollOptions); // setup infinite scroll
+            window.addEventListener("resize", checkHeight, false);
+
         }
-        // Open JSON file containing stories
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = (timeout > 0) ?
-            setTimeout(handleJson, timeout) : handleJson;
-        xmlhttp.open("GET", jsonUrl, true);
-        xmlhttp.send();
 
         function clearFilter() {
             filter.fromDate = firstDate;
@@ -143,16 +128,16 @@
                 reset = false;
             }
             var j = 0;
-            for (var i = next; i < stories.length; i++) {
-                if (fitsThru(stories[i])) {
-                    document.getElementById("stories").innerHTML += formatStory(stories[i]);
+            for (; next < stories.length; next++) {
+                if (fitsThru(stories[next])) {
+                    document.getElementById("stories").innerHTML +=
+                        formatStory(stories[next]);
                     j++;
                 }
-                next++;
                 if (j >= bucket) break;
             }
             nStories += j;
-            if (i == stories.length && writeNotice) {
+            if (next == stories.length && writeNotice) {
                 var notice;
                 switch (nStories) {
                     case 0:
@@ -174,123 +159,127 @@
                     "</span></div>";
                 writeNotice = false;
             }
-        }
 
-        function fitsThru(s) {
-            return s.date.substr(0, 10) >= filter.fromDate &&
-                s.date.substr(0, 10) <= filter.toDate &&
-                (filter.person == "" || s.person.search(filter.person) > -1) &&
-                (filter.topics == "" || s.topics.search(filter.topics) > -1) &&
-                (filter.search == "" ||
-                    s.title.search(filter.search) > -1 ||
-                    s.author.search(filter.search) > -1);
-        };
+            function fitsThru(s) {
+                return s.date.substr(0, 10) >= filter.fromDate &&
+                    s.date.substr(0, 10) <= filter.toDate &&
+                    (filter.person == "" || s.person.search(filter.person) > -1) &&
+                    (filter.topics == "" || s.topics.search(filter.topics) > -1) &&
+                    (filter.search == "" ||
+                        s.title.search(filter.search) > -1 ||
+                        s.author.search(filter.search) > -1);
+            }
 
-        function formatStory(s) {
+            function formatStory(s) {
 
-            var storyDiv = "<div class='story'>";
+                var storyDiv = "<div class='story'>";
 
-            detailsDiv: {
-                storyDiv += "<div class='details'>";
+                detailsDiv: {
+                    storyDiv += "<div class='details'>";
 
-                storyDiv += "<h2>" + s.title + "</h2>";
+                    storyDiv += "<h2>" + s.title + "</h2>";
 
-                byline: {
-                    if (s.author || s.online) {
-                        storyDiv += "<p class='byline'>";
-                        if (s.online != "") {
-                            storyDiv += "<a href='" + onlinePrefix + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' title='Read online'></a> ";
-                        }
-                        storyDiv += s.author + "</p>";
-                    }
-                }
-
-                tagline: {
-                    storyDiv += "<p class='tagline'>"
-                    if (s.topics != "") {
-                        storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this story'>";
-                        var topicList = s.topics.split(", ");
-                        for (var i = 0; topicList[i]; i++) {
-                            storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
-                        }
-                    }
-                    if (s.person != "") {
-                        storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this story'>";
-                        var personList = s.person.split(", ");
-                        for (var i = 0; personList[i]; i++) {
-                            storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
+                    byline: {
+                        if (s.author || s.online) {
+                            storyDiv += "<p class='byline'>";
+                            if (s.online != "") {
+                                storyDiv += "<a href='" + onlinePrefix + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' title='Read online'></a> ";
+                            }
+                            storyDiv += s.author + "</p>";
                         }
                     }
 
-                    storyDiv += "</p>"
-                }
+                    tagline: {
+                        storyDiv += "<p class='tagline'>"
+                        if (s.topics != "") {
+                            storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this story'>";
+                            var topicList = s.topics.split(", ");
+                            for (var i = 0; topicList[i]; i++) {
+                                storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
+                            }
+                        }
+                        if (s.person != "") {
+                            storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this story'>";
+                            var personList = s.person.split(", ");
+                            for (var i = 0; personList[i]; i++) {
+                                storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
+                            }
+                        }
 
-                citeline: {
-                    storyDiv += "<p class='citeline'>" + "<span class='noWrap'>" + paperName + ",</span> ";
+                        storyDiv += "</p>"
+                    }
 
-                    var d = new Date(s.date);
-                    var dateString = month[d.getMonth()] + " " +
-                        d.getDate() + " " +
-                        d.getFullYear();
+                    citeline: {
+                        storyDiv += "<p class='citeline'>" + "<span class='noWrap'>" + paperName + ",</span> ";
 
-                    var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
+                        var d = new Date(s.date);
+                        var dateString = month[d.getMonth()] + " " +
+                            d.getDate() + " " +
+                            d.getFullYear();
 
-                    storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" +
-                        s.date + "\"; filter.toDate=\"" +
-                        s.date + "\"; setInputs(); writeStories(true)'>" +
-                        dateString + "</a></span>";
+                        var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
 
-                    storyDiv += " &ndash; page " + s.page + "</p>";
-                }
+                        storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" +
+                            s.date + "\"; filter.toDate=\"" +
+                            s.date + "\"; setInputs(); writeStories(true)'>" +
+                            dateString + "</a></span>";
 
-                shareBtns: {
-                    var shareLink = encodeURIComponent(sharePrefix + s.link + shareSuffix);
+                        storyDiv += " &ndash; page " + s.page + "</p>";
+                    }
 
-                    storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
+                    shareBtns: {
+                        var shareLink = encodeURIComponent(sharePrefix + s.link + shareSuffix);
 
-                    var tweet = s.title + " - " + s.author + " ";
-                    tweet += paperTwitterHandle || paperName;
-                    tweet += " " + shortDate;
-                    tweet += (d.getFullYear() == new Date().getFullYear()) ?
-                        "" : " " + d.getFullYear(); // Add year if not this year
-                    tweet = tweet.replace(/\'/g, "%27");
+                        storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
 
-                    storyDiv += " <a href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags='" + hashtag + "' target='_blank'><img class='textBtn' src='images/tweet.svg' title='Tweet this story'></a>";
+                        var tweet = s.title + " - " + s.author + " ";
+                        tweet += paperTwitterHandle || paperName;
+                        tweet += " " + shortDate;
+                        tweet += (d.getFullYear() == new Date().getFullYear()) ?
+                            "" : " " + d.getFullYear(); // Add year if not this year
+                        tweet = tweet.replace(/\'/g, "%27");
 
-                    var body = '"' + s.title + '"\n' +
-                        s.author + ", " + paperName + " " + dateString + "\n\n";
-                    body = encodeURIComponent(body) +
-                        linkPrefix.replace(/\&/g, "%26") + s.link;
+                        storyDiv += " <a href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags='" + hashtag + "' target='_blank'><img class='textBtn' src='images/tweet.svg' title='Tweet this story'></a>";
 
-                    var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
-                        "&body=" + body;
-                    storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
+                        var body = '"' + s.title + '"\n' +
+                            s.author + ", " + paperName + " " + dateString + "\n\n";
+                        body = encodeURIComponent(body) +
+                            linkPrefix.replace(/\&/g, "%26") + s.link;
+
+                        var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
+                            "&body=" + body;
+                        storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
+
+                        storyDiv += "</div>";
+                    }
 
                     storyDiv += "</div>";
                 }
 
+                thumbDiv: {
+                    storyDiv += "<div class='thumb'>";
+                    storyDiv += "<a name='" + s.link + "'></a>";
+
+                    // Drop loadImg: not appearing till main image loads anyway
+                    // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
+
+                    storyDiv += "<a href='#" + s.link + "'>";
+                    storyDiv += "<img onclick=clickImg(this) src='" +
+                        thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
+                    storyDiv += "</div>";
+                }
+
                 storyDiv += "</div>";
+
+                storyDiv += "<hr>";
+
+                return storyDiv;
             }
 
-            thumbDiv: {
-                storyDiv += "<div class='thumb'>";
-                storyDiv += "<a name='" + s.link + "'></a>";
 
-                // Drop loadImg: not appearing till main image loads anyway
-                // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
-
-                storyDiv += "<a href='#" + s.link + "'>";
-                storyDiv += "<img onclick=clickImg(this) src='" +
-                    thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
-                storyDiv += "</div>";
-            }
-
-            storyDiv += "</div>";
-
-            storyDiv += "<hr>";
-
-            return storyDiv;
         }
+
+
 
         function search() {
             var s = document.getElementById('search').value.trim().replace('\n', '');
@@ -380,8 +369,6 @@
             }
         }
 
-        window.addEventListener("resize", checkHeight, false);
-
         function scrollHeader() {
             var st = window.pageYOffset || document.documentElement.scrollTop;
             if (st < lastScrollTop) { // Scroll up
@@ -413,7 +400,7 @@
     </script>
 </head>
 
-<body onload="clearFilter(); checkHeight()">
+<body onload="init()">
     <div id="header">
         <div id="headerBlock">
             <span class="logo"><img src=images/logo.png width=auto height=35>SSEC Leader ecoNews</span>

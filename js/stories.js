@@ -1,4 +1,4 @@
-[
+var stories = [
     {
         "date": "2016-02-24",
         "page": 1,
