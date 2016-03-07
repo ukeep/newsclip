@@ -169,6 +169,11 @@ h2 {
     height: 22px;
 }
 
+.note {
+    font-style: italic;
+    color: darkgrey;
+    margin: 33px 0 0 22px;
+}
 
 /* Desktop or landscape mobile */
 

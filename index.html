@@ -226,45 +226,47 @@
                         storyDiv += " &ndash; page " + s.page + "</p>";
                     }
 
-                    shareBtns: {
-                        var shareLink = encodeURIComponent(sharePrefix + s.link + shareSuffix);
+                    shareBtns: if (s.link) {
+                            var shareLink = encodeURIComponent(sharePrefix + s.link + shareSuffix);
 
-                        storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
+                            storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
 
-                        var tweet = s.title + " - " + s.author + " ";
-                        tweet += paperTwitterHandle || paperName;
-                        tweet += " " + shortDate;
-                        tweet += (d.getFullYear() == new Date().getFullYear()) ?
-                            "" : " " + d.getFullYear(); // Add year if not this year
-                        tweet = tweet.replace(/\'/g, "%27");
+                            var tweet = s.title + " - " + s.author + " ";
+                            tweet += paperTwitterHandle || paperName;
+                            tweet += " " + shortDate;
+                            tweet += (d.getFullYear() == new Date().getFullYear()) ?
+                                "" : " " + d.getFullYear(); // Add year if not this year
+                            tweet = tweet.replace(/\'/g, "%27");
 
-                        storyDiv += " <a href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags='" + hashtag + "' target='_blank'><img class='textBtn' src='images/tweet.svg' title='Tweet this story'></a>";
+                            storyDiv += " <a href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags='" + hashtag + "' target='_blank'><img class='textBtn' src='images/tweet.svg' title='Tweet this story'></a>";
 
-                        var body = '"' + s.title + '"\n' +
-                            s.author + ", " + paperName + " " + dateString + "\n\n";
-                        body = encodeURIComponent(body) +
-                            linkPrefix.replace(/\&/g, "%26") + s.link;
+                            var body = '"' + s.title + '"\n' +
+                                s.author + ", " + paperName + " " + dateString + "\n\n";
+                            body = encodeURIComponent(body) +
+                                linkPrefix.replace(/\&/g, "%26") + s.link;
 
-                        var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
-                            "&body=" + body;
-                        storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
+                            var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
+                                "&body=" + body;
+                            storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
 
-                        storyDiv += "</div>";
-                    }
+                            storyDiv += "</div>";
+                        }
 
                     storyDiv += "</div>";
                 }
 
                 thumbDiv: {
                     storyDiv += "<div class='thumb'>";
-                    storyDiv += "<a name='" + s.link + "'></a>";
+if (s.link) {                    storyDiv += "<a name='" + s.link + "'></a>";
 
                     // Drop loadImg: not appearing till main image loads anyway
                     // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
                     storyDiv += "<a href='#" + s.link + "'>";
                     storyDiv += "<img onclick=clickImg(this) src='" +
-                        thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
+                        thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";} else {
+                            storyDiv += "<p class='note'>no image</p>"
+                        }
                     storyDiv += "</div>";
                 }
 
