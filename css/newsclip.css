@@ -35,6 +35,19 @@ body {
     vertical-align: bottom
 }
 
+.logo a {
+    color: #405398;
+    text-decoration: none;
+    transition: all 200ms ease-in-out;
+}
+
+#header a:hover {
+    background-color: #d0daec;
+    padding: 5px 0;
+    border-radius: 5px;
+    transition: all 200ms ease-in-out;
+}
+
 .filterCell {
     display: inline-block;
     font-weight: bold;
@@ -43,7 +56,8 @@ body {
     margin-top: 10px;
 }
 
-label, #clearBtn {
+label,
+#clearBtn {
     margin-left: 8px;
 }
 
@@ -174,6 +188,7 @@ h2 {
     color: darkgrey;
     margin: 33px 0 0 22px;
 }
+
 
 /* Desktop or landscape mobile */
 
