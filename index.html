@@ -409,7 +409,7 @@
                     <input type=date id="fromDate" value=firstDate onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(true); this.style.color = (this.value == firstDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == firstDate) ? inactive[bg] : active[bg];">
                 </div>
                 <div class="filterCell">
-                    <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5></label>
+                    <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5 title="To date"></label>
                     <input type=date id="toDate" onmouseover="this.style.color=active[col]"  onmouseout="this.style.color = (this.value == lastDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=lastDate; filter.toDate=this.value; writeStories(true); this.style.color = (this.value == lastDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == lastDate) ? inactive[bg] : active[bg];">
                 </div>
             </span>
@@ -463,7 +463,7 @@
             </div>
             <div class="filterCell">
                 <a href="javascript:clearFilter(); writeStories(true)">
-                    <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver=this.src='images/clearon.svg' onMouseOut=this.src='images/clear.svg' alt="Clear search/filter">
+                    <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver=this.src='images/clearon.svg' onMouseOut=this.src='images/clear.svg' title="Clear search/filter">
                 </a>
             </div>
         </div>
