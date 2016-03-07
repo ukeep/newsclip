@@ -7,12 +7,14 @@ body {
 #header {
     width: 100%;
     transition: top 200ms ease-out;
+    -webkit-transition: top 200ms ease-out;
     margin: auto;
     background-image: url("../images/bg.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     position: fixed;
     z-index: 1;
+    box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.4);
 }
 
 #headerBlock {
@@ -67,9 +69,6 @@ label.toDate {
     vertical-align: bottom;
 }
 
-#searchBtn,
-#clearBtn {}
-
 #show {
     position: fixed;
     display: none;
@@ -87,8 +86,8 @@ label.toDate {
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    -webkit-transition: opacity 300ms ease-out;
     transition: opacity 300ms ease-out;
+    -webkit-transition: opacity 300ms ease-out;
     opacity: 0;
     overflow: auto;
     max-width: 100%;
@@ -106,36 +105,31 @@ label.toDate {
     left: 50px;
 }
 
-.thumb {
-    background-color: white;
-}
-
-.thumb:hover {
-    background-color: black;
-}
-
 .thumb img {
     left: 0;
-    max-width: 100%;
-    background-color: white;
+    box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.40);
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
 }
 
 .thumb img:hover {
-    opacity: 0.9;
-    background-color: black;
+    box-shadow: 0 17px 50px 0 rgba(0, 0, 0, 0.40);
+    transform: scale(1.025, 1.025);
+    -ms-transform: scale(1.025, 1.025);
+    -webkit-transform: scale(1.025, 1.025);
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
 }
 
 hr {
     border: 0;
     height: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid lightgrey;
     margin: 0;
 }
 
 .story {
     border-radius: 2px;
-    /*    padding: 10px;*/
     overflow: visible;
     position: relative;
 }
@@ -197,7 +191,6 @@ h2 {
 
 @media screen and (min-width: 10cm) {
     .story {
-        clear: left;
         width: 85%;
         margin: 10px auto;
     }
@@ -219,9 +212,6 @@ h2 {
 /* Portrait mobile */
 
 @media not screen and (min-width: 10cm) {
-    .thumb img {
-        max-height: 200px;
-    }
     .story {
         margin: 10px;
         /*        padding: 10px;*/
@@ -231,6 +221,9 @@ h2 {
         position: relative;
         min-height: 130px;
         display: inline-block;
+    }
+    .thumb img {
+        max-height: 200px;
     }
 }
 

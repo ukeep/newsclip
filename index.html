@@ -190,10 +190,6 @@
 
             var storyDiv = "<div class='story'>";
 
-            // Paper border around each story - dropped in favour of thumb border
-            // storyDiv += "<div class='paper-shadow paper-shadow-top'></div>";
-            // storyDiv += "<div class='paper-shadow paper-shadow-bottom'></div>";
-
             detailsDiv: {
                 storyDiv += "<div class='details'>";
 
@@ -284,12 +280,8 @@
                 // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
                 storyDiv += "<a href='#" + s.link + "'>";
-                storyDiv += "<img class='thumbImg'  onclick=clickImg(this) src='" +
+                storyDiv += "<img onclick=clickImg(this) src='" +
                     thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
-
-                storyDiv += "<div class='paper-shadow paper-shadow-top'></div>";
-                storyDiv += "<div class='paper-shadow paper-shadow-bottom'></div>";
-
                 storyDiv += "</div>";
             }
 
@@ -423,9 +415,6 @@
 
 <body onload="clearFilter(); checkHeight()">
     <div id="header">
-        <div class='paper-shadow paper-shadow-top'></div>
-        <div class='paper-shadow paper-shadow-bottom'></div>
-
         <div id="headerBlock">
             <span class="logo"><img src=images/logo.png width=auto height=35>SSEC Leader ecoNews</span>
             <span class="noWrap">
