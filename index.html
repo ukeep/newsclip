@@ -30,13 +30,13 @@
             var firstDate = "2013-01-01";
             var lastDate = dayString(new Date()); // If a fixed last date, use "yyyy-mm-dd"
             var searchHint = "Search title or author";
-            var inactiveStyle = "color:grey; background-color:white";
-            var activeStyle = "color:black; background-color:#ffff66";
+            var inactiveStyle = "color:grey; background-color:white;";
+            var activeStyle = "color:black; background-color:#f8ecb9;";
 
             var showMargin = 10; // Margin between edge of window and full size news image
 
             var next = 0; // Next story to display when scrolling to end of page 
-            var bucket = 6; // Number of stories loaded to page at a time
+            var bucket = 7; // Number of stories loaded to page at a time
             var scrollSensor = 50; // Add more content if within this distance of page end
             var filter = {};
             var searchStart = true;
@@ -54,12 +54,14 @@
             var timeout;
             if (navigator.userAgent.search("Firefox") > 0 ||
                 navigator.userAgent.search("Chrome/18") > 0 ||
-//                navigator.userAgent.search("Edge") > 0 ||
+                //                navigator.userAgent.search("Edge") > 0 ||
                 false) {
                 timeout = 1000;
             } else {
                 timeout = 0;
             }
+
+            var writeNotice = true;
         }
 
         function handleJson() {
@@ -114,15 +116,16 @@
                 (filter.person) ? activeStyle : inactiveStyle;
             document.getElementById("search").style =
                 (filter.search && !searchStart) ? activeStyle : inactiveStyle;
-
         }
 
         function writeStories(reset) {
             if (reset) {
+                writeNotice = true;
                 next = 0;
+                nStories = 0;
                 document.getElementById("stories").innerHTML = "";
-                reset = false;
                 window.scrollTo(0, 0);
+                reset = false;
             }
             var j = 0;
             for (var i = next; i < stories.length; i++) {
@@ -131,11 +134,30 @@
                     j++;
                 }
                 next++;
-                if (j > bucket) break;
+                if (j >= bucket) break;
             }
-            if (j == 0) {
-                document.getElementById("stories").innerHTML =
-                    "<p>Your search or filter did not match any news items. <a href='javascript:clearFilter(); writeStories(true)'>Clear search/filter</a>.</p>";
+            nStories += j;
+            if (i == stories.length && writeNotice) {
+                var notice;
+                switch (nStories) {
+                    case 0:
+                        notice = "No items match";
+                        break;
+                    case 1:
+                        notice = "1 item matches";
+                        break;
+                    default:
+                        notice = nStories + " items match";
+                }
+                notice += " your search/filter.";
+                if (nStories == 0) {
+                    notice += " <span class='noWrap'><a href='javascript:clearFilter(); writeStories(true)'>Clear search/filter</a></span>.";
+                }
+
+                document.getElementById("stories").innerHTML +=
+                    "<div class='story'><span class='notice'>" + notice +
+                    "</span></div>";
+                writeNotice = false;
             }
         }
 
@@ -270,9 +292,11 @@
                 writeStories(true)
             }
             if (s && !searchStart) {
-                document.getElementById('search').style = 'color:black; font-style:normal; background-color:#ffff66'
+                //                document.getElementById('search').style = 'color:black; font-style:normal; background-color:#ffff66';
+                document.getElementById('search').style = activeStyle + "font-style:normal;";
             } else {
-                document.getElementById('search').style = 'background-color:#white'
+                //                document.getElementById('search').style = 'background-color:#white';
+                document.getElementById('search').style = inactiveStyle;
             }
         }
 

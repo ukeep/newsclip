@@ -10,11 +10,10 @@ body {
     margin: auto;
     background-image: url("../images/bg.jpg");
     background-repeat: no-repeat;
-    background-size:cover;
+    background-size: cover;
     position: fixed;
     z-index: 1;
 }
-
 
 #headerBlock {
     padding: 5px 5px 15px 5px;
@@ -286,6 +285,45 @@ h2 {
     }
 }
 
+
+/* Animation for notice text */
+
+@keyframes highlight {
+    0% {
+        background: #eecc44;
+    }
+    100% {
+        background: none;
+    }
+}
+
+@-o-keyframes highlight {
+    0% {
+        background: #eecc44;
+    }
+    100% {
+        background: none;
+    }
+}
+
+@-moz-keyframes highlight {
+    0% {
+        background: #eecc44;
+    }
+    100% {
+        background: none;
+    }
+}
+
+@-webkit-keyframes highlight {
+    0% {
+        background: #eecc44;
+    }
+    100% {
+        background: none;
+    }
+}
+
 #loadStories {
     text-align: center;
     line-height: 150px;
@@ -300,4 +338,11 @@ h2 {
     -moz-animation: flickerAnimation 2s infinite;
     -o-animation: flickerAnimation 2s infinite;
     animation: flickerAnimation 2s infinite;
+}
+
+.notice {
+    -webkit-animation: highlight 3s ease-out;
+    -moz-animation: highlight 3s ease-out;
+    -o-animation: highlight 3s ease-out;
+    animation: highlight 3s ease-out;
 }
