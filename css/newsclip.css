@@ -43,8 +43,8 @@ body {
     margin-top: 10px;
 }
 
-label {
-    margin-left: 10px;
+label, #clearBtn {
+    margin-left: 8px;
 }
 
 label.toDate {
