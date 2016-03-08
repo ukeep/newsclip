@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
     <link rel=stylesheet href="css/newsclip.css">
 
     <title>SSEC Leader ecoNews</title>
@@ -22,6 +23,9 @@
             var maxheaderPercent = 0.10; // 0.07;
             var headerHeight, hideHeader, lastScrollTop;
             var headerShown = true;
+            var subscribeFormHeight = 488.188;
+            var aboutBoxHeight = 59.375;
+            var formShown = "";
 
             var onlinePrefix = "http://www.theleader.com.au/story/";
             var paperName = "Sutherland Shire Leader";
@@ -372,10 +376,14 @@
             if (hideHeader) {
                 lastScrollTop = 0;
                 window.addEventListener("scroll", scrollHeader, false);
+                document.getElementById("mc_embed_signup").style.top = -subscribeFormHeight;
+                document.getElementById("aboutBox").style.top = -aboutBoxHeight;
             } else {
                 window.removeEventListener("scroll", scrollHeader);
                 document.getElementById("header").style.top = 0;
                 document.getElementById("header").style.width = document.body.clientWidth; // Recover width lost by position fixed
+                document.getElementById("mc_embed_signup").style.top = -headerHeight - subscribeFormHeight;
+                document.getElementById("aboutBox").style.top = -headerHeight - aboutBoxHeight;
             }
         }
 
@@ -407,13 +415,56 @@
             lastScrollTop = st;
         }
 
+        function showForm(f) {
+
+            /* It may be possible to animate the modal darkness from top to bottom, following the drop of the pennant, using CSS gradients : http://codepen.io/hi_mynameisdave/pen/vEqKzx
+             */
+            if (formShown) {
+                if (formShown == f) {
+                    hideForm();
+                    return;
+                } else {
+                    hideForm();
+                }
+            }
+            document.getElementById("modal").style.zIndex = 1;
+            document.getElementById("modal").style.transition =
+                "opacity 375ms ease-in 125ms";
+            document.getElementById("modal").style.opacity = .5;
+            switch (f) {
+                case "subscribe":
+                    document.getElementById("mc_embed_signup").style.top =
+                        headerHeight;
+                    break;
+                case "about":
+                    document.getElementById("aboutBox").style.top = headerHeight;
+                    break;
+                default:
+                    break;
+            }
+            formShown = f;
+        }
+
+        function hideForm() {
+            document.getElementById("mc_embed_signup").style.top = -subscribeFormHeight;
+            document.getElementById("aboutBox").style.top = -aboutBoxHeight;
+
+            document.getElementById("modal").style.transition = "opacity 375ms ease-out";;
+            document.getElementById("modal").style.opacity = 0;
+            document.getElementById("modal").style.zIndex = -1;
+            formShown = "";
+        }
+
     </script>
+
+
 </head>
 
 <body onload="init()">
     <div id="header">
         <div id="headerBlock">
             <span class="logo"><a href="/" title="SSEC home page"><img src=images/logo.png width=auto height=35>SSEC </a>Leader ecoNews</span>
+            <div id="headerLinks"><span><a href="javascript:;" onclick="showForm('subscribe');">Subscribe</a></span> &bull; <span><a href="javascript:;" onclick="showForm('about');">About</a></span></div>
             <span class="noWrap">
                 <div class="filterCell">
                     <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range"></label>
@@ -478,7 +529,68 @@
                 </a>
             </div>
         </div>
+        <form id="subscribe">
+        </form>
     </div>
+
+    <div id="modal" onclick="hideForm()"></div>
+    <!-- Begin MailChimp Signup Form -->
+    <div id="mc_embed_signup" class="pennant">
+        <form action="//ssec.us2.list-manage.com/subscribe/post?u=eb6ab4030129e1d2e792b698e&amp;id=02f3d3fd50" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+            <div id="mc_embed_signup_scroll">
+                <span class="close" onclick="hideForm()" title="Close">&#10006;</span>
+                <h2>Get the Leader ecoNews in your inbox each week.</h2>
+                <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+                <div class="mc-field-group">
+                    <label for="mce-EMAIL">Email Address <span class="asterisk">*</span>
+                    </label>
+                    <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+                </div>
+                <div class="mc-field-group">
+                    <label for="mce-FNAME">First Name <span class="asterisk">*</span>
+                    </label>
+                    <input type="text" value="" name="FNAME" class="required" id="mce-FNAME">
+                </div>
+                <div class="mc-field-group">
+                    <label for="mce-LNAME">Last Name <span class="asterisk">*</span>
+                    </label>
+                    <input type="text" value="" name="LNAME" class="required" id="mce-LNAME">
+                </div>
+                <div class="mc-field-group input-group">
+                    <strong>Subscribe me to: </strong>
+                    <ul>
+                        <li>
+                            <input type="checkbox" value="1" checked name="group[18357][1]" id="mce-group[18357]-18357-0">
+                            <label for="mce-group[18357]-18357-0">SSEC Newsletter (monthly)</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" value="2" checked name="group[18357][2]" id="mce-group[18357]-18357-1">
+                            <label for="mce-group[18357]-18357-1">Leader ecoNews (weekly)</label>
+                        </li>
+                    </ul>
+                </div>
+                <div id="mce-responses" class="clear">
+                    <div class="response" id="mce-error-response" style="display:none"></div>
+                    <div class="response" id="mce-success-response" style="display:none"></div>
+                </div>
+                <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                    <input type="text" name="b_eb6ab4030129e1d2e792b698e_02f3d3fd50" tabindex="-1" value="">
+                </div>
+                <div class="clear">
+                    <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--End mc_embed_signup-->
+
+    <div id="aboutBox" class="pennant">
+        <span class="close" onclick="hideForm()" title="Close">&#10006;</span>
+        <h2>Leader ecoNews</h2>
+        <h3>environmental news monitoring for the Shire</h3>
+    </div>
+
     <div id="stories">
         <div id="loadStories">Loading...</div>
     </div>
