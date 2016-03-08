@@ -307,14 +307,19 @@
 
         function clickImg(thumb) {
             var imgBox = document.getElementById("imgBox");
-
-            if (document.getElementById("show").style.display === "initial") {
+            var show = document.getElementById("show").style;
+            if (show.zIndex == 4) {
                 if (justShown) {
                     justShown = false;
                     return;
                 }
+
                 document.body.style.overflow = "auto";
-                document.getElementById("show").style.display = "none";
+
+                show.opacity = 0;
+                show.transition = "opacity 250ms ease-in-out, z-index 0ms linear 500ms";
+                show.zIndex = -1;
+
                 imgBox.style.width = "auto";
                 imgBox.style.opacity = 0;
                 window.removeEventListener("keyup", showKey);
@@ -324,8 +329,14 @@
                     history.back();
                 }
             } else {
-                document.getElementById("show").style.display = "initial";
-                document.body.style.overflow = "hidden";
+                show.width = window.innerWidth;
+                show.height = window.innerHeight;
+                show.transition = "opacity 250ms ease-in-out, z-index 0ms";
+                show.zIndex = 4;
+                show.opacity = 1;
+                window.setTimeout(function() {
+                    document.body.style.overflow = "hidden";
+                }, 250);
                 document.getElementById("showImg").src =
                     thumb.src.replace(thumbPrefix, linkPrefix);
 
@@ -377,13 +388,13 @@
                 lastScrollTop = 0;
                 window.addEventListener("scroll", scrollHeader, false);
                 document.getElementById("mc_embed_signup").style.top = -subscribeFormHeight;
-                document.getElementById("aboutBox").style.top = -aboutBoxHeight;
+                document.getElementById("aboutBox").style.top = -aboutBoxHeight - subscribeFormHeight;
             } else {
                 window.removeEventListener("scroll", scrollHeader);
                 document.getElementById("header").style.top = 0;
                 document.getElementById("header").style.width = document.body.clientWidth; // Recover width lost by position fixed
                 document.getElementById("mc_embed_signup").style.top = -headerHeight - subscribeFormHeight;
-                document.getElementById("aboutBox").style.top = -headerHeight - aboutBoxHeight;
+                document.getElementById("aboutBox").style.top = -headerHeight - aboutBoxHeight - subscribeFormHeight;
             }
         }
 
@@ -427,10 +438,11 @@
                     hideForm();
                 }
             }
-            document.getElementById("modal").style.zIndex = 1;
+            //            document.getElementById("modal").style.zIndex = 1;
             document.getElementById("modal").style.transition =
-                "opacity 375ms ease-in 125ms";
-            document.getElementById("modal").style.opacity = .5;
+                "top 500ms ease-in";
+            document.getElementById("modal").style.top = 0;
+            //            document.getElementById("modal").style.opacity = .5;
             switch (f) {
                 case "subscribe":
                     document.getElementById("mc_embed_signup").style.top =
@@ -438,6 +450,7 @@
                     break;
                 case "about":
                     document.getElementById("aboutBox").style.top = headerHeight;
+
                     break;
                 default:
                     break;
@@ -447,11 +460,15 @@
 
         function hideForm() {
             document.getElementById("mc_embed_signup").style.top = -subscribeFormHeight;
-            document.getElementById("aboutBox").style.top = -aboutBoxHeight;
+            document.getElementById("aboutBox").style.top = -aboutBoxHeight - subscribeFormHeight;
 
-            document.getElementById("modal").style.transition = "opacity 375ms ease-out";;
-            document.getElementById("modal").style.opacity = 0;
-            document.getElementById("modal").style.zIndex = -1;
+            document.getElementById("modal").style.transition = "top 500ms ease-out";;
+            document.getElementById("modal").style.top = "-100%";
+            //            document.getElementById("modal").style.opacity = 0;
+            //            document.getElementById("modal").style.zIndex = -1;
+            //            window.setTimeout(function() {
+            //                document.getElementById("modal").style.display = "none";
+            //            }, 500);
             formShown = "";
         }
 
@@ -534,12 +551,13 @@
     </div>
 
     <div id="modal" onclick="hideForm()"></div>
+
     <!-- Begin MailChimp Signup Form -->
     <div id="mc_embed_signup" class="pennant">
         <form action="//ssec.us2.list-manage.com/subscribe/post?u=eb6ab4030129e1d2e792b698e&amp;id=02f3d3fd50" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
             <div id="mc_embed_signup_scroll">
                 <span class="close" onclick="hideForm()" title="Close">&#10006;</span>
-                <h2>Get the Leader ecoNews in your inbox each week.</h2>
+                <h2>Get Leader ecoNews in your inbox each week.</h2>
                 <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
                 <div class="mc-field-group">
                     <label for="mce-EMAIL">Email Address <span class="asterisk">*</span>
@@ -586,9 +604,58 @@
     <!--End mc_embed_signup-->
 
     <div id="aboutBox" class="pennant">
-        <span class="close" onclick="hideForm()" title="Close">&#10006;</span>
-        <h2>Leader ecoNews</h2>
-        <h3>environmental news monitoring for the Shire</h3>
+        <div>
+            <span class="close" onclick="hideForm()" title="Close">&#10006;</span>
+            <h2>About Leader ecoNews</h2>
+            <h3>Environmental news monitoring for the Shire</h3>
+            <p>Browse and search our catalogue of well over a thousand news items from the Sutherland Shire edition of <span class="noWrap"><a href="theleader.com.au" target="_blank">The Leader</a></span> newspaper. Stay up-to-date with local news and views on environmental topics:
+            </p>
+            <div class="table">
+                <div class='row'>
+                    <div class='term'>Climate &amp; energy</div>
+                    <div class='description'>Storms, fires, floods, drought, coal, gas, oil, nuclear, solar, wind</div>
+                </div>
+                <div class='row'>
+                    <div class='term'>Marine</div>
+                    <div class='description'>Beaches, estuaries, coast, fishing</div>
+                </div>
+                <div class='row'>
+                    <div class='term'>Parks &amp; nature</div>
+                    <div class='description'>Forest, natural areas, parks, animals, plants</div>
+                </div>
+                <div class='row'>
+                    <div class='term'>Planning</div>
+                    <div class='description'>Development, housing</div>
+                </div>
+                <div class='row'>
+                    <div class='term'>Politics</div>
+                    <div class='description'>Elections</div>
+                </div>
+                <div class='row'>
+                    <div class='term'>Refugees</div>
+                    <div class='description'>Asylum seekers, boat people</div>
+                </div>
+                <div class='row'>
+                    <div class='term'>Transport</div>
+                    <div class='description'>Cycling, walking, buses, trains, roads</div>
+                </div>
+                <div class='row'>
+                    <div class='term'>Vegetarianism</div>
+                    <div class='description'>Veganism, healthy eating</div>
+                </div>
+                <div class='row'>
+                    <div class='term'>Waste</div>
+                    <div class='description'>Pollution, recycling</div>
+                </div>
+                <div class='row'>
+                    <div class='term'>Water</div>
+                    <div class='description'>Rivers, water catchment</div>
+                </div>
+
+            </div>
+
+            <p>The news archive was commenced in 2013 by <a href="https://www.facebook.com/sarah.a.roxas" target="_blank">Sarah Roxas</a>, a dedicated IT student in the Philippines. We started a weekly mailout to SSEC members and supporters in 2015 &ndash; <a href="javascript:;" onclick="hideForm(); showForm('subscribe');">subscribe here</a>. This web app was designed and <a href="https://github.com/ukeep/newsclip" target="_blank">coded</a> in 2016 by SSEC Board member <a href="http://fb.com/jondoig" target="_blank">Jonathan Doig</a>. <a href="http://ssec.org.au/index.php/contact/">Feedback welcome!</a></p>
+        </div>
     </div>
 
     <div id="stories">
