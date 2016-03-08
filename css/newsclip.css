@@ -13,12 +13,19 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     position: fixed;
-    z-index: 1;
+    z-index: 3;
     box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.4);
 }
 
+#header a:hover {
+    background-color: #d0daec;
+    padding: 2px 0;
+    border-radius: 5px;
+    transition: all 200ms ease-in-out;
+}
+
 #headerBlock {
-    padding: 5px 5px 15px 5px;
+    padding: 5px;
     margin: auto;
     overflow: auto;
     text-align: center;
@@ -35,17 +42,24 @@ body {
     vertical-align: bottom
 }
 
-.logo a {
+.logo a,
+#headerLinks a {
     color: #405398;
     text-decoration: none;
     transition: all 200ms ease-in-out;
 }
 
-#header a:hover {
-    background-color: #d0daec;
-    padding: 5px 0;
-    border-radius: 5px;
-    transition: all 200ms ease-in-out;
+#headerLinks {
+    position: absolute;
+    top: 42px;
+    left: 160px;
+    font: 14px "Pontano Sans", arial, sans-serif;
+    letter-spacing: -1px;
+    color: #405398;
+}
+
+#headerLinks span {
+    margin: 5px;
 }
 
 .filterCell {
@@ -83,14 +97,142 @@ label.toDate {
     vertical-align: bottom;
 }
 
-#show {
+
+/* Add your own MailChimp form style overrides in your site stylesheet or in this style block. We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+
+
+/* The Modal (background) */
+
+#modal {
+    /*    display: none;*/
     position: fixed;
-    display: none;
+    z-index: 1;
+    left: 0;
+    top: -100%;
     width: 100%;
     height: 100%;
-    background-color: black;
+    overflow: auto;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.1));
+}
+
+#mc_embed_signup {
+    left: 160px;
+}
+
+#aboutBox {
+    left: 232px;
+}
+
+.pennant {
+    top: -2000;
+    clear: left;
+    font: 14px "Pontano Sans", arial, sans-serif;
+    color: #26315a;
+    max-width: 500px;
+    max-height: 500px;
+    min-width: 300px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    position: absolute;
+    box-shadow: 0 17px 50px 0 rgba(0, 0, 0, 0.50);
+    transition: top 500ms ease-in-out;
+    background-color: white;
+    opacity: 1;
     z-index: 2;
+    overflow: auto;
+}
+
+.pennant > div {
+    margin: 10px;
+}
+
+.pennant h2,
+#mc_embed_signup h2 {
+    font-size: 18px;
+    margin: 6px 0;
+}
+
+.pennant h3 {
+    margin: 3px 0;
+    font-style: italic;
+    font-size: 16px;
+}
+
+.pennant p,
+#aboutBox p {
+    margin: 8px 0;
+}
+
+.pennant a {
+    color: #405398;
+    text-decoration-style: dashed;
+}
+
+.pennant a:hover,
+.pennant a:active {
+    color: #405398;
+    background-color: #d0daec;
+}
+
+.pennant a:visited {
+    color: #524099;
+}
+
+.pennant .row {
+    display: inline-block;
+    margin: 2px 0;
     overflow: hidden;
+    width: 100%;
+}
+
+.row > div {
+    display: inline;
+    float: left;
+    margin: 2px;
+}
+
+.term {
+    width: 30%;
+    font-weight: bold;
+}
+
+.description {
+    width: 65%;
+}
+
+#mc_embed_signup .button {
+    background-color: #405398;
+}
+
+#mc_embed_signup .button:hover {
+    background-color: #26315a;
+}
+
+
+/* The Close Button */
+
+.close {
+    color: #d0daec;
+    position: absolute;
+    right: 8px;
+    top: 0px;
+    font-size: 20px;
+}
+
+.close:hover,
+.close:focus {
+    color: #405398;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#show {
+    position: fixed;
+    background-color: black;
+    z-index: -1;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 250ms ease-in-out;
 }
 
 #imgBox {
@@ -149,7 +291,7 @@ hr {
     position: relative;
 }
 
-h2 {
+#header h2 {
     margin: 0 0 5px 0;
 }
 
@@ -228,6 +370,13 @@ h2 {
     }
     .thumb img {
         max-height: 200px;
+    }
+    #headerLinks {
+        left: 10px;
+    }
+    #mc_embed_signup,
+    #aboutBox {
+        left: 10px;
     }
 }
 
