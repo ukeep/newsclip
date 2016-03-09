@@ -59,6 +59,16 @@
             var justShown = false;
 
             var writeNotice = true;
+
+            function dayString(d) {
+                var t = d.getFullYear() + "-";
+                t += (d.getMonth() < 9) ? "0" : "";
+                t += d.getMonth() + 1 + "-";
+                t += (d.getDate() < 10) ? "0" : "";
+                t += d.getDate();
+                return t
+
+            }
         }
 
         function init() {
@@ -77,8 +87,8 @@
             }
 
             infiniteScroll(scrollOptions); // setup infinite scroll
-            window.addEventListener("resize", checkHeight, false);
 
+            window.addEventListener("resize", checkHeight, false);
         }
 
         function clearFilter() {
@@ -282,13 +292,9 @@
 
                 return storyDiv;
             }
-
-
         }
 
-
-
-        function search() {
+        function searchStories() {
             var s = document.getElementById('search').value.trim().replace('\n', '');
             var sStyle = document.getElementById('search').style;
             if (!searchStart) {
@@ -367,16 +373,6 @@
             if (e.keyCode == 27) clickImg();
         }
 
-        function dayString(d) {
-            var t = d.getFullYear() + "-";
-            t += (d.getMonth() < 9) ? "0" : "";
-            t += d.getMonth() + 1 + "-";
-            t += (d.getDate() < 10) ? "0" : "";
-            t += d.getDate();
-            return t
-
-        }
-
         // Show filter/search tools when user scrolls up but not at top
         function checkHeight() {
             headerHeight = document.getElementById("header").scrollHeight;
@@ -427,9 +423,6 @@
         }
 
         function showForm(f) {
-
-            /* It may be possible to animate the modal darkness from top to bottom, following the drop of the pennant, using CSS gradients : http://codepen.io/hi_mynameisdave/pen/vEqKzx
-             */
             if (formShown) {
                 if (formShown == f) {
                     hideForm();
@@ -438,11 +431,9 @@
                     hideForm();
                 }
             }
-            //            document.getElementById("modal").style.zIndex = 1;
             document.getElementById("modal").style.transition =
                 "top 500ms ease-in";
             document.getElementById("modal").style.top = 0;
-            //            document.getElementById("modal").style.opacity = .5;
             switch (f) {
                 case "subscribe":
                     document.getElementById("mc_embed_signup").style.top =
@@ -450,7 +441,6 @@
                     break;
                 case "about":
                     document.getElementById("aboutBox").style.top = headerHeight;
-
                     break;
                 default:
                     break;
@@ -464,11 +454,6 @@
 
             document.getElementById("modal").style.transition = "top 500ms ease-out";;
             document.getElementById("modal").style.top = "-100%";
-            //            document.getElementById("modal").style.opacity = 0;
-            //            document.getElementById("modal").style.zIndex = -1;
-            //            window.setTimeout(function() {
-            //                document.getElementById("modal").style.display = "none";
-            //            }, 500);
             formShown = "";
         }
 
@@ -537,7 +522,7 @@
             </div>
             <div class="filterCell">
                 <a href="javascript:;">
-                    <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="search()" title="Search">
+                    <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="searchStories()" title="Search">
                 </a>
             </div>
             <div class="filterCell">
@@ -606,9 +591,9 @@
     <div id="aboutBox" class="pennant">
         <div>
             <span class="close" onclick="hideForm()" title="Close">&#10006;</span>
-            <h2>About Leader ecoNews</h2>
+            <h2>Leader ecoNews</h2>
             <h3>Environmental news monitoring for the Shire</h3>
-            <p>Browse and search our catalogue of well over a thousand news items from the Sutherland Shire edition of <span class="noWrap"><a href="theleader.com.au" target="_blank">The Leader</a></span> newspaper. Stay up-to-date with local news and views on environmental topics:
+            <p>Browse and search our catalogue of well over a thousand news items from the Sutherland Shire edition of <span class="noWrap"><i><a href="theleader.com.au" target="_blank">The Leader</a></i></span> newspaper. Stay up-to-date with local news and views on environmental topics:
             </p>
             <div class="table">
                 <div class='row'>
@@ -654,7 +639,14 @@
 
             </div>
 
-            <p>The news archive was commenced in 2013 by <a href="https://www.facebook.com/sarah.a.roxas" target="_blank">Sarah Roxas</a>, a dedicated IT student in the Philippines. We started a weekly mailout to SSEC members and supporters in 2015 &ndash; <a href="javascript:;" onclick="hideForm(); showForm('subscribe');">subscribe here</a>. This web app was designed and <a href="https://github.com/ukeep/newsclip" target="_blank">coded</a> in 2016 by SSEC Board member <a href="http://fb.com/jondoig" target="_blank">Jonathan Doig</a>. <a href="http://ssec.org.au/index.php/contact/">Feedback welcome!</a></p>
+            <p>
+                Our news archive commenced in 2013. We started a weekly mailout to SSEC members and supporters in 2015 &ndash; <a href="javascript:;" onclick="hideForm(); showForm('subscribe');">subscribe here</a>. This web app was launched in 2016.
+            </p>
+            <p>
+                Content: <a href="https://www.facebook.com/sarah.a.roxas" target="_blank">Sarah Roxas</a>.
+                <a href="https://github.com/ukeep/newsclip" target="_blank">Newsclip</a> app: <a href="http://fb.com/jondoig" target="_blank">Jonathan Doig</a>.
+                <a href="http://ssec.org.au/index.php/contact/">Feedback welcome</a>.
+            </p>
         </div>
     </div>
 
