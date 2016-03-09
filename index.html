@@ -23,9 +23,10 @@
             var maxheaderPercent = 0.10; // 0.07;
             var headerHeight, hideHeader, lastScrollTop;
             var headerShown = true;
-            var subscribeFormHeight = 488.188;
-            var aboutBoxHeight = 59.375;
-            var formShown = "";
+            var subscribeHeight = 488.188;
+            var aboutHeight = 59.375;
+            var pennantDown = "";
+            var bodyTop, storiesTop;
 
             var onlinePrefix = "http://www.theleader.com.au/story/";
             var paperName = "Sutherland Shire Leader";
@@ -41,6 +42,8 @@
             var col = 0,
                 bg = 1,
                 fs = 2;
+
+            var view = "";
 
             var showMargin = 10; // Margin between edge of window and full size news image
 
@@ -173,125 +176,126 @@
                 writeNotice = false;
             }
 
-            function fitsThru(s) {
-                return s.date.substr(0, 10) >= filter.fromDate &&
-                    s.date.substr(0, 10) <= filter.toDate &&
-                    (filter.person == "" || s.person.search(filter.person) > -1) &&
-                    (filter.topics == "" || s.topics.search(filter.topics) > -1) &&
-                    (filter.search == "" ||
-                        s.title.search(filter.search) > -1 ||
-                        s.author.search(filter.search) > -1);
-            }
+        }
 
-            function formatStory(s) {
+        function fitsThru(s) {
+            return s.date.substr(0, 10) >= filter.fromDate &&
+                s.date.substr(0, 10) <= filter.toDate &&
+                (filter.person == "" || s.person.search(filter.person) > -1) &&
+                (filter.topics == "" || s.topics.search(filter.topics) > -1) &&
+                (filter.search == "" ||
+                    s.title.search(filter.search) > -1 ||
+                    s.author.search(filter.search) > -1);
+        }
 
-                var storyDiv = "<div class='story'>";
+        function formatStory(s) {
 
-                detailsDiv: {
-                    storyDiv += "<div class='details'>";
+            var storyDiv = "<div class='story'>";
 
-                    storyDiv += "<h2>" + s.title + "</h2>";
+            detailsDiv: {
+                storyDiv += "<div class='details'>";
 
-                    byline: {
-                        if (s.author || s.online) {
-                            storyDiv += "<p class='byline'>";
-                            if (s.online != "") {
-                                storyDiv += "<a href='" + onlinePrefix + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' title='Read online'></a> ";
-                            }
-                            storyDiv += s.author + "</p>";
+                storyDiv += "<h2>" + s.title + "</h2>";
+
+                byline: {
+                    if (s.author || s.online) {
+                        storyDiv += "<p class='byline'>";
+                        if (s.online != "") {
+                            storyDiv += "<a href='" + onlinePrefix + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' title='Read online'></a> ";
                         }
+                        storyDiv += s.author + "</p>";
                     }
-
-                    tagline: {
-                        storyDiv += "<p class='tagline'>"
-                        if (s.topics != "") {
-                            storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this story'>";
-                            var topicList = s.topics.split(", ");
-                            for (var i = 0; topicList[i]; i++) {
-                                storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
-                            }
-                        }
-                        if (s.person != "") {
-                            storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this story'>";
-                            var personList = s.person.split(", ");
-                            for (var i = 0; personList[i]; i++) {
-                                storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
-                            }
-                        }
-
-                        storyDiv += "</p>"
-                    }
-
-                    citeline: {
-                        storyDiv += "<p class='citeline'>" + "<span class='noWrap'>" + paperName + ",</span> ";
-
-                        var d = new Date(s.date);
-                        var dateString = month[d.getMonth()] + " " +
-                            d.getDate() + " " +
-                            d.getFullYear();
-
-                        var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
-
-                        storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" +
-                            s.date + "\"; filter.toDate=\"" +
-                            s.date + "\"; setInputs(); writeStories(true)'>" +
-                            dateString + "</a></span>";
-
-                        storyDiv += " &ndash; page " + s.page + "</p>";
-                    }
-
-                    shareBtns: if (s.link) {
-                            var shareLink = encodeURIComponent(sharePrefix + s.link + shareSuffix);
-
-                            storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
-
-                            var tweet = s.title + " - " + s.author + " ";
-                            tweet += paperTwitterHandle || paperName;
-                            tweet += " " + shortDate;
-                            tweet += (d.getFullYear() == new Date().getFullYear()) ?
-                                "" : " " + d.getFullYear(); // Add year if not this year
-                            tweet = tweet.replace(/\'/g, "%27");
-
-                            storyDiv += " <a href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags='" + hashtag + "' target='_blank'><img class='textBtn' src='images/tweet.svg' title='Tweet this story'></a>";
-
-                            var body = '"' + s.title + '"\n' +
-                                s.author + ", " + paperName + " " + dateString + "\n\n";
-                            body = encodeURIComponent(body) +
-                                linkPrefix.replace(/\&/g, "%26") + s.link;
-
-                            var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
-                                "&body=" + body;
-                            storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
-
-                            storyDiv += "</div>";
-                        }
-
-                    storyDiv += "</div>";
                 }
 
-                thumbDiv: {
-                    storyDiv += "<div class='thumb'>";
-                    if (s.link) {
-                        storyDiv += "<a name='" + s.link + "'></a>";
-
-                        // Drop loadImg: not appearing till main image loads anyway
-                        // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
-
-                        storyDiv += "<a href='#" + s.link + "'>";
-                        storyDiv += "<img onclick=clickImg(this) src='" +
-                            thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
-                    } else {
-                        storyDiv += "<p class='note'>no image</p>"
+                tagline: {
+                    storyDiv += "<p class='tagline'>"
+                    if (s.topics != "") {
+                        storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this story'>";
+                        var topicList = s.topics.split(", ");
+                        for (var i = 0; topicList[i]; i++) {
+                            storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
+                        }
                     }
-                    storyDiv += "</div>";
+                    if (s.person != "") {
+                        storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this story'>";
+                        var personList = s.person.split(", ");
+                        for (var i = 0; personList[i]; i++) {
+                            storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
+                        }
+                    }
+
+                    storyDiv += "</p>"
                 }
+
+                citeline: {
+                    storyDiv += "<p class='citeline'>" + "<span class='noWrap'>" + paperName + ",</span> ";
+
+                    var d = new Date(s.date);
+                    var dateString = month[d.getMonth()] + " " +
+                        d.getDate() + " " +
+                        d.getFullYear();
+
+                    var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
+
+                    storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" +
+                        s.date + "\"; filter.toDate=\"" +
+                        s.date + "\"; setInputs(); writeStories(true)'>" +
+                        dateString + "</a></span>";
+
+                    storyDiv += " &ndash; page " + s.page + "</p>";
+                }
+
+                shareBtns: if (s.link) {
+                        var shareLink = encodeURIComponent(sharePrefix + s.link + shareSuffix);
+
+                        storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
+
+                        var tweet = s.title + " - " + s.author + " ";
+                        tweet += paperTwitterHandle || paperName;
+                        tweet += " " + shortDate;
+                        tweet += (d.getFullYear() == new Date().getFullYear()) ?
+                            "" : " " + d.getFullYear(); // Add year if not this year
+                        tweet = tweet.replace(/\'/g, "%27");
+
+                        storyDiv += " <a href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags='" + hashtag + "' target='_blank'><img class='textBtn' src='images/tweet.svg' title='Tweet this story'></a>";
+
+                        var body = '"' + s.title + '"\n' +
+                            s.author + ", " + paperName + " " + dateString + "\n\n";
+                        body = encodeURIComponent(body) +
+                            linkPrefix.replace(/\&/g, "%26") + s.link;
+
+                        var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
+                            "&body=" + body;
+                        storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
+
+                        storyDiv += "</div>";
+                    }
 
                 storyDiv += "</div>";
-
-                storyDiv += "<hr>";
-
-                return storyDiv;
             }
+
+            thumbDiv: {
+                storyDiv += "<div class='thumb'>";
+                if (s.link) {
+                    storyDiv += "<a name='" + s.link + "'></a>";
+
+                    // Drop loadImg: not appearing till main image loads anyway
+                    // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
+
+                    storyDiv += "<a href='#" + s.link + "'>";
+                    storyDiv += "<img onclick=clickImg(this) src='" +
+                        thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
+                } else {
+                    storyDiv += "<p class='note'>no image</p>"
+                }
+                storyDiv += "</div>";
+            }
+
+            storyDiv += "</div>";
+
+            storyDiv += "<hr>";
+
+            return storyDiv;
         }
 
         function searchStories() {
@@ -314,12 +318,12 @@
         function clickImg(thumb) {
             var imgBox = document.getElementById("imgBox");
             var show = document.getElementById("show").style;
-            if (show.zIndex == 4) {
+            if (view == "fullscreen") {
                 if (justShown) {
                     justShown = false;
                     return;
                 }
-
+                view = "";
                 document.body.style.overflow = "auto";
 
                 show.opacity = 0;
@@ -335,6 +339,7 @@
                     history.back();
                 }
             } else {
+                view = "fullscreen";
                 show.width = window.innerWidth;
                 show.height = window.innerHeight;
                 show.transition = "opacity 250ms ease-in-out, z-index 0ms";
@@ -373,9 +378,10 @@
             if (e.keyCode == 27) clickImg();
         }
 
-        // Show filter/search tools when user scrolls up but not at top
+        // Show header when user scrolls up
         function checkHeight() {
-            headerHeight = document.getElementById("header").scrollHeight;
+            var hdr = document.getElementById("header");
+            headerHeight = hdr.scrollHeight;
             document.getElementById("stories").style.top = headerHeight;
             hideHeader = headerHeight > window.innerHeight * maxheaderPercent;
 
@@ -383,18 +389,21 @@
             if (hideHeader) {
                 lastScrollTop = 0;
                 window.addEventListener("scroll", scrollHeader, false);
-                document.getElementById("mc_embed_signup").style.top = -subscribeFormHeight;
-                document.getElementById("aboutBox").style.top = -aboutBoxHeight - subscribeFormHeight;
+                document.getElementById("mc_embed_signup").style.top = -subscribeHeight;
+                document.getElementById("about").style.top = -aboutHeight - subscribeHeight;
             } else {
                 window.removeEventListener("scroll", scrollHeader);
-                document.getElementById("header").style.top = 0;
-                document.getElementById("header").style.width = document.body.clientWidth; // Recover width lost by position fixed
-                document.getElementById("mc_embed_signup").style.top = -headerHeight - subscribeFormHeight;
-                document.getElementById("aboutBox").style.top = -headerHeight - aboutBoxHeight - subscribeFormHeight;
+                hdr.style.top = 0;
+                hdr.style.width = document.body.clientWidth; // Recover width lost by position fixed
+                document.getElementById("mc_embed_signup").style.top = -headerHeight - subscribeHeight;
+                document.getElementById("about").style.top = -headerHeight - aboutHeight - subscribeHeight;
             }
         }
 
         function scrollHeader() {
+            if (pennantDown || view == "fullscreen") {
+                return;
+            }
             var st = window.pageYOffset || document.documentElement.scrollTop;
             if (st < lastScrollTop) { // Scroll up
                 if (headerShown) {
@@ -422,39 +431,52 @@
             lastScrollTop = st;
         }
 
-        function showForm(f) {
-            if (formShown) {
-                if (formShown == f) {
-                    hideForm();
+        function dropPennant(f) {
+            if (pennantDown) {
+                if (pennantDown == f) {
+                    raisePennant();
                     return;
                 } else {
-                    hideForm();
+                    raisePennant();
                 }
             }
             document.getElementById("modal").style.transition =
                 "top 500ms ease-in";
             document.getElementById("modal").style.top = 0;
-            switch (f) {
+
+            bodyTop = document.body.scrollTop;
+            //            storiesTop = document.getElementById("stories").scrollTop;
+            document.body.className += " noscroll";
+            //            storiesTop = document.getElementById("stories").offsetTop;
+            //            document.getElementById("stories").style.top =
+            //                storiesTop - bodyTop + "px";
+            document.body.style.top = -bodyTop;
+
+                    switch (f) {
                 case "subscribe":
                     document.getElementById("mc_embed_signup").style.top =
-                        headerHeight;
+                        headerHeight + bodyTop + "px";
                     break;
                 case "about":
-                    document.getElementById("aboutBox").style.top = headerHeight;
+                    document.getElementById("about").style.top =
+                        headerHeight + bodyTop + "px";
                     break;
                 default:
                     break;
             }
-            formShown = f;
-        }
+            pennantDown = f;
+}
 
-        function hideForm() {
-            document.getElementById("mc_embed_signup").style.top = -subscribeFormHeight;
-            document.getElementById("aboutBox").style.top = -aboutBoxHeight - subscribeFormHeight;
+        function raisePennant() {
+            document.getElementById("mc_embed_signup").style.top = -subscribeHeight;
+            document.getElementById("about").style.top = -aboutHeight - subscribeHeight;
 
             document.getElementById("modal").style.transition = "top 500ms ease-out";;
             document.getElementById("modal").style.top = "-100%";
-            formShown = "";
+            pennantDown = "";
+
+            document.body.className = document.body.className.replace(" noscroll", "");
+            window.scrollTo(0, bodyTop);
         }
 
     </script>
@@ -465,8 +487,12 @@
 <body onload="init()">
     <div id="header">
         <div id="headerBlock">
-            <span class="logo"><a href="/" title="SSEC home page"><img src=images/logo.png width=auto height=35>SSEC </a>Leader ecoNews</span>
-            <div id="headerLinks"><span><a href="javascript:;" onclick="showForm('subscribe');">Subscribe</a></span> &bull; <span><a href="javascript:;" onclick="showForm('about');">About</a></span></div>
+            <div id="title">
+                <span class="logo"><a href="/" title="SSEC home page"><img src=images/logo.png width=auto height=35>SSEC </a>Leader ecoNews</span>
+                <div id="headerLinks">
+                    <a href="javascript:;" onclick="dropPennant('subscribe');">Subscribe</a> <span class="divider"> </span><a href="javascript:;" onclick="dropPennant('about');">About</a>
+                </div>
+            </div>
             <span class="noWrap">
                 <div class="filterCell">
                     <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range"></label>
@@ -477,72 +503,75 @@
                     <input type=date id="toDate" onmouseover="this.style.color=active[col]"  onmouseout="this.style.color = (this.value == lastDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=lastDate; filter.toDate=this.value; writeStories(true); this.style.color = (this.value == lastDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == lastDate) ? inactive[bg] : active[bg];">
                 </div>
             </span>
-            <div class=" filterCell ">
-                <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
-                <select id=topic onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
-                    <option value="" selected>(all)</option>
-                    <option value="Bushland">Bushland</option>
-                    <option value="Climate">Climate</option>
-                    <option value="Marine">Marine</option>
-                    <option value="Planning">Planning</option>
-                    <option value="Politics">Politics</option>
-                    <option value="Refugees">Refugees</option>
-                    <option value="Transport">Transport</option>
-                    <option value="Vegetarianism">Vegetarianism</option>
-                    <option value="Waste">Waste</option>
-                    <option value="Water">Water</option>
-                </select>
-            </div>
-            <div class="filterCell">
-                <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by person"></label>
-                <select id=person onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
-                    <option value="" selected>(all)</option>
-                    <option value="AR">Anne Robinson</option>
-                    <option value="BR">Bill Ryan</option>
-                    <option value="BW">Bob Walshe</option>
-                    <option value="BE">Brian Everingham</option>
-                    <option value="CR">Colin Ryan</option>
-                    <option value="GS">Gary Schoer</option>
-                    <option value="GH">Gordon Hocking</option>
-                    <option value="JG">Jenni Gormley</option>
-                    <option value="JF">Jenny Fitzgerald</option>
-                    <option value="JD">Jonathan Doig</option>
-                    <option value="JW">Judy Walker</option>
-                    <option value="LH">Lloyd Hodges</option>
-                    <option value="MS">Murray Scott</option>
-                    <option value="PS">Phil Smith</option>
-                    <option value="RC">Rick Cavicchioli</option>
-                    <option value="SM">Sue McKinnon</option>
-                    <option value="SSEC">Suth Shire Envt Centre</option>
-                    <option value="TK">Tassia Kolesnikow</option>
-                </select>
-            </div>
-            <div class="filterCell">
-                <input type=text id=search value="Search" onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style.color=active[col]; this.style.fontStyle=active[fs]; if(searchStart) {this.value=''; searchStart = false}">
-            </div>
-            <div class="filterCell">
-                <a href="javascript:;">
-                    <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="searchStories()" title="Search">
-                </a>
-            </div>
-            <div class="filterCell">
-                <a href="javascript:clearFilter(); writeStories(true)">
-                    <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver=this.src='images/clearon.svg' onMouseOut=this.src='images/clear.svg' title="Clear search/filter">
-                </a>
-            </div>
+            <span class="noWrap">
+                <div class=" filterCell ">
+                    <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
+                    <select id=topic onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
+                        <option value="" selected>(all)</option>
+                        <option value="Bushland">Bushland</option>
+                        <option value="Climate">Climate</option>
+                        <option value="Marine">Marine</option>
+                        <option value="Planning">Planning</option>
+                        <option value="Politics">Politics</option>
+                        <option value="Refugees">Refugees</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Vegetarianism">Vegetarianism</option>
+                        <option value="Waste">Waste</option>
+                        <option value="Water">Water</option>
+                    </select>
+                </div>
+                <div class="filterCell">
+                    <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by person"></label>
+                    <select id=person onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
+                        <option value="" selected>(all)</option>
+                        <option value="AR">Anne Robinson</option>
+                        <option value="BR">Bill Ryan</option>
+                        <option value="BW">Bob Walshe</option>
+                        <option value="BE">Brian Everingham</option>
+                        <option value="CR">Colin Ryan</option>
+                        <option value="GS">Gary Schoer</option>
+                        <option value="GH">Gordon Hocking</option>
+                        <option value="JG">Jenni Gormley</option>
+                        <option value="JF">Jenny Fitzgerald</option>
+                        <option value="JD">Jonathan Doig</option>
+                        <option value="JW">Judy Walker</option>
+                        <option value="LH">Lloyd Hodges</option>
+                        <option value="MS">Murray Scott</option>
+                        <option value="PS">Phil Smith</option>
+                        <option value="RC">Rick Cavicchioli</option>
+                        <option value="SM">Sue McKinnon</option>
+                        <option value="SSEC">Suth Shire Envt Centre</option>
+                        <option value="TK">Tassia Kolesnikow</option>
+                    </select>
+                </div>
+            </span>
+            <span class="noWrap">
+                <div class="filterCell">
+                    <input type=text id=search value="Search" onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style.color=active[col]; this.style.fontStyle=active[fs]; if(searchStart) {this.value=''; searchStart = false}">
+                </div>
+                <div class="filterCell">
+                    <a href="javascript:;">
+                        <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="searchStories()" title="Search">
+                    </a>
+                </div>
+                <div class="filterCell">
+                    <a href="javascript:clearFilter(); writeStories(true)">
+                        <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver=this.src='images/clearon.svg' onMouseOut=this.src='images/clear.svg' title="Clear search/filter">
+                    </a>
+                </div>
+            </span>
         </div>
-        <form id="subscribe">
-        </form>
     </div>
 
-    <div id="modal" onclick="hideForm()"></div>
+    <div id="modal" onclick="raisePennant()"></div>
 
     <!-- Begin MailChimp Signup Form -->
     <div id="mc_embed_signup" class="pennant">
         <form action="//ssec.us2.list-manage.com/subscribe/post?u=eb6ab4030129e1d2e792b698e&amp;id=02f3d3fd50" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
             <div id="mc_embed_signup_scroll">
-                <span class="close" onclick="hideForm()" title="Close">&#10006;</span>
-                <h2>Get Leader ecoNews in your inbox each week.</h2>
+                <span class="close" onclick="raisePennant()" title="Close">&#10006;</span>
+                <h2>Get Leader ecoNews in your inbox
+                    <span class="noWrap">each week</span>.</h2>
                 <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
                 <div class="mc-field-group">
                     <label for="mce-EMAIL">Email Address <span class="asterisk">*</span>
@@ -588,9 +617,9 @@
     </div>
     <!--End mc_embed_signup-->
 
-    <div id="aboutBox" class="pennant">
+    <div id="about" class="pennant">
         <div>
-            <span class="close" onclick="hideForm()" title="Close">&#10006;</span>
+            <span class="close" onclick="raisePennant()" title="Close">&#10006;</span>
             <h2>Leader ecoNews</h2>
             <h3>Environmental news monitoring for the Shire</h3>
             <p>Browse and search our catalogue of well over a thousand news items from the Sutherland Shire edition of <span class="noWrap"><i><a href="theleader.com.au" target="_blank">The Leader</a></i></span> newspaper. Stay up-to-date with local news and views on environmental topics:
@@ -640,7 +669,7 @@
             </div>
 
             <p>
-                Our news archive commenced in 2013. We started a weekly mailout to SSEC members and supporters in 2015 &ndash; <a href="javascript:;" onclick="hideForm(); showForm('subscribe');">subscribe here</a>. This web app was launched in 2016.
+                Our news archive commenced in 2013. We started a weekly mailout to SSEC members and supporters in 2015 &ndash; <a href="javascript:;" onclick="raisePennant(); dropPennant('subscribe');">subscribe here</a>. This web app was launched in 2016.
             </p>
             <p>
                 Content: <a href="https://www.facebook.com/sarah.a.roxas" target="_blank">Sarah Roxas</a>.

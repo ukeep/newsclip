@@ -4,6 +4,11 @@ body {
     width: 100%;
 }
 
+.noscroll {
+    position: fixed;
+    overflow-y: scroll;
+}
+
 #header {
     width: 100%;
     transition: top 200ms ease-out;
@@ -25,10 +30,17 @@ body {
 }
 
 #headerBlock {
-    padding: 5px;
+    padding: 5px 5px 0 5px;
     margin: auto;
     overflow: auto;
     text-align: center;
+}
+
+#title {
+    display: inline-block;
+    min-height: 50px;
+    position: relative;
+    vertical-align: top;
 }
 
 .logo {
@@ -42,6 +54,16 @@ body {
     vertical-align: bottom
 }
 
+#headerLinks {
+    position: relative;
+    text-align: left;
+    top: -3px;
+    left: 144px;
+    font: 14px "Pontano Sans", arial, sans-serif;
+    letter-spacing: -1px;
+    color: #405398;
+}
+
 .logo a,
 #headerLinks a {
     color: #405398;
@@ -49,17 +71,13 @@ body {
     transition: all 200ms ease-in-out;
 }
 
-#headerLinks {
-    position: absolute;
-    top: 42px;
-    left: 160px;
-    font: 14px "Pontano Sans", arial, sans-serif;
-    letter-spacing: -1px;
-    color: #405398;
+#headerLinks .divider {
+    margin: 0 5px;
 }
 
-#headerLinks span {
-    margin: 5px;
+#headerLinks .divider:before {
+    /* Bullet */
+    content: "\2022";
 }
 
 .filterCell {
@@ -67,7 +85,7 @@ body {
     font-weight: bold;
     font-size: small;
     vertical-align: bottom;
-    margin-top: 10px;
+    padding: 11px 0 15px 0;
 }
 
 label,
@@ -94,7 +112,7 @@ label.toDate {
     height: 24;
     width: 148;
     margin-left: 10px;
-    vertical-align: bottom;
+    /*    vertical-align: bottom;*/
 }
 
 
@@ -119,7 +137,7 @@ label.toDate {
     left: 160px;
 }
 
-#aboutBox {
+#about {
     left: 232px;
 }
 
@@ -128,8 +146,8 @@ label.toDate {
     clear: left;
     font: 14px "Pontano Sans", arial, sans-serif;
     color: #26315a;
-    max-width: 500px;
-    max-height: 500px;
+    width: 395px;
+    max-height: 550px;
     min-width: 300px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -159,7 +177,7 @@ label.toDate {
 }
 
 .pennant p,
-#aboutBox p {
+#about p {
     margin: 8px 0;
 }
 
@@ -198,6 +216,7 @@ label.toDate {
 
 .description {
     width: 65%;
+    margin-left: 5px;
 }
 
 #mc_embed_signup .button {
@@ -358,6 +377,15 @@ hr {
 /* Portrait mobile */
 
 @media not screen and (min-width: 10cm) {
+    #headerLinks {
+        left: 10px;
+    }
+    .filterCell {
+        padding: 0 0 5px 0;
+    }
+    .pennant {
+        width: 325px;
+    }
     .story {
         margin: 10px;
     }
@@ -371,11 +399,8 @@ hr {
     .thumb img {
         max-height: 200px;
     }
-    #headerLinks {
-        left: 10px;
-    }
     #mc_embed_signup,
-    #aboutBox {
+    #about {
         left: 10px;
     }
 }
