@@ -23,10 +23,11 @@
             var maxheaderPercent = 0.10; // 0.07;
             var headerHeight, hideHeader, lastScrollTop;
             var headerShown = true;
-            var subscribeHeight = 488.188;
-            var aboutHeight = 59.375;
+            var subscribeHeight = 440;
+            var aboutHeight = 515;
             var pennantDown = "";
-            var bodyTop, storiesTop;
+            var dontScrollHeaderThisTime = false;
+            var bodyTop;
 
             var onlinePrefix = "http://www.theleader.com.au/story/";
             var paperName = "Sutherland Shire Leader";
@@ -401,7 +402,8 @@
         }
 
         function scrollHeader() {
-            if (pennantDown || view == "fullscreen") {
+            if (pennantDown || dontScrollHeaderThisTime || view == "fullscreen") {
+                dontScrollHeaderThisTime = false;
                 return;
             }
             var st = window.pageYOffset || document.documentElement.scrollTop;
@@ -445,38 +447,40 @@
             document.getElementById("modal").style.top = 0;
 
             bodyTop = document.body.scrollTop;
-            //            storiesTop = document.getElementById("stories").scrollTop;
-            document.body.className += " noscroll";
-            //            storiesTop = document.getElementById("stories").offsetTop;
-            //            document.getElementById("stories").style.top =
-            //                storiesTop - bodyTop + "px";
-            document.body.style.top = -bodyTop;
 
-                    switch (f) {
+            switch (f) {
                 case "subscribe":
                     document.getElementById("mc_embed_signup").style.top =
-                        headerHeight + bodyTop + "px";
+                        headerHeight + bodyTop;
+                    document.getElementById("mc_embed_signup").style.height =
+                        Math.min(subscribeHeight, window.innerHeight - headerHeight);
                     break;
                 case "about":
                     document.getElementById("about").style.top =
-                        headerHeight + bodyTop + "px";
+                        headerHeight + bodyTop;
+                    document.getElementById("about").style.height =
+                        Math.min(aboutHeight, window.innerHeight - headerHeight);
                     break;
                 default:
                     break;
             }
             pennantDown = f;
-}
+            document.body.style.top = -bodyTop + "px";
+            document.body.className += " noscroll";
+        }
 
         function raisePennant() {
             document.getElementById("mc_embed_signup").style.top = -subscribeHeight;
             document.getElementById("about").style.top = -aboutHeight - subscribeHeight;
+            document.getElementById("mc_embed_signup").style.bottom = "auto";
+            document.getElementById("about").style.bottom = "auto";
 
             document.getElementById("modal").style.transition = "top 500ms ease-out";;
             document.getElementById("modal").style.top = "-100%";
             pennantDown = "";
-
             document.body.className = document.body.className.replace(" noscroll", "");
-            window.scrollTo(0, bodyTop);
+            dontScrollHeaderThisTime = hideHeader; // Tell scrollHeader not to run
+            document.body.scrollTop = bodyTop;
         }
 
     </script>
