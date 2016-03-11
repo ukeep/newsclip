@@ -284,8 +284,8 @@
                     // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
                     storyDiv += "<a href='#" + s.link + "'>";
-                    storyDiv += "<img onclick=clickImg(this) src='" +
-                        thumbPrefix + s.link + "' onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
+                    storyDiv += "<img src='" +
+                        thumbPrefix + s.link + "' title='Click to view' onclick=clickImg(this) onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
                 } else {
                     storyDiv += "<p class='note'>no image</p>"
                 }
