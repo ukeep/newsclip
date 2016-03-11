@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="7.6569257mm"
-   height="7.4936042mm"
-   viewBox="0 0 27.130839 26.552141"
+   width="8.4666662mm"
+   height="8.4666662mm"
+   viewBox="0 0 29.999998 29.999999"
    id="svg4220"
    version="1.1"
    inkscape:version="0.91 r13725"
@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.919596"
-     inkscape:cx="-21.346557"
-     inkscape:cy="13.537729"
+     inkscape:cx="-4.8159064"
+     inkscape:cy="13.537704"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -56,19 +56,19 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-375.00601,-453.37185)">
+     transform="translate(-375.20601,-449.92397)">
     <rect
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#4567a5;stroke-width:0.80000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#4567a5;stroke-width:0.89419168;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3364"
-       width="26.330839"
-       height="25.75214"
-       x="375.40601"
-       y="453.77185"
-       rx="3"
-       ry="3" />
+       width="29.105808"
+       height="29.105806"
+       x="375.65311"
+       y="450.37106"
+       rx="3.3161657"
+       ry="3.390686" />
     <g
        id="g4188"
-       transform="matrix(1.0969628,0,0,1.0969628,324.76871,368.63716)"
+       transform="matrix(1.2394061,0,0,1.2394061,318.24526,354.28591)"
        style="stroke:#405398;stroke-opacity:1">
       <ellipse
          ry="5.9604502"
