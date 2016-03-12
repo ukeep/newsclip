@@ -1,90 +1,13 @@
-/* Get data for all Leader ecoNews stories from spreadsheet and save to JSON file for access by Leader ecoNews web page.
-   This script should be run after spreadsheet is updated or edited, and can be scheduled to run each night to be sure.
-   
-   Jonathan Doig jon@doig.net 15/2/2016
-*/
+// Get data for all Leader ecoNews stories from spreadsheet and save to JSON file
+// for access by Leader ecoNews web page.
+//
+// This script should be run after spreadsheet is updated or edited,
+// and can be scheduled to run each night to be sure.
+//   
+// Jonathan Doig jon@doig.net 15/2/2016
 
-function getStories() {
-  
-  /* Constants to check and change if needed */
-  var sheetFileId = "105-3UwKCJ5_3IFpMGHLZuNvECCg9LdzCIjaBl-uSscA"; /* Dev file: "1Qika7nnPak17eD6X5yXTiXuV99J9lGPXw5WzJngxjXg"; */
-  var jsonFileId = "0B4rKiNtdxe1NemF1ay1Pc1dVWXc";
-  var startYear = 2013;
-  var endYear = new Date().getFullYear();
-  var startRow = 1; /* = row 2 */
-
-  var dateCol   = 0,
-      pageCol   = 1, 
-      titleCol  = 4,
-      authorCol = 5,
-      personCol = 6,
-      topicsCol = 14,
-      linkCol   = 7,
-      onlineCol = 9;
-
-  /* These constant strings will be stripped from URLs to save space and I/O time */
-  var linkPrefix = /https:\/\/d(rive|ocs).google.com\/file\/d\//;
-  var linkSuffix = /\/(view|edit)\?usp=sharing/;
-  var onlinePrefix = "http://www.theleader.com.au/story/";
-  
-  var sheetFile = SpreadsheetApp.openById(sheetFileId);
-  var sheet, sheetName, values, r;
-  var stories = [];
-
-  for (var y = endYear; y >= startYear; y--) {
-    sheetName = "Stories " + y;
-    sheet = sheetFile.getSheetByName(sheetName);
-
-    if (sheet === null) {
-      throw("Cannot find sheet '" + sheetName + "'");
-    } else {
-
-      /* Logger.log(sheetName + " has " + sheet.getLastRow() + " rows"); */
-
-      values = sheet.getDataRange().getValues();
-
-      for (r = startRow; r <= sheet.getLastRow(); r++) {
-
-        if (values[r][dateCol] == "") break; /* Reached last actual story in sheet, remaining rows are formulas only */
-
-        var story = {
-          date:   isoDateString(values[r][dateCol]),
-          page:   values[r][pageCol], 
-          title:  values[r][titleCol],
-          author: values[r][authorCol],
-          person: values[r][personCol],
-          topics: values[r][topicsCol],
-          link:   values[r][linkCol],
-          online: values[r][onlineCol]
-        };
-        
-        /* Strip constant URL sections to save time writing and reading JSON file */
-        story.link = story.link.replace (linkPrefix, "");
-        story.link = story.link.replace (linkSuffix, "");
-        story.online = story.online.replace (onlinePrefix, "");
-
-        stories.push(story);
-        /* Logger.log(story); */
-      }  
-    }
-  }
-  stories.sort(function(a, b) {
-    if (a.date < b.date) return 1;
-    if (a.date > b.date) return -1;
-    return (a.page - b.page);
-  });
-
-  
-  DriveApp.getFileById(jsonFileId).setContent(JSON.stringify(stories));
-  
-}
-
-function isoDateString(s) {
-    var d = s.getDate();
-    if (d < 10) d = "0" + d;
-    var m = s.getMonth() + 1;
-    if (m < 10) m = "0" + m;
-    var y = s.getFullYear();
-    return y + "-" + m + "-" + d;
+function doGet() {
+    return HtmlService.createHtmlOutputFromFile("updateweb.html")
+        .setSandboxMode(HtmlService.SandboxMode.IFRAME);
 }
 
