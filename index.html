@@ -15,7 +15,7 @@
 
     <script>
         initVars: {
-            var linkPrefix = "https://drive.google.com/uc?export=download&id=";
+            var linkPrefix = "https://drive.google.com/uc?export=view&id=";
             //        var thumbPrefix = "https://drive.google.com/thumbnail?sz=h200&id=";
             var thumbPrefix = linkPrefix;
             var sharePrefix = "https://drive.google.com/file/d/";
@@ -76,6 +76,8 @@
         }
 
         function init() {
+            setTopics();
+            setPeople();
             clearFilter();
             checkHeight();
 
@@ -93,6 +95,34 @@
             infiniteScroll(scrollOptions); // setup infinite scroll
 
             window.addEventListener("resize", checkHeight, false);
+        }
+
+        function setTopics() {
+            var options = "<option value='' selected>(all)</option>";
+            for (var i = 0; i < topics.length; i++) {
+                options += "<option value='" + topics[i].name + "'>" +
+                    topics[i].name + "</option>";
+            }
+            document.getElementById("topic").innerHTML = options;
+
+            var rows = "";
+            for (var j = 0; j < topics.length; j++) {
+                rows += "<div class='row'>" +
+                    "<div class='term'>" + topics[j].name + "</div>" +
+                    "<div class='description'>" + topics[j].description + "</div>" +
+                    "</div>";
+            }
+
+            document.getElementById("topicHelp").innerHTML = rows;
+        }
+
+        function setPeople() {
+            var options = "<option value='' selected>(all)</option>";
+            for (var i = 0; i < people.length; i++) {
+                options += "<option value='" + people[i].initials + "'>" +
+                    people[i].fullname + "</option>";
+            }
+            document.getElementById("person").innerHTML = options;
         }
 
         function clearFilter() {
@@ -211,17 +241,25 @@
                 tagline: {
                     storyDiv += "<p class='tagline'>"
                     if (s.topics != "") {
-                        storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this story'>";
+                        storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this news item'>";
                         var topicList = s.topics.split(", ");
                         for (var i = 0; topicList[i]; i++) {
                             storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
                         }
                     }
                     if (s.person != "") {
-                        storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this story'>";
+                        storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this news item'>";
                         var personList = s.person.split(", ");
                         for (var i = 0; personList[i]; i++) {
-                            storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
+                            var fullname = "";
+                            for (var j = 0; j < people.length; j++) {
+                                if (people[j].initials == personList[i]) {
+                                    fullname = people[j].fullname;
+                                    break;
+                                }
+                            }
+                            storyDiv += " <a href='javascript:;'" +
+                                "onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + fullname + "</a>";
                         }
                     }
 
@@ -482,7 +520,6 @@
             dontScrollHeaderThisTime = hideHeader; // Tell scrollHeader not to run
             document.body.scrollTop = bodyTop;
         }
-
     </script>
 
 
@@ -510,42 +547,13 @@
             <span class="noWrap">
                 <div class=" filterCell ">
                     <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
-                    <select id=topic onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
-                        <option value="" selected>(all)</option>
-                        <option value="Bushland">Bushland</option>
-                        <option value="Climate">Climate</option>
-                        <option value="Marine">Marine</option>
-                        <option value="Planning">Planning</option>
-                        <option value="Politics">Politics</option>
-                        <option value="Refugees">Refugees</option>
-                        <option value="Transport">Transport</option>
-                        <option value="Vegetarianism">Vegetarianism</option>
-                        <option value="Waste">Waste</option>
-                        <option value="Water">Water</option>
+                    <select id="topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
+
                     </select>
                 </div>
                 <div class="filterCell">
                     <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by person"></label>
-                    <select id=person onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
-                        <option value="" selected>(all)</option>
-                        <option value="AR">Anne Robinson</option>
-                        <option value="BR">Bill Ryan</option>
-                        <option value="BW">Bob Walshe</option>
-                        <option value="BE">Brian Everingham</option>
-                        <option value="CR">Colin Ryan</option>
-                        <option value="GS">Gary Schoer</option>
-                        <option value="GH">Gordon Hocking</option>
-                        <option value="JG">Jenni Gormley</option>
-                        <option value="JF">Jenny Fitzgerald</option>
-                        <option value="JD">Jonathan Doig</option>
-                        <option value="JW">Judy Walker</option>
-                        <option value="LH">Lloyd Hodges</option>
-                        <option value="MS">Murray Scott</option>
-                        <option value="PS">Phil Smith</option>
-                        <option value="RC">Rick Cavicchioli</option>
-                        <option value="SM">Sue McKinnon</option>
-                        <option value="SSEC">Suth Shire Envt Centre</option>
-                        <option value="TK">Tassia Kolesnikow</option>
+                    <select id="person" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
                     </select>
                 </div>
             </span>
@@ -628,48 +636,7 @@
             <h3>Environmental news monitoring for the Shire</h3>
             <p>Browse and search our catalogue of well over a thousand news items from the Sutherland Shire edition of <span class="noWrap"><i><a href="theleader.com.au" target="_blank">The Leader</a></i></span> newspaper. Stay up-to-date with local news and views on environmental topics:
             </p>
-            <div class="table">
-                <div class='row'>
-                    <div class='term'>Climate &amp; energy</div>
-                    <div class='description'>Storms, fires, floods, drought, coal, gas, oil, nuclear, solar, wind</div>
-                </div>
-                <div class='row'>
-                    <div class='term'>Marine</div>
-                    <div class='description'>Beaches, estuaries, coast, fishing</div>
-                </div>
-                <div class='row'>
-                    <div class='term'>Parks &amp; nature</div>
-                    <div class='description'>Forest, natural areas, parks, animals, plants</div>
-                </div>
-                <div class='row'>
-                    <div class='term'>Planning</div>
-                    <div class='description'>Development, housing</div>
-                </div>
-                <div class='row'>
-                    <div class='term'>Politics</div>
-                    <div class='description'>Elections</div>
-                </div>
-                <div class='row'>
-                    <div class='term'>Refugees</div>
-                    <div class='description'>Asylum seekers, boat people</div>
-                </div>
-                <div class='row'>
-                    <div class='term'>Transport</div>
-                    <div class='description'>Cycling, walking, buses, trains, roads</div>
-                </div>
-                <div class='row'>
-                    <div class='term'>Vegetarianism</div>
-                    <div class='description'>Veganism, healthy eating</div>
-                </div>
-                <div class='row'>
-                    <div class='term'>Waste</div>
-                    <div class='description'>Pollution, recycling</div>
-                </div>
-                <div class='row'>
-                    <div class='term'>Water</div>
-                    <div class='description'>Rivers, water catchment</div>
-                </div>
-
+            <div id="topicHelp" class="table">
             </div>
 
             <p>
