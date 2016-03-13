@@ -31,6 +31,7 @@
 
             var onlinePrefix = "http://www.theleader.com.au/story/";
             var paperName = "Sutherland Shire Leader";
+            var paperShortName = "Leader";
             var paperTwitterHandle = "@theleadernews";
             var hashtag = "econews";
 
@@ -258,7 +259,7 @@
                                     break;
                                 }
                             }
-                            storyDiv += " <a href='javascript:;'" + title + 
+                            storyDiv += " <a href='javascript:;'" + title +
                                 "onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
                         }
                     }
@@ -298,14 +299,7 @@
 
                         storyDiv += " <a href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags='" + hashtag + "' target='_blank'><img class='textBtn' src='images/tweet.svg' title='Tweet this story'></a>";
 
-                        var body = '"' + s.title + '"\n' +
-                            s.author + ", " + paperName + " " + dateString + "\n\n";
-                        body = encodeURIComponent(body) +
-                            linkPrefix.replace(/\&/g, "%26") + s.link;
-
-                        var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
-                            "&body=" + body;
-                        storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
+                        storyDiv += " <img class='textBtn' src='images/mail.svg' title='Mail this story' onclick='mailStory(this, \"" + s.title + "\", \"" + s.author + "\", \"" + dateString + "\", \"" + s.link + "\")'>";
 
                         storyDiv += "</div>";
                     }
@@ -335,6 +329,34 @@
             storyDiv += "<hr>";
 
             return storyDiv;
+        }
+
+        function mailStory(button, title, author, date, link) {
+            mc = document.getElementById("mailChoice");
+            rep = document.getElementById("reply");
+            fwd = document.getElementById("forward");
+
+            var iReply = 0;
+            var iForward = 1;
+            var body = [];
+
+            body[iReply] = encodeURIComponent("Dear Editor\n\nRegarding \"" +
+                title + "\" (" + paperShortName + ", " + date.replace(/ [0-9]{4}$/,"") + "), ");
+
+            body[iForward] = '"' + title + '"\n' +
+                author + ", " + paperName + " " + date + "\n\n";
+            body[iForward] = encodeURIComponent(body[iForward]) +
+                linkPrefix.replace(/\&/g, "%26") + link;
+
+            rep.href = "mailto:?subject=" + encodeURIComponent(title) +
+                "&body=" + body[iReply];
+            fwd.href = "mailto:?subject=" + encodeURIComponent(title) +
+                "&body=" + body[iForward];
+            
+            mc.style.top = button.offsetTop + button.offsetHeight
+            mc.style.top += (headerShown) ? headerHeight : 0;
+            mc.style.left = button.offsetLeft;
+            mc.style.height = "auto";
         }
 
         function searchStories() {
@@ -660,6 +682,14 @@
             <img id="showImg">
         </div>
     </div>
+    <ul id="mailChoice">
+        <a id="reply" href="" target="_blank">
+            <li>Reply to The Leader</li>
+        </a>
+        <a id="forward" href="" target="_blank">
+            <li>Forward to a friend</li>
+        </a>
+    </ul>
     <div id="footer"></div>
 </body>
 
