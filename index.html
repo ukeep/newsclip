@@ -31,11 +31,18 @@
 
             var onlinePrefix = "http://www.theleader.com.au/story/";
             var paperName = "Sutherland Shire Leader";
+            var paperEmail = "Leader Letters <leaderletters@fairfaxmedia.com.au>";
+            var paperShortName = "Leader";
             var paperTwitterHandle = "@theleadernews";
             var hashtag = "econews";
 
             var firstDate = "2013-01-01";
             var lastDate = dayString(new Date()); // If a fixed last date, use "yyyy-mm-dd"
+            var replyBy = 20; // Show reply button if story is less than these days old
+            var today = new Date();
+            var cutoff = new Date();
+            cutoff.setDate(today.getDate() - replyBy);
+
             var searchHint = "Search title or author";
 
             var active = ["black", "#f8ecb9", "normal"];
@@ -241,14 +248,14 @@
                 tagline: {
                     storyDiv += "<p class='tagline'>"
                     if (s.topics != "") {
-                        storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this news item'>";
+                        storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this story'>";
                         var topicList = s.topics.split(", ");
                         for (var i = 0; topicList[i]; i++) {
                             storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
                         }
                     }
                     if (s.person != "") {
-                        storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this news item'>";
+                        storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this story'>";
                         var personList = s.person.split(", ");
                         for (var i = 0; personList[i]; i++) {
                             var title = "";
@@ -258,7 +265,7 @@
                                     break;
                                 }
                             }
-                            storyDiv += " <a href='javascript:;'" + title + 
+                            storyDiv += " <a href='javascript:;'" + title +
                                 "onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
                         }
                     }
@@ -292,7 +299,7 @@
                         var tweet = s.title + " - " + s.author + " ";
                         tweet += paperTwitterHandle || paperName;
                         tweet += " " + shortDate;
-                        tweet += (d.getFullYear() == new Date().getFullYear()) ?
+                        tweet += (d.getFullYear() == today.getFullYear()) ?
                             "" : " " + d.getFullYear(); // Add year if not this year
                         tweet = tweet.replace(/\'/g, "%27");
 
@@ -303,9 +310,21 @@
                         body = encodeURIComponent(body) +
                             linkPrefix.replace(/\&/g, "%26") + s.link;
 
-                        var mailLink = "mailto:?subject=" + encodeURIComponent(s.title) +
+                        var mailLink = "mailto:?subject=" +
+                            encodeURIComponent(s.title) +
                             "&body=" + body;
                         storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
+
+                        if (d >= cutoff) {
+                            body = "Dear Editor\n\nRegarding \"" +
+                                s.title + "\" (" + paperShortName + ", " +
+                                dateString.replace(/ [0-9]{4}$/, "") + "), ";
+
+                            mailLink = "mailto:" + encodeURIComponent(paperEmail) + "?subject=" +
+                                encodeURIComponent(s.title) +
+                                "&body=" + encodeURIComponent(body);
+                            storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/reply.svg' title='Write to the paper'></a>";
+                        }
 
                         storyDiv += "</div>";
                     }
@@ -635,7 +654,7 @@
             <span class="close" onclick="raisePennant()" title="Close">&#10006;</span>
             <h2>Leader ecoNews</h2>
             <h3>Environmental news monitoring for the Shire</h3>
-            <p>Browse and search our catalogue of well over a thousand news items from the Sutherland Shire edition of <span class="noWrap"><i><a href="theleader.com.au" target="_blank">The Leader</a></i></span> newspaper. Stay up-to-date with local news and views on environmental topics:
+            <p>Browse and search our catalogue of well over a thousand stories from the Sutherland Shire edition of <span class="noWrap"><i><a href="theleader.com.au" target="_blank">The Leader</a></i></span> newspaper. Stay up-to-date with local news and views on environmental topics:
             </p>
             <div id="topicHelp" class="table">
             </div>

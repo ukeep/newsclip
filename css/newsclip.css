@@ -22,7 +22,8 @@ body {
     box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.4);
 }
 
-#header a:hover :not(#clearBtn, #searchBtn) {
+#header a:hover:not(#clearBtn,
+#searchBtn) {
     background-color: #d0daec;
     padding: 2px 0;
     border-radius: 5px;
@@ -348,7 +349,6 @@ hr {
     color: darkgrey;
     margin: 33px 0 0 22px;
 }
-
 
 /* Desktop or landscape mobile */
 
