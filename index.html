@@ -114,13 +114,13 @@
             if (window.location.hash) {
                 gotoStory(window.location.hash);
             } else {
-                writeStories(true);
+                writeStories(bucket, true);
             }
 
             var scrollOptions = {
                 distance: scrollSensor,
                 callback: function(done) {
-                    writeStories();
+                    writeStories(bucket);
                     done();
                 }
             }
@@ -212,23 +212,25 @@
 
             if (j == stories.length) {
                 console.log("story ID " + id + " not found");
-                writeStories(true);
+                writeStories(bucket, true);
                 return;
             }
 
-            // filter to show a bucket of stories up to that date
+            filter.fromDate = stories[j].date;
             filter.toDate = stories[j].date;
             setInputs();
 
-            // go to that story using ID anchor?
-            writeStories(true);
+            writeStories(Infinity, true); // Write all stories in filter
+            window.setTimeout(function() {
+                document.getElementById(id).scrollIntoView();
+            }, 250);
 
-            // Show that story
+
             showImg(id);
             window.location.hash = "#" + id;
         }
 
-        function writeStories(reset) {
+        function writeStories(n, reset) {
             if (reset) {
                 writeNotice = true;
                 next = 0;
@@ -237,7 +239,7 @@
                 window.scrollTo(0, 0);
                 reset = false;
             }
-            for (var j = 0; next < stories.length && j <= bucket; next++) {
+            for (var j = 0; next < stories.length && j <= n; next++) {
                 if (fitsThru(stories[next])) {
                     document.getElementById("stories").innerHTML +=
                         formatStory(stories[next]);
@@ -259,7 +261,7 @@
                 }
                 notice += " your search/filter.";
                 if (nStories == 0) {
-                    notice += " <span class='noWrap'><a href='javascript:clearFilter(); writeStories(true)'>Clear search/filter</a></span>.";
+                    notice += " <span class='noWrap'><a href='javascript:clearFilter(); writeStories(bucket, true)'>Clear search/filter</a></span>.";
                 }
 
                 document.getElementById("stories").innerHTML +=
@@ -282,13 +284,12 @@
 
         function formatStory(s) {
 
-            var storyDiv = "<div class='story'";
-
             if (s.link) {
-                storyDiv += " id='" + s.link + "'";
+                var storyDiv = "<a name='" + s.link + "'></a>";
+                storyDiv += "<div class='story' id='" + s.link + "'>";
+            } else {
+                var storyDiv = "<div class='story'>";
             }
-
-            storyDiv += ">";
 
             detailsDiv: {
                 storyDiv += "<div class='details'>";
@@ -311,7 +312,7 @@
                         storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this story'>";
                         var topicList = s.topics.split(", ");
                         for (var i = 0; topicList[i]; i++) {
-                            storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(true)'>" + topicList[i] + "</a>";
+                            storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(bucket, true)'>" + topicList[i] + "</a>";
                         }
                     }
                     if (s.person != "") {
@@ -326,7 +327,7 @@
                                 }
                             }
                             storyDiv += " <a href='javascript:;'" + title +
-                                "onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(true)'>" + personList[i] + "</a>";
+                                "onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(bucket, true)'>" + personList[i] + "</a>";
                         }
                     }
 
@@ -345,7 +346,7 @@
 
                     storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" +
                         s.date + "\"; filter.toDate=\"" +
-                        s.date + "\"; setInputs(); writeStories(true)'>" +
+                        s.date + "\"; setInputs(); writeStories(bucket, true)'>" +
                         dateString + "</a></span>";
 
                     storyDiv += " &ndash; page " + s.page + "</p>";
@@ -396,7 +397,6 @@
             thumbDiv: {
                 storyDiv += "<div class='thumb'>";
                 if (s.link) {
-                    storyDiv += "<a name='" + s.link + "'></a>";
 
                     // Drop loadImg: not appearing till main image loads anyway
                     // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
@@ -422,7 +422,7 @@
             var sStyle = document.getElementById('search').style;
             if (!searchStart) {
                 filter.search = RegExp(s, 'i');
-                writeStories(true)
+                writeStories(bucket, true);
             }
             if (s && !searchStart) {
                 sStyle.backgroundColor = active[bg];
@@ -465,7 +465,9 @@
             window.addEventListener("resize", checkHeight, false);
 
             //            justShown = true;
-            window.setTimeout(function() {
+            var pos = document.body.scrollTop;
+            window.setTimeout(function() { // Do this after <a href> is effected
+                document.body.scrollTop = pos;
                 window.addEventListener("hashchange", closeImg, false);
             }, 250);
         }
@@ -494,7 +496,28 @@
             window.removeEventListener("keyup", showKey);
             window.removeEventListener("resize", vscrollOutside);
             window.removeEventListener("hashchange", closeImg);
-            window.location.hash = "";
+            removeHash();
+            //            if (window.location.hash) {
+            //                history.back();
+            //            }
+            //            window.location.hash = "";
+        }
+
+        function removeHash() {
+            var scrollV, scrollH, loc = window.location;
+            if ("pushState" in history)
+                history.pushState("", document.title, loc.pathname + loc.search);
+            else {
+                // Prevent scrolling by storing the page's current scroll offset
+                scrollV = document.body.scrollTop;
+                scrollH = document.body.scrollLeft;
+
+                loc.hash = "";
+
+                // Restore the scroll offset, should be flicker free
+                document.body.scrollTop = scrollV;
+                document.body.scrollLeft = scrollH;
+            }
         }
 
         // If only vertical scrollbar on image, put it outside
@@ -631,23 +654,23 @@
             <span class="noWrap">
                 <div class="filterCell">
                     <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range (from - to)"></label>
-                    <input type=date id="fromDate" value=firstDate onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(true); this.style.color = (this.value == firstDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == firstDate) ? inactive[bg] : active[bg];">
+                    <input type=date id="fromDate" value=firstDate onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(bucket, true); this.style.color = (this.value == firstDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == firstDate) ? inactive[bg] : active[bg];">
                 </div>
                 <div class="filterCell">
                     <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5 title="To date"></label>
-                    <input type=date id="toDate" onmouseover="this.style.color=active[col]"  onmouseout="this.style.color = (this.value == lastDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=lastDate; filter.toDate=this.value; writeStories(true); this.style.color = (this.value == lastDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == lastDate) ? inactive[bg] : active[bg];">
+                    <input type=date id="toDate" onmouseover="this.style.color=active[col]"  onmouseout="this.style.color = (this.value == lastDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=lastDate; filter.toDate=this.value; writeStories(bucket, true); this.style.color = (this.value == lastDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == lastDate) ? inactive[bg] : active[bg];">
                 </div>
             </span>
             <span class="noWrap">
                 <div class=" filterCell ">
                     <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
-                    <select id="topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
+                    <select id="topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(bucket, true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
 
                     </select>
                 </div>
                 <div class="filterCell">
                     <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by person"></label>
-                    <select id="person" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
+                    <select id="person" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(bucket, true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
                     </select>
                 </div>
             </span>
@@ -661,7 +684,7 @@
                     </a>
                 </div>
                 <div class="filterCell">
-                    <a href="javascript:clearFilter(); writeStories(true)">
+                    <a href="javascript:clearFilter(); writeStories(bucket, true)">
                         <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver=this.src='images/clearon.svg' onMouseOut=this.src='images/clear.svg' title="Clear search/filter">
                     </a>
                 </div>
