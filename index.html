@@ -4,6 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- for Google -->
+    <meta name="description" content="Environmental news monitoring for the Shire. Browse and search our catalogue of well over a thousand stories from the Sutherland Shire edition of The Leader newspaper. Stay up-to-date with local news and views on environmental topics." id="gglDesc" />
+    <!--    <meta name="keywords" content="" />-->
+
+    <!--    <meta name="author" content="" />-->
+    <!--    <meta name="copyright" content="" />-->
+    <!--    <meta name="application-name" content="" />-->
+
+    <!-- for Facebook -->
+    <meta property="og:title" content="SSEC Leader ecoNews" id="fbTitle" />
+    <meta property="og:type" content="website" id="fbType" />
+    <meta property="og:url" content="http://ssec.org.au/dev/econews/" id="fbUrl" />
+    <meta property="og:description" content="Environmental news monitoring for the Shire. Browse and search our catalogue of well over a thousand stories from the Sutherland Shire edition of The Leader newspaper. Stay up-to-date with local news and views on environmental topics." id="fbDesc" />
+    <meta property="og:image" content="http://ssec.org.au/dev/econews/images/screenshot.jpg" id="fbImg" />
+
+    <!-- for Twitter -->
+    <!--    <meta name="twitter:card" content="summary" />-->
+    <meta name="twitter:title" content="SSEC Leader ecoNews" id="twTitle" />
+    <meta name="twitter:description" content="Environmental news monitoring for the Shire. Browse and search our catalogue of well over a thousand stories from the Sutherland Shire edition of The Leader newspaper. Stay up-to-date with local news and views on environmental topics." id="twDesc" />
+    <meta name="twitter:image" content="http://ssec.org.au/dev/econews/images/screenshot.jpg" id="twImg" />
+
     <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
     <link rel=stylesheet href="css/newsclip.css">
 
@@ -348,7 +369,7 @@
                         var body = '"' + s.title + '"\n' +
                             s.author + ", " + paperName + " " + dateString + "\n\n";
                         body = encodeURIComponent(body) + shareLink;
-//                            linkPrefix.replace(/\&/g, "%26") + s.link;
+                        //                            linkPrefix.replace(/\&/g, "%26") + s.link;
 
                         var mailLink = "mailto:?subject=" +
                             encodeURIComponent(s.title) +
@@ -473,9 +494,7 @@
             window.removeEventListener("keyup", showKey);
             window.removeEventListener("resize", vscrollOutside);
             window.removeEventListener("hashchange", closeImg);
-            if (window.location.hash) {
-                history.back();
-            }
+            window.location.hash = "";
         }
 
         // If only vertical scrollbar on image, put it outside
