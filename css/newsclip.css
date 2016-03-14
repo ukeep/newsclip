@@ -350,12 +350,6 @@ hr {
     margin: 33px 0 0 22px;
 }
 
-#mailChoice {
-    position: fixed;
-    background-color: white;
-    height: 0;
-}
-
 /* Desktop or landscape mobile */
 
 @media screen and (min-width: 10cm) {
