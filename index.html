@@ -89,7 +89,12 @@
             checkHeight();
 
             document.getElementById("loadStories").style.display = "none";
-            writeStories(true);
+
+            if (window.location.hash) {
+                gotoStory(window.location.hash);
+            } else {
+                writeStories(true);
+            }
 
             var scrollOptions = {
                 distance: scrollSensor,
@@ -173,6 +178,35 @@
                 (filter.search && !searchStart) ? active[bg] : inactive[bg];
         }
 
+        function gotoStory(id) {
+
+            id = id.replace(/^#/, "");
+
+            // find story with that link(id)
+            for (var j = 0; j < stories.length; j++) {
+                if (stories[j].link == id) {
+                    break;
+                }
+            }
+
+            if (j == stories.length) {
+                console.log("story ID " + id + " not found");
+                writeStories(true);
+                return;
+            }
+
+            // filter to show a bucket of stories up to that date
+            filter.toDate = stories[j].date;
+            setInputs();
+
+            // go to that story using ID anchor?
+            writeStories(true);
+
+            // Show that story
+            clickImg(id);
+            window.location.hash = "#" + id;
+        }
+
         function writeStories(reset) {
             if (reset) {
                 writeNotice = true;
@@ -182,8 +216,7 @@
                 window.scrollTo(0, 0);
                 reset = false;
             }
-            var j;
-            for (j = 0; next < stories.length && j <= bucket; next++) {
+            for (var j = 0; next < stories.length && j <= bucket; next++) {
                 if (fitsThru(stories[next])) {
                     document.getElementById("stories").innerHTML +=
                         formatStory(stories[next]);
@@ -228,7 +261,13 @@
 
         function formatStory(s) {
 
-            var storyDiv = "<div class='story'>";
+            var storyDiv = "<div class='story'";
+
+            if (s.link) {
+                storyDiv += " id='" + s.link + "'";
+            }
+
+            storyDiv += ">";
 
             detailsDiv: {
                 storyDiv += "<div class='details'>";
@@ -342,7 +381,7 @@
 
                     storyDiv += "<a href='#" + s.link + "'>";
                     storyDiv += "<img src='" +
-                        thumbPrefix + s.link + "' title='Click to view' onclick=clickImg(this) onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
+                        thumbPrefix + s.link + "' title='Click to view' onclick=clickImg('" + s.link + "') onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
                 } else {
                     storyDiv += "<p class='note'>no image</p>"
                 }
@@ -373,7 +412,7 @@
             }
         }
 
-        function clickImg(thumb) {
+        function clickImg(id) {
             var imgBox = document.getElementById("imgBox");
             var show = document.getElementById("show").style;
             if (view == "fullscreen") {
@@ -406,8 +445,8 @@
                 window.setTimeout(function() {
                     document.body.style.overflow = "hidden";
                 }, 250);
-                document.getElementById("showImg").src =
-                    thumb.src.replace(thumbPrefix, linkPrefix);
+                document.getElementById("shownImg").src =
+                    linkPrefix + id;
 
                 vscrollOutside();
 
@@ -676,7 +715,7 @@
 
     <div id="show" onClick=clickImg() title="Click anywhere to close">
         <div id="imgBox">
-            <img id="showImg">
+            <img id="shownImg">
         </div>
     </div>
     <div id="footer"></div>
