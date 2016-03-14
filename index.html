@@ -18,8 +18,8 @@
             var linkPrefix = "https://drive.google.com/uc?export=view&id=";
             //        var thumbPrefix = "https://drive.google.com/thumbnail?sz=h200&id=";
             var thumbPrefix = linkPrefix;
-            var sharePrefix = "https://drive.google.com/file/d/";
-            var shareSuffix = "/view?usp=sharing";
+            //            var sharePrefix = "https://drive.google.com/file/d/";
+            //            var shareSuffix = "/view?usp=sharing";
             var maxheaderPercent = 0.10; // 0.07;
             var headerHeight, hideHeader, lastScrollTop;
             var headerShown = true;
@@ -67,7 +67,7 @@
                 "October", "November", "December");
 
             var scrollbarWidth = 17;
-            var justShown = false;
+            //            var justShown = false;
 
             var writeNotice = true;
 
@@ -203,7 +203,7 @@
             writeStories(true);
 
             // Show that story
-            clickImg(id);
+            showImg(id);
             window.location.hash = "#" + id;
         }
 
@@ -331,7 +331,8 @@
                 }
 
                 shareBtns: if (s.link) {
-                        var shareLink = encodeURIComponent(sharePrefix + s.link + shareSuffix);
+                        var shareLink =
+                            encodeURIComponent(window.location.href.replace(/\#.*/, "") + "#" + s.link);
 
                         storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
 
@@ -346,8 +347,8 @@
 
                         var body = '"' + s.title + '"\n' +
                             s.author + ", " + paperName + " " + dateString + "\n\n";
-                        body = encodeURIComponent(body) +
-                            linkPrefix.replace(/\&/g, "%26") + s.link;
+                        body = encodeURIComponent(body) + shareLink;
+//                            linkPrefix.replace(/\&/g, "%26") + s.link;
 
                         var mailLink = "mailto:?subject=" +
                             encodeURIComponent(s.title) +
@@ -381,7 +382,7 @@
 
                     storyDiv += "<a href='#" + s.link + "'>";
                     storyDiv += "<img src='" +
-                        thumbPrefix + s.link + "' title='Click to view' onclick=clickImg('" + s.link + "') onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
+                        thumbPrefix + s.link + "' title='Click to view' onclick=showImg('" + s.link + "') onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
                 } else {
                     storyDiv += "<p class='note'>no image</p>"
                 }
@@ -412,53 +413,68 @@
             }
         }
 
-        function clickImg(id) {
+        function showImg(id) {
+            if (view == "fullscreen") {
+                alert("in showImg, but already fullscreen");
+                return;
+            }
+
             var imgBox = document.getElementById("imgBox");
             var show = document.getElementById("show").style;
-            if (view == "fullscreen") {
-                if (justShown) {
-                    justShown = false;
-                    return;
-                }
-                view = "";
-                document.body.style.overflow = "auto";
 
-                show.opacity = 0;
-                show.transition = "opacity 250ms ease-in-out, z-index 0ms linear 500ms";
-                show.zIndex = -1;
+            view = "fullscreen";
+            show.width = window.innerWidth;
+            show.height = window.innerHeight;
+            show.transition = "opacity 250ms ease-in-out, z-index 0ms";
+            show.zIndex = 4;
+            show.opacity = 1;
+            window.setTimeout(function() {
+                document.body.style.overflow = "hidden";
+            }, 250);
+            document.getElementById("shownImg").src =
+                linkPrefix + id;
 
-                imgBox.style.width = "auto";
-                imgBox.style.opacity = 0;
-                window.removeEventListener("keyup", showKey);
-                window.removeEventListener("resize", vscrollOutside);
-                window.removeEventListener("hashchange", clickImg);
-                if (location.hash) {
-                    history.back();
-                }
-            } else {
-                view = "fullscreen";
-                show.width = window.innerWidth;
-                show.height = window.innerHeight;
-                show.transition = "opacity 250ms ease-in-out, z-index 0ms";
-                show.zIndex = 4;
-                show.opacity = 1;
-                window.setTimeout(function() {
-                    document.body.style.overflow = "hidden";
-                }, 250);
-                document.getElementById("shownImg").src =
-                    linkPrefix + id;
+            vscrollOutside();
 
-                vscrollOutside();
+            imgBox.scrollTop = 0;
+            imgBox.scrollLeft = 0;
 
-                imgBox.scrollTop = 0;
-                imgBox.scrollLeft = 0;
+            imgBox.style.opacity = 1;
+            window.addEventListener("keyup", showKey, false);
+            window.addEventListener("resize", checkHeight, false);
 
-                imgBox.style.opacity = 1;
-                window.addEventListener("keyup", showKey, false);
-                window.addEventListener("resize", checkHeight, false);
+            //            justShown = true;
+            window.setTimeout(function() {
+                window.addEventListener("hashchange", closeImg, false);
+            }, 250);
+        }
 
-                justShown = true;
-                window.addEventListener("hashchange", clickImg, false);
+        function closeImg() {
+            //            if (justShown) {
+            //                justShown = false;
+            //                return;
+            //            }
+            var imgBox = document.getElementById("imgBox");
+            var show = document.getElementById("show").style;
+
+            if (view != "fullscreen") {
+                alert("in closeImg, but not fullscreen");
+                return;
+            }
+            view = "";
+            document.body.style.overflow = "auto";
+
+            show.opacity = 0;
+            show.transition = "opacity 250ms ease-in-out, z-index 0ms linear 500ms";
+            show.zIndex = -1;
+
+            imgBox.style.width = "auto";
+            imgBox.style.opacity = 0;
+            window.removeEventListener("keyup", showKey);
+            window.removeEventListener("resize", vscrollOutside);
+            window.removeEventListener("hashchange", closeImg);
+            if (window.location.hash) {
+                history.back();
             }
         }
 
@@ -472,7 +488,7 @@
         }
 
         function showKey(e) {
-            if (e.keyCode == 27) clickImg();
+            if (e.keyCode == 27) closeImg();
         }
 
         // Show header when user scrolls up
@@ -713,7 +729,7 @@
         <div id="loadStories">Loading...</div>
     </div>
 
-    <div id="show" onClick=clickImg() title="Click anywhere to close">
+    <div id="show" onClick=closeImg() title="Click anywhere to close">
         <div id="imgBox">
             <img id="shownImg">
         </div>
