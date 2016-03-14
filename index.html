@@ -31,6 +31,7 @@
 
             var onlinePrefix = "http://www.theleader.com.au/story/";
             var paperName = "Sutherland Shire Leader";
+            var paperEmail = "Leader Letters <leaderletters@fairfaxmedia.com.au>";
             var paperShortName = "Leader";
             var paperTwitterHandle = "@theleadernews";
             var hashtag = "econews";
@@ -315,11 +316,11 @@
                         storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
 
                         if (d >= cutoff) {
-                            body = encodeURIComponent("Dear Editor\n\nRegarding \"" +
+                            body = "Dear Editor\n\nRegarding \"" +
                                 s.title + "\" (" + paperShortName + ", " +
-                                dateString.replace(/ [0-9]{4}$/, "") + "), ");
+                                dateString.replace(/ [0-9]{4}$/, "") + "), ";
 
-                            mailLink = "mailto:?subject=" +
+                            mailLink = "mailto:" + encodeURIComponent(paperEmail) + "?subject=" +
                                 encodeURIComponent(s.title) +
                                 "&body=" + encodeURIComponent(body);
                             storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/reply.svg' title='Write to the paper'></a>";
