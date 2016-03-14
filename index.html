@@ -4,6 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- for Google -->
+    <meta name="description" content="" id="gglDesc" />
+    <!--    <meta name="keywords" content="" />-->
+
+    <!--    <meta name="author" content="" />-->
+    <!--    <meta name="copyright" content="" />-->
+    <!--    <meta name="application-name" content="" />-->
+
+    <!-- for Facebook -->
+    <meta property="og:title" content="" id="fbTitle" />
+    <meta property="og:type" content="website" id="fbType" />
+    <meta property="og:url" content="http://ssec.org.au/dev/econews" id="fbUrl" />
+    <meta property="og:description" content="" id="fbDesc" />
+    <meta property="og:image" content="" id="fbImg" />
+
+    <!-- for Twitter -->
+    <!--    <meta name="twitter:card" content="summary" />-->
+    <meta name="twitter:title" content="" id="twTitle" />
+    <meta name="twitter:description" content="" id="twDesc" />
+    <meta name="twitter:image" content="" id="twImg" />
+
     <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
     <link rel=stylesheet href="css/newsclip.css">
 
@@ -204,6 +225,15 @@
 
             // Show that story
             showImg(id);
+            var url = window.location.href.replace(/\#.*/, "") + "#" + id;
+            var desc = (stories[j].author) ? stories[j].author + ", " : "";
+            var d = new Date(stories[j].date);
+            var dateString = month[d.getMonth()] + " " +
+                d.getDate() + " " +
+                d.getFullYear();
+            desc += paperName + " " + dateString;
+            setMetaTags(url, stories[j].title, desc, linkPrefix + id);
+
             window.location.hash = "#" + id;
         }
 
@@ -334,7 +364,11 @@
                         var shareLink =
                             encodeURIComponent(window.location.href.replace(/\#.*/, "") + "#" + s.link);
 
-                        storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
+                        storyDiv += "<div class='shareBtns'>";
+                        var desc = (s.author) ? s.author + ", " : "";
+                        desc += paperName + " " + dateString;
+                        storyDiv += "<a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank' onclick='setMetaTags(\"" + shareLink + "\", \"" + s.title + "\", \"" + desc + "\", \"" +
+                            linkPrefix + s.link + "\")'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
 
                         var tweet = s.title + " - " + s.author + " ";
                         tweet += paperTwitterHandle || paperName;
@@ -348,7 +382,7 @@
                         var body = '"' + s.title + '"\n' +
                             s.author + ", " + paperName + " " + dateString + "\n\n";
                         body = encodeURIComponent(body) + shareLink;
-//                            linkPrefix.replace(/\&/g, "%26") + s.link;
+                        //                            linkPrefix.replace(/\&/g, "%26") + s.link;
 
                         var mailLink = "mailto:?subject=" +
                             encodeURIComponent(s.title) +
@@ -381,8 +415,10 @@
                     // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
                     storyDiv += "<a href='#" + s.link + "'>";
+
                     storyDiv += "<img src='" +
-                        thumbPrefix + s.link + "' title='Click to view' onclick=showImg('" + s.link + "') onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
+                        thumbPrefix + s.link + "' title='Click to view' onclick='showImg(\"" + s.link + "\"); setMetaTags(\"" + shareLink + "\", \"" + s.title + "\", \"" + desc + "\", \"" +
+                        linkPrefix + s.link + "\")' onload = 'if(this.parentElement) this.parentElement.previousElementSibling.style.display=\"none\"'></a>";
                 } else {
                     storyDiv += "<p class='note'>no image</p>"
                 }
@@ -394,6 +430,22 @@
             storyDiv += "<hr>";
 
             return storyDiv;
+        }
+
+        function setMetaTags(url, title, desc, img) {
+            document.getElementById("fbType").content = "article";
+
+            document.getElementById("fbUrl").content = decodeURIComponent(url);
+
+            document.getElementById("fbTitle").content = title;
+            document.getElementById("twTitle").content = title;
+
+            document.getElementById("gglDesc").content = desc;
+            document.getElementById("twDesc").content = desc;
+            document.getElementById("twDesc").content = desc;
+
+            document.getElementById("fbImg").content = img;
+            document.getElementById("twImg").content = img;
         }
 
         function searchStories() {
