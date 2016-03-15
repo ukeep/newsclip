@@ -343,6 +343,17 @@ hr {
 .textBtn {
     vertical-align: middle;
     height: 22px;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, .8);
+}
+
+.textBtn:hover {
+    cursor: pointer;
+}
+
+.copied {
+    box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0);
+    transition: box-shadow 1s ease-out;
+    -webkit-transition: box-shadow 1s ease-out;
 }
 
 .note {
@@ -350,6 +361,7 @@ hr {
     color: darkgrey;
     margin: 33px 0 0 22px;
 }
+
 
 /* Desktop or landscape mobile */
 
