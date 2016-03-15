@@ -295,6 +295,7 @@ label.toDate {
     -webkit-transform: scale(1.025, 1.025);
     transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
+    cursor: pointer;
 }
 
 hr {

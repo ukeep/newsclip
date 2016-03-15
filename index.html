@@ -111,8 +111,8 @@
 
             document.getElementById("loadStories").style.display = "none";
 
-            if (window.location.hash) {
-                gotoStory(window.location.hash);
+            if (window.location.search) {
+                showOnPageLoad(window.location.search.replace(/^\?s=/, ""));
             } else {
                 writeStories(bucket, true);
             }
@@ -199,9 +199,7 @@
                 (filter.search && !searchStart) ? active[bg] : inactive[bg];
         }
 
-        function gotoStory(id) {
-
-            id = id.replace(/^#/, "");
+        function showOnPageLoad(id) {
 
             // find story with that link(id)
             for (var j = 0; j < stories.length; j++) {
@@ -212,7 +210,7 @@
 
             if (j == stories.length) {
                 console.log("story ID " + id + " not found");
-                writeStories(bucket, true);
+                location = location.pathname; // Reloads page without search query
                 return;
             }
 
@@ -225,9 +223,7 @@
                 document.getElementById(id).scrollIntoView();
             }, 250);
 
-
             showImg(id);
-            window.location.hash = "#" + id;
         }
 
         function writeStories(n, reset) {
@@ -285,8 +281,7 @@
         function formatStory(s) {
 
             if (s.link) {
-                var storyDiv = "<a name='" + s.link + "'></a>";
-                storyDiv += "<div class='story' id='" + s.link + "'>";
+                var storyDiv = "<div class='story' id='" + s.link + "'>";
             } else {
                 var storyDiv = "<div class='story'>";
             }
@@ -401,9 +396,8 @@
                     // Drop loadImg: not appearing till main image loads anyway
                     // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
 
-                    storyDiv += "<a href='#" + s.link + "'>";
                     storyDiv += "<img src='" +
-                        thumbPrefix + s.link + "' title='Click to view' onclick=showImg('" + s.link + "') onload=\"if(this.parentElement) this.parentElement.previousElementSibling.style.display='none'\"></a>";
+                        thumbPrefix + s.link + "' title='Click to view' onclick=showImg('" + s.link + "')>";
                 } else {
                     storyDiv += "<p class='note'>no image</p>"
                 }
@@ -463,20 +457,14 @@
             imgBox.style.opacity = 1;
             window.addEventListener("keyup", showKey, false);
             window.addEventListener("resize", checkHeight, false);
-
-            //            justShown = true;
-            var pos = document.body.scrollTop;
-            window.setTimeout(function() { // Do this after <a href> is effected
-                document.body.scrollTop = pos;
-                window.addEventListener("hashchange", closeImg, false);
-            }, 250);
+            window.onbeforeunload = function() {
+                return "Click anywhere to close the image."
+            };
+            history.pushState("", document.title, "?s=" + id);
+            window.addEventListener("popstate", closeImg, false);
         }
 
         function closeImg() {
-            //            if (justShown) {
-            //                justShown = false;
-            //                return;
-            //            }
             var imgBox = document.getElementById("imgBox");
             var show = document.getElementById("show").style;
 
@@ -495,29 +483,10 @@
             imgBox.style.opacity = 0;
             window.removeEventListener("keyup", showKey);
             window.removeEventListener("resize", vscrollOutside);
-            window.removeEventListener("hashchange", closeImg);
-            removeHash();
-            //            if (window.location.hash) {
-            //                history.back();
-            //            }
-            //            window.location.hash = "";
-        }
+            window.onbeforeunload = "";
 
-        function removeHash() {
-            var scrollV, scrollH, loc = window.location;
-            if ("pushState" in history)
-                history.pushState("", document.title, loc.pathname + loc.search);
-            else {
-                // Prevent scrolling by storing the page's current scroll offset
-                scrollV = document.body.scrollTop;
-                scrollH = document.body.scrollLeft;
-
-                loc.hash = "";
-
-                // Restore the scroll offset, should be flicker free
-                document.body.scrollTop = scrollV;
-                document.body.scrollLeft = scrollH;
-            }
+            window.removeEventListener("popstate", closeImg);
+            history.pushState("", document.title, location.pathname);
         }
 
         // If only vertical scrollbar on image, put it outside
@@ -530,7 +499,9 @@
         }
 
         function showKey(e) {
-            if (e.keyCode == 27) closeImg();
+            if (e.keyCode == 27) { // Esc key pressed
+                closeImg();
+            }
         }
 
         // Show header when user scrolls up
