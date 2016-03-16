@@ -383,7 +383,7 @@ hr {
 }
 
 .copyMe:focus:after {
-    animation: fade 1s linear;
+    animation: fade 900ms linear 100ms;
 }
 
 @keyframes fade {
