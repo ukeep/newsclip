@@ -343,17 +343,62 @@ hr {
 .textBtn {
     vertical-align: middle;
     height: 22px;
-    box-shadow: 0 0 0 0 rgba(0, 0, 0, .8);
 }
 
 .textBtn:hover {
     cursor: pointer;
 }
 
-.copied {
+.puff {
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, .8);
+    outline: 0;
+    transition: box-shadow 0.0s;
+}
+
+.puff:focus {
     box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0);
     transition: box-shadow 1s ease-out;
-    -webkit-transition: box-shadow 1s ease-out;
+}
+
+.copyMe {
+    position: relative;
+}
+
+.copyMe:after {
+    content: "Link copied";
+    font-family: sans-serif;
+    font-size: 12px;
+    color: #888;
+    position: absolute;
+    left: 100%;
+    top: 100%;
+    margin: 10px 0;
+    padding: 2px;
+    white-space: nowrap;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+    background-color: white;
+    opacity: 0;
+    border: 1px solid #888;
+}
+
+.copyMe:focus:after {
+    animation: fade 1s linear;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 .note {
@@ -420,7 +465,7 @@ hr {
 
 /* Animation for "Loading..." text */
 
-@keyframes flickerAnimation {
+@keyframes flicker {
     0% {
         opacity: 1;
     }
@@ -432,7 +477,7 @@ hr {
     }
 }
 
-@-o-keyframes flickerAnimation {
+@-o-keyframes flicker {
     0% {
         opacity: 1;
     }
@@ -444,7 +489,7 @@ hr {
     }
 }
 
-@-moz-keyframes flickerAnimation {
+@-moz-keyframes flicker {
     0% {
         opacity: 1;
     }
@@ -456,7 +501,7 @@ hr {
     }
 }
 
-@-webkit-keyframes flickerAnimation {
+@-webkit-keyframes flicker {
     0% {
         opacity: 1;
     }
@@ -517,10 +562,10 @@ hr {
 
 #loadStories,
 .loadImg {
-    -webkit-animation: flickerAnimation 2s infinite;
-    -moz-animation: flickerAnimation 2s infinite;
-    -o-animation: flickerAnimation 2s infinite;
-    animation: flickerAnimation 2s infinite;
+    -webkit-animation: flicker 2s infinite;
+    -moz-animation: flicker 2s infinite;
+    -o-animation: flicker 2s infinite;
+    animation: flicker 2s infinite;
 }
 
 .notice {
