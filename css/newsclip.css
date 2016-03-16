@@ -345,10 +345,6 @@ hr {
     height: 22px;
 }
 
-.textBtn:hover {
-    cursor: pointer;
-}
-
 .puff {
     display: inline-block;
     box-shadow: 0 0 0 0 rgba(0, 0, 0, .8);

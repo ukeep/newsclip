@@ -350,7 +350,7 @@
 
                 shareBtns: if (s.link) {
                         var shareLink =
-                            encodeURIComponent(window.location.origin + window.location.pathname + "?" + s.link);
+                            encodeURIComponent(window.location.origin + window.location.pathname + "?s=" + s.link);
 
                         storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
 
@@ -372,7 +372,7 @@
                             "&body=" + body;
                         storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
 
-                        storyDiv += " <a href='javascript:;' class='copyMe puff' tabindex='1'><img class='textBtn puff' src='images/copy.svg' onclick='window.setTimeout(function() {copyTextToClipboard(\"" + window.location.origin + window.location.pathname + "?" + s.link + "\");}, 1000)' title='Copy link to clipboard'></a>";
+                        storyDiv += " <a href='javascript:;' class='copyMe puff' tabindex='1'><img class='textBtn puff' src='images/copy.svg' onclick='window.setTimeout(function() {copyTextToClipboard(\"" + window.location.origin + window.location.pathname + "?s=" + s.link + "\");}, 1000)' title='Copy link to clipboard'></a>";
 
                         if (d >= cutoff) {
                             body = "Dear Editor\n\nRegarding \"" +
@@ -382,6 +382,7 @@
                             mailLink = "mailto:" + encodeURIComponent(paperEmail) + "?subject=" +
                                 encodeURIComponent(s.title) +
                                 "&body=" + encodeURIComponent(body);
+                            
                             storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/reply.svg' title='Write to the paper'></a>";
                         }
 
