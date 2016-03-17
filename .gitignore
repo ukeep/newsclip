@@ -4,6 +4,5 @@
 *.lnk
 stories.json
 *.xlsx#
-*.docx
 test/
 old/
