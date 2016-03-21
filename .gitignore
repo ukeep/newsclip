@@ -6,3 +6,5 @@ stories.json
 *.xlsx#
 test/
 old/
+.brackets*
+*.min.*

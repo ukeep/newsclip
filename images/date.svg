@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="11.2"
-     inkscape:cx="11.764356"
-     inkscape:cy="20.956369"
+     inkscape:cx="-1.5838583"
+     inkscape:cy="13.813512"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -38,7 +38,7 @@
      inkscape:window-width="1280"
      inkscape:window-height="657"
      inkscape:window-x="-8"
-     inkscape:window-y="1016"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      units="px" />
   <metadata
@@ -49,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -58,6 +58,17 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(1880.5714,-1020.505)">
+    <g
+       id="g3027-9"
+       transform="matrix(0.01674107,0,0,-0.01674107,-1880.5714,1046.2193)"
+       style="fill:#984540;fill-opacity:1">
+      <path
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:connector-curvature="0"
+         id="path3029-0"
+         d="m 1664,1152 0,-1280 c 0,-34.66667 -12.6667,-64.66667 -38,-90 -25.3333,-25.33333 -55.3333,-38 -90,-38 l -1408,0 c -34.666667,0 -64.666667,12.66667 -90,38 -25.333333,25.33333 -38,55.33333 -38,90 l 0,1280 c 0,34.6667 12.666667,64.6667 38,90 25.333333,25.3333 55.333333,38 90,38 l 128,0 0,96 c 0,44 15.66667,81.6667 47,113 31.33333,31.3333 69,47 113,47 l 64,0 c 44,0 81.66667,-15.6667 113,-47 31.33333,-31.3333 47,-69 47,-113 l 0,-96 384,0 0,96 c 0,44 15.6667,81.6667 47,113 31.3333,31.3333 69,47 113,47 l 64,0 c 44,0 81.6667,-15.6667 113,-47 31.3333,-31.3333 47,-69 47,-113 l 0,-96 128,0 c 34.6667,0 64.6667,-12.6667 90,-38 25.3333,-25.3333 38,-55.3333 38,-90 z"
+         sodipodi:nodetypes="sssssssssscssssssccsssssscsss" />
+    </g>
     <g
        id="g3027"
        transform="matrix(0.01674107,0,0,-0.01674107,-1880.5714,1046.2193)"
