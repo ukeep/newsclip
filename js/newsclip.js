@@ -274,7 +274,7 @@ function formatStory(s) {
             if (s.author || s.online) {
                 storyDiv += "<p class='byline'>";
                 if (s.online != "") {
-                    storyDiv += "<a href='" + onlinePrefix + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' title='Read online'></a> ";
+                    storyDiv += "<a href='" + onlinePrefix + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' title='This story is available on the " + paperShortName + " website'></a> ";
                 }
                 storyDiv += s.author + "</p>";
             }
