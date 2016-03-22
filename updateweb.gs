@@ -1,10 +1,9 @@
-// Get data for all Leader ecoNews stories from spreadsheet and write two files
-// for access by Leader ecoNews web page:
-// * a Javascript file with topics, persons and stories to be read by the HTML file for human users
-// * a JSON file with story metadata to be read by a PHP script that sets meta tags for social media crawlers
+// Read news stories and associated data from Google sheet and
+// write two files for access by newsclip web app:
+// * Javascript file with stories, topics and people. Read by HTML file to display stories for end-users
+// * JSON file with story metadata. Read by PHP script to set meta tags for social media crawlers
 //
-// This script should be run after spreadsheet is updated or edited,
-// and can be scheduled to run each night to be sure.
+// This script should be run after the spreadsheet is updated or edited.
 //   
 // Jonathan Doig jon@doig.net 15/2/2016
 
