@@ -20,12 +20,29 @@ initVars: {
     var paperTwitterHandle = "@theleadernews";
     var hashtag = "econews";
 
+    function dayString(d) {
+        var t = d.getFullYear() + "-";
+        t += (d.getMonth() < 9) ? "0" : "";
+        t += d.getMonth() + 1 + "-";
+        t += (d.getDate() < 10) ? "0" : "";
+        t += d.getDate();
+        return t
+
+    }
+
     var firstDate = "2013-01-01";
     var lastDate = dayString(new Date()); // If a fixed last date, use "yyyy-mm-dd"
     var replyBy = 20; // Show reply button if story is less than these days old
     var today = new Date();
     var cutoff = new Date();
     cutoff.setDate(today.getDate() - replyBy);
+
+    var filterElem = []; // Will reference the filter elements in header
+    var iFromDate = 0,
+        iToDate = 1,
+        iTopic = 2,
+        iPerson = 3,
+        iSearch = 4 // Indices to filterElem array
 
     var searchHint = "Search title or author";
 
@@ -55,20 +72,19 @@ initVars: {
 
     var writeNotice = true;
 
-    function dayString(d) {
-        var t = d.getFullYear() + "-";
-        t += (d.getMonth() < 9) ? "0" : "";
-        t += d.getMonth() + 1 + "-";
-        t += (d.getDate() < 10) ? "0" : "";
-        t += d.getDate();
-        return t
-
-    }
 }
 
 function init() {
+    window.filterElem[iFromDate] = document.getElementById("fromDate");
+    window.filterElem[iToDate] = document.getElementById("toDate");
+    window.filterElem[iTopic] = document.getElementById("topic");
+    window.filterElem[iPerson] = document.getElementById("person");
+    window.filterElem[iSearch] = document.getElementById("search");
+
+    setDates();
     setTopics();
     setPeople();
+
     clearFilter();
     checkHeight();
 
@@ -93,13 +109,23 @@ function init() {
     window.addEventListener("resize", checkHeight, false);
 }
 
+function setDates() {
+    filterElem[iFromDate].min = firstDate;
+    filterElem[iFromDate].max = lastDate;
+    filterElem[iFromDate].title = "Filter from date (default: start of archive)";
+    filterElem[iToDate].min = firstDate;
+    filterElem[iToDate].max = lastDate;
+    filterElem[iToDate].title = "Filter to date (default: today)";
+}
+
 function setTopics() {
     var options = "<option value='' selected>(all)</option>";
     for (var i = 0; i < topics.length; i++) {
         options += "<option value='" + topics[i].name + "'>" +
             topics[i].name + "</option>";
     }
-    document.getElementById("topic").innerHTML = options;
+
+    filterElem[iTopic].innerHTML = options;
 
     var rows = "";
     for (var j = 0; j < topics.length; j++) {
@@ -118,7 +144,7 @@ function setPeople() {
         options += "<option value='" + people[i].initials + "'>" +
             people[i].fullname + "</option>";
     }
-    document.getElementById("person").innerHTML = options;
+    filterElem[iPerson].innerHTML = options;
 }
 
 function clearFilter() {
@@ -132,34 +158,23 @@ function clearFilter() {
 };
 
 function setInputs() {
-    document.getElementById("fromDate").value = filter.fromDate;
-    document.getElementById("toDate").value = filter.toDate;
-    document.getElementById("topic").value = filter.topics;
-    document.getElementById("person").value = filter.person;
-    document.getElementById("search").value =
-        (searchStart) ? searchHint : filter.search;
+    filterElem[iFromDate].value = filter.fromDate;
+    filterElem[iToDate].value = filter.toDate;
+    filterElem[iTopic].value = filter.topics;
+    filterElem[iPerson].value = filter.person;
+    filterElem[iSearch].value = (searchStart) ? searchHint : filter.search;
 
-    document.getElementById("fromDate").style.color =
-        (filter.fromDate != firstDate) ? active[col] : inactive[col];
-    document.getElementById("fromDate").style.backgroundColor =
-        (filter.fromDate != firstDate) ? active[bg] : inactive[bg];
+    filterElem[iFromDate].style.color = (filter.fromDate != firstDate) ? active[col] : inactive[col];
+    filterElem[iFromDate].style.backgroundColor = (filter.fromDate != firstDate) ? active[bg] : inactive[bg];
 
-    document.getElementById("toDate").style.color =
-        (filter.toDate != lastDate) ? active[col] : inactive[col];
-    document.getElementById("toDate").style.backgroundColor =
-        (filter.toDate != lastDate) ? active[bg] : inactive[bg];
-    document.getElementById("topic").style.color =
-        (filter.topics) ? active[col] : inactive[col];
-    document.getElementById("topic").style.backgroundColor =
-        (filter.topics) ? active[bg] : inactive[bg];
-    document.getElementById("person").style.color =
-        (filter.person) ? active[col] : inactive[col];
-    document.getElementById("person").style.backgroundColor =
-        (filter.person) ? active[bg] : inactive[bg];
-    document.getElementById("search").style.color =
-        (filter.search && !searchStart) ? active[col] : inactive[col];
-    document.getElementById("search").style.backgroundColor =
-        (filter.search && !searchStart) ? active[bg] : inactive[bg];
+    filterElem[iToDate].style.color = (filter.toDate != lastDate) ? active[col] : inactive[col];
+    filterElem[iToDate].style.backgroundColor = (filter.toDate != lastDate) ? active[bg] : inactive[bg];
+    filterElem[iTopic].style.color = (filter.topics) ? active[col] : inactive[col];
+    filterElem[iTopic].style.backgroundColor = (filter.topics) ? active[bg] : inactive[bg];
+    filterElem[iPerson].style.color = (filter.person) ? active[col] : inactive[col];
+    filterElem[iPerson].style.backgroundColor = (filter.person) ? active[bg] : inactive[bg];
+    filterElem[iSearch].style.color = (filter.search && !searchStart) ? active[col] : inactive[col];
+    filterElem[iSearch].style.backgroundColor = (filter.search && !searchStart) ? active[bg] : inactive[bg];
 }
 
 function showOnPageLoad(id) {

@@ -34,7 +34,7 @@
 
     <script type="text/javascript" src="js/infinite-scroll.js"></script>
 
-        <script type="text/javascript" src="js/newsclip.js"></script>
+    <script type="text/javascript" src="js/newsclip.js"></script>
 </head>
 
 <body onload="init()">
@@ -49,7 +49,7 @@
             <span class="noWrap">
                 <div class="filterCell">
                     <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range (from - to)"></label>
-                    <input type=date id="fromDate" value=firstDate onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(bucket, true); this.style.color = (this.value == firstDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == firstDate) ? inactive[bg] : active[bg];">
+                    <input type=date id="fromDate" onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(bucket, true); this.style.color = (this.value == firstDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == firstDate) ? inactive[bg] : active[bg];">
                 </div>
                 <div class="filterCell">
                     <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5 title="To date"></label>
@@ -59,19 +59,19 @@
             <span class="noWrap">
                 <div class=" filterCell ">
                     <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
-                    <select id="topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(bucket, true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
+                    <select id="topic" title="Filter by topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(bucket, true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
 
                     </select>
                 </div>
                 <div class="filterCell">
                     <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by person"></label>
-                    <select id="person" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(bucket, true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
+                    <select id="person" title="Filter by person" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(bucket, true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
                     </select>
                 </div>
             </span>
             <span class="noWrap">
                 <div class="filterCell">
-                    <input type=text id=search value="Search" onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style.color=active[col]; this.style.fontStyle=active[fs]; if(searchStart) {this.value=''; searchStart = false}">
+                    <input type=text id=search onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style.color=active[col]; this.style.fontStyle=active[fs]; if(searchStart) {this.value=''; searchStart = false}">
                 </div>
                 <div class="filterCell">
                     <a href="javascript:;">
