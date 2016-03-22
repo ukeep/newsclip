@@ -50,23 +50,23 @@
             <span class="noWrap">
                 <div class="filterCell">
                     <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range (from - to)"></label>
-                    <input type=date id="fromDate" onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(bucket, true); this.style.color = (this.value == firstDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == firstDate) ? inactive[bg] : active[bg];">
+                    <input type=date id="fromDate" required onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(bucket, true); setInputs(false);">
                 </div>
                 <div class="filterCell">
                     <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5 title="To date"></label>
-                    <input type=date id="toDate" onmouseover="this.style.color=active[col]"  onmouseout="this.style.color = (this.value == lastDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=lastDate; filter.toDate=this.value; writeStories(bucket, true); this.style.color = (this.value == lastDate) ? inactive[col] : active[col]; this.style.backgroundColor = (this.value == lastDate) ? inactive[bg] : active[bg];">
+                    <input type=date id="toDate" required onmouseover="this.style.color=active[col]"  onmouseout="this.style.color = (this.value == lastDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=lastDate; filter.toDate=this.value; writeStories(bucket, true); setInputs(false);">
                 </div>
             </span>
             <span class="noWrap">
                 <div class=" filterCell ">
                     <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
-                    <select id="topic" title="Filter by topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(bucket, true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
+                    <select id="topic" title="Filter by topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(bucket, true); setInputs(false)">
 
                     </select>
                 </div>
                 <div class="filterCell">
                     <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by person"></label>
-                    <select id="person" title="Filter by person" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(bucket, true); this.style.color = (this.value) ? active[col] : inactive[col]; this.style.backgroundColor = (this.value) ? active[bg] : inactive[bg];">
+                    <select id="person" title="Filter by person" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
                     </select>
                 </div>
             </span>

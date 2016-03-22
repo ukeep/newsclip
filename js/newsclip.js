@@ -153,22 +153,39 @@ function clearFilter() {
     filter.person = "";
     filter.topics = "";
     filter.search = "";
-    setInputs();
+    setInputs(true);
 
 };
 
-function setInputs() {
-    filterElem[iFromDate].value = filter.fromDate;
-    filterElem[iToDate].value = filter.toDate;
-    filterElem[iTopic].value = filter.topics;
-    filterElem[iPerson].value = filter.person;
-    filterElem[iSearch].value = (searchStart) ? searchHint : filter.search;
+function setInputs(fromFilter) {
+    if (fromFilter) {
+        filterElem[iFromDate].value = filter.fromDate;
+        filterElem[iToDate].value = filter.toDate;
+        filterElem[iTopic].value = filter.topics;
+        filterElem[iPerson].value = filter.person;
+        filterElem[iSearch].value = (searchStart) ? searchHint : filter.search;
+    }
 
-    filterElem[iFromDate].style.color = (filter.fromDate != firstDate) ? active[col] : inactive[col];
-    filterElem[iFromDate].style.backgroundColor = (filter.fromDate != firstDate) ? active[bg] : inactive[bg];
+    if (filter.fromDate == firstDate) {
+        filterElem[iFromDate].style.color = inactive[col];
+        filterElem[iFromDate].style.backgroundColor = inactive[bg];
+        if (!filterElem[iFromDate].required) filterElem[iFromDate].setAttribute("required", true);
+    } else {
+        filterElem[iFromDate].style.color = active[col];
+        filterElem[iFromDate].style.backgroundColor = active[bg];
+        if (filterElem[iFromDate].required) filterElem[iFromDate].removeAttribute("required");
+    }
 
-    filterElem[iToDate].style.color = (filter.toDate != lastDate) ? active[col] : inactive[col];
-    filterElem[iToDate].style.backgroundColor = (filter.toDate != lastDate) ? active[bg] : inactive[bg];
+    if (filter.toDate == lastDate) {
+        filterElem[iToDate].style.color = inactive[col];
+        filterElem[iToDate].style.backgroundColor = inactive[bg];
+        if (!filterElem[iToDate].required) filterElem[iToDate].setAttribute("required", true);
+    } else {
+        filterElem[iToDate].style.color = active[col];
+        filterElem[iToDate].style.backgroundColor = active[bg];
+        if (filterElem[iToDate].required) filterElem[iToDate].removeAttribute("required");
+    }
+
     filterElem[iTopic].style.color = (filter.topics) ? active[col] : inactive[col];
     filterElem[iTopic].style.backgroundColor = (filter.topics) ? active[bg] : inactive[bg];
     filterElem[iPerson].style.color = (filter.person) ? active[col] : inactive[col];
@@ -195,7 +212,7 @@ function showOnPageLoad(id) {
 
     filter.fromDate = stories[j].date;
     filter.toDate = stories[j].date;
-    setInputs();
+    setInputs(true);
 
     writeStories(Infinity, true); // Write all stories in filter
     window.setTimeout(function () {
@@ -286,7 +303,7 @@ function formatStory(s) {
                 storyDiv += " <img class='textIcon' src='images/topic.svg' title='Topics tagged in this story'>";
                 var topicList = s.topics.split(", ");
                 for (var i = 0; topicList[i]; i++) {
-                    storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(); writeStories(bucket, true)'>" + topicList[i] + "</a>";
+                    storyDiv += " <a href='javascript:;' onClick='clearFilter(); filter.topics=\"" + topicList[i] + "\"; setInputs(true); writeStories(bucket, true)'>" + topicList[i] + "</a>";
                 }
             }
             if (s.person != "") {
@@ -301,7 +318,7 @@ function formatStory(s) {
                         }
                     }
                     storyDiv += " <a href='javascript:;'" + title +
-                        "onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(); writeStories(bucket, true)'>" + personList[i] + "</a>";
+                        "onClick='clearFilter(); filter.person=\"" + personList[i] + "\"; setInputs(true); writeStories(bucket, true)'>" + personList[i] + "</a>";
                 }
             }
 
@@ -320,7 +337,7 @@ function formatStory(s) {
 
             storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" +
                 s.date + "\"; filter.toDate=\"" +
-                s.date + "\"; setInputs(); writeStories(bucket, true)'>" +
+                s.date + "\"; setInputs(true); writeStories(bucket, true)'>" +
                 dateString + "</a></span>";
 
             storyDiv += " &ndash; page " + s.page + "</p>";
