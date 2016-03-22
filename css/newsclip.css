@@ -369,7 +369,7 @@ hr {
 }
 
 .copyMe:after {
-    content: "Link copied";
+    content: "Story copied";
     font-family: sans-serif;
     font-size: 12px;
     color: #888;

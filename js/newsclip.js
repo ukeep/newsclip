@@ -332,8 +332,9 @@ function formatStory(s) {
 
                 storyDiv += "<div class='shareBtns'><a href='https://www.facebook.com/sharer/sharer.php?u=" + shareLink + "' target='_blank'><img class='textBtn' src='images/fb_share.svg' title='Share on Facebook'></a>"
 
-                var tweet = s.title + " - " + s.author + " ";
-                tweet += paperTwitterHandle || paperName;
+                var tweet = s.title;
+                tweet += (s.author) ? " - " + s.author : "";
+                tweet += " " + paperTwitterHandle || paperName;
                 tweet += " " + shortDate;
                 tweet += (d.getFullYear() == today.getFullYear()) ?
                     "" : " " + d.getFullYear(); // Add year if not this year
@@ -341,8 +342,9 @@ function formatStory(s) {
 
                 storyDiv += " <a href='https://twitter.com/intent/tweet?text=" + tweet + "&url=" + shareLink + "&hashtags='" + hashtag + "' target='_blank'><img class='textBtn' src='images/tweet.svg' title='Tweet this story'></a>";
 
-                var body = '"' + s.title + '"\n' +
-                    s.author + ", " + paperName + " " + dateString + "\n\n";
+                var body = '"' + s.title + '"\n';
+                body += (s.author) ? s.author + ", " : "";
+                body += paperName + " " + dateString + "\n\n";
                 body = encodeURIComponent(body) + shareLink;
 
                 var mailLink = "mailto:?subject=" +
@@ -350,7 +352,12 @@ function formatStory(s) {
                     "&body=" + body;
                 storyDiv += " <a href=" + mailLink + " target='_blank'><img class='textBtn' src='images/mail.svg' title='Mail this story'></a>";
 
-                storyDiv += " <a href='javascript:;' class='copyMe puff' tabindex='1'><img class='textBtn puff' src='images/copy.svg' onclick='window.setTimeout(function() {copyTextToClipboard(\"" + window.location.origin + window.location.pathname + "?s=" + s.link + "\");}, 1000)' title='Copy link to clipboard'></a>";
+                var copyText = '\"\\"' + s.title + '\\"\\n'; // Escape quote & \n to work in copyTextToClipboard
+                copyText += (s.author) ? s.author + ", " : "";
+                copyText += paperName + " " + dateString + "\\n\\n" +
+                    window.location.origin + window.location.pathname + "?s=" + s.link + "\"";
+
+                storyDiv += " <a href='javascript:;' class='copyMe puff' tabindex='1'><img class='textBtn puff' src='images/copy.svg' onclick='window.setTimeout(function() {copyTextToClipboard(" + copyText + ");}, 1000)' title='Copy story to clipboard'></a>";
 
                 if (d >= cutoff) {
                     body = "Dear Editor\n\nRegarding \"" +
