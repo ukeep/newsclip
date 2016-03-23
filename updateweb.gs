@@ -1,21 +1,24 @@
-// Get data for all Leader ecoNews stories from spreadsheet and save to JSON file
-// for access by Leader ecoNews web page.
+// Read news stories and associated data from Google sheet and
+// write two files for access by newsclip web app:
+// * Javascript file with stories, topics and people. Read by HTML file to display stories for end-users
+// * JSON file with story metadata. Read by PHP script to set meta tags for social media crawlers
 //
-// This script should be run after spreadsheet is updated or edited,
-// and can be scheduled to run each night to be sure.
+// This script should be run after the spreadsheet is updated or edited.
 //   
 // Jonathan Doig jon@doig.net 15/2/2016
 
 function updateWeb() {
-    var sheetFileId = "18RO3nsWm1DzWVkDZ70GCRguPRZEpjWLZHOXqpr1EV1s";
-    var jsonFileId = "0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk";
+    var sheetFileId = "18RO3nsWm1DzWVkDZ70GCRguPRZEpjWLZHOXqpr1EV1s",
+        jsonFileId = "0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk",
+        jsonMetaFileId = "0B4rKiNtdxe1NVEFnTmkzYTJlalU";
     var adminEmail = "jonathan.doig@gmail.com, sarah.a.roxas@gmail.com";
-    var success = 0;
-    var fail = -1;
+    var success = 0,
+        fail = -1;
     var errString = "";
-    var topics = [];
-    var people = [];
-    var stories = [];
+    var topics = [],
+        people = [],
+        stories = [],
+        meta = {};
     var mail = true;
 
     try {
@@ -29,7 +32,16 @@ function updateWeb() {
         var jsonFile = DriveApp.getFileById(jsonFileId);
     } catch (e) {
         errString += (errString) ? "\n" : "";
-        errString += "Cannot open JSON file with ID '" + jsonFileId +
+        errString += "Cannot open JSON data file with ID '" + jsonFileId +
+            "'\n" +
+            "Error: " + e.message + "\n";
+    }
+
+    try {
+        var jsonMetaFile = DriveApp.getFileById(jsonMetaFileId);
+    } catch (e) {
+        errString += (errString) ? "\n" : "";
+        errString += "Cannot open JSON metadata file with ID '" + jsonMetaFileId +
             "'\n" +
             "Error: " + e.message + "\n";
     }
@@ -41,7 +53,7 @@ function updateWeb() {
     if (Math.min(
             getTopics(topics),
             getPeople(people),
-            getStories(stories)) == fail) {
+            getStories(stories, meta)) == fail) {
 
         rtn(fail);
 
@@ -52,6 +64,8 @@ function updateWeb() {
             "var people  = " + JSON.stringify(people) + ";" +
             "var stories = " + JSON.stringify(stories) + ";"
         );
+
+        jsonMetaFile.setContent(JSON.stringify(meta));
 
         rtn(success);
     }
@@ -66,11 +80,9 @@ function updateWeb() {
         var sheet, values, r;
 
         sheet = sheetFile.getSheetByName(sheetName);
-        Logger.log("sheet is " + sheet);
         if (!sheet) {
             errString += (errString) ? "\n" : "";
             errString += "Cannot find sheet '" + sheetName + "'\n";
-            Logger.log(errString);
             return fail;
         }
 
@@ -86,7 +98,6 @@ function updateWeb() {
             };
 
             res.push(topic);
-            //            Logger.log(topic);
         }
 
         res.sort(function (a, b) {
@@ -104,11 +115,9 @@ function updateWeb() {
         var sheet, values, r;
 
         sheet = sheetFile.getSheetByName(sheetName);
-        Logger.log("sheet is " + sheet);
         if (!sheet) {
             errString += (errString) ? "\n" : "";
             errString += "Cannot find sheet '" + sheetName + "'\n";
-            Logger.log(errString);
             return fail;
         }
 
@@ -124,7 +133,6 @@ function updateWeb() {
             };
 
             res.push(person);
-            // Logger.log(person);
         }
 
         res.sort(function (a, b) {
@@ -134,7 +142,7 @@ function updateWeb() {
         return success;
     }
 
-    function getStories(res) {
+    function getStories(tStories, tMeta) {
         var startYear = 2013;
         var endYear = new Date().getFullYear();
         var startRow = 1; // = row 2
@@ -159,11 +167,9 @@ function updateWeb() {
             sheetName = "Stories " + y;
 
             sheet = sheetFile.getSheetByName(sheetName);
-            Logger.log("sheetName is " + sheetName);
             if (!sheet) {
                 errString += (errString) ? "\n" : "";
                 errString += "Cannot find sheet '" + sheetName + "'\n";
-                Logger.log(errString);
             }
 
             if (!errString) {
@@ -189,8 +195,18 @@ function updateWeb() {
                     story.link = story.link.replace(linkSuffix, "");
                     story.online = story.online.replace(onlinePrefix, "");
 
-                    res.push(story);
-                    // Logger.log(story);
+                    tStories.push(story);
+
+                    if (story.link) { // Only stories with images can  be shared, so only they need metadata
+                        var storyMeta = {
+                            title: story.title,
+                            author: story.author,
+                            date: story.date,
+                            page: story.page
+                        };
+
+                        tMeta[story.link] = storyMeta;
+                    }
                 }
             }
         }
@@ -198,7 +214,7 @@ function updateWeb() {
         if (errString) {
             return fail;
         } else {
-            res.sort(function (a, b) {
+            tStories.sort(function (a, b) {
                 if (a.date < b.date) return 1;
                 if (a.date > b.date) return -1;
                 return (a.page - b.page);
