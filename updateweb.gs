@@ -237,18 +237,18 @@ function updateWeb() {
         var heading;
         switch (status) {
             case success:
-                heading = "Newsclip getData succeeded";
-                msg = "Newsclip getData finished " + new Date() + "\n";
+                heading = "Newsclip updateWeb succeeded";
+                msg = "Newsclip updateWeb finished " + new Date() + "\n";
                 break;
             case fail:
-                heading = "Newsclip getData Error";
-                msg = "Newsclip getData failed " + new Date() + "\n\n" + errString;
+                heading = "Newsclip updateWeb Error";
+                msg = "Newsclip updateWeb failed " + new Date() + "\n\n" + errString;
                 break;
             default:
                 break;
         }
         if (mail) {
-            MailApp.sendEmail(adminEmail, "Newsclip getData succeeded", msg);
+            MailApp.sendEmail(adminEmail, "Newsclip updateWeb succeeded", msg);
         } else {
             document.getElementById("result").innerHTML =
                 "<h2>" + heading + "/h2><p>" + msg + "<\p>";
