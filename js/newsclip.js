@@ -514,6 +514,8 @@ function showImg(id) {
 
     vscrollOutside();
 
+//    mobileScale(0.1);
+
     imgBox.scrollTop = 0;
     imgBox.scrollLeft = 0;
 
@@ -527,6 +529,14 @@ function showImg(id) {
     window.addEventListener("popstate", closeImg, false);
 }
 
+//function mobileScale(scale) {
+//    var viewport = document.querySelector('meta[name="viewport"]');
+//
+//    if (viewport) {
+//        viewport.content = "width=device-width, initial-scale=" + scale;
+//    }
+//}
+
 function closeImg() {
     var imgBox = document.getElementById("imgBox");
     var show = document.getElementById("show").style;
@@ -537,6 +547,8 @@ function closeImg() {
     }
     view = "";
     document.body.style.overflow = "auto";
+    
+//    mobileScale(1.0);
 
     show.opacity = 0;
     show.transition = "opacity 250ms ease-in-out, z-index 0ms linear 500ms";
