@@ -307,7 +307,7 @@ function formatStory(s) {
                 }
             }
             if (s.person != "") {
-                storyDiv += " <img class='textIcon' src='images/person.svg' title='People tagged in this story'>";
+                storyDiv += " <img class='textIcon' src='images/person.svg' title='SSEC members tagged in this story'>";
                 var personList = s.person.split(", ");
                 for (var i = 0; personList[i]; i++) {
                     var title = "";
