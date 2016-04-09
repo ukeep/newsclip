@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
     width: 100%;
 }
 
@@ -316,8 +316,8 @@ hr {
     position: relative;
 }
 
-#header h2 {
-    margin: 0 0 5px 0;
+.details h2 {
+    margin: 5px 0;
 }
 
 .byline {
