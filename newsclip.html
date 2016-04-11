@@ -3,12 +3,13 @@
 <head>
     <link rel=stylesheet href="css/newsclip.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="js/infinite-scroll.js"></script>
     <script src="js/newsclip.js"></script>
 </head>
 
 <body ng-controller="pageController as p">
     <!--    <div id="stories" ng-controller="storyController as storyCtrl">-->
-    <div id="stories">
+    <div id="stories" infinite-scroll="addStories({{bucket}})" threshold="100" can-load="moreStories">
         <div class="story" id="{{s.link}}" ng-repeat="s in p.stories">
 
             <div class="details">
@@ -16,7 +17,7 @@
 
                 <!-- byline-->
                 <p class="byline" ng-show="s.author || s.online">
-                    <a ng-show="s.online" href="{{p.onlinePrefix}}{{s.online}}" target=_blank><img class="textBtn" src="images/online.svg" title="This story is available on the {{p.paperShortName}} website"></a>
+                    <a ng-show="s.online" href="{{onlinePrefix}}{{s.online}}" target=_blank><img class="textBtn" src="images/online.svg" title="This story is available on the {{paperShortName}} website"></a>
                     {{s.author}}
                 </p>
 
@@ -30,14 +31,14 @@
                 </p>
 
                 <!-- citeline-->
-                <p class="citeline"><span class="noWrap">{{p.paperName}}</span>
+                <p class="citeline"><span class="noWrap">{{paperName}}</span>
                     <span class="noWrap"><a href="javascript:;">{{s.dateString}}</a></span> &ndash; page {{s.page}}</p>
 
                 <!-- shareBtns-->
                 <div ng-if="s.link" class="shareBtns">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{p.sharePrefix}}{{s.link}}" target="_blank"><img class="textBtn" src="images/fb_share.svg" title="Share on Facebook"></a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{sharePrefix}}{{s.link}}" target="_blank"><img class="textBtn" src="images/fb_share.svg" title="Share on Facebook"></a>
 
-                    <a href="https://twitter.com/intent/tweet?text={{s.tweet}}&url={{p.sharePrefix}}{{s.link}}&hashtags={{p.hashtag}}" target="_blank"><img class="textBtn" src="images/tweet.svg" title="Tweet this story"></a>
+                    <a href="https://twitter.com/intent/tweet?text={{s.tweet}}&url={{sharePrefix}}{{s.link}}&hashtags={{hashtag}}" target="_blank"><img class="textBtn" src="images/tweet.svg" title="Tweet this story"></a>
 
                     <a href="{{s.mailLink}}" target="_blank"><img class="textBtn" src="images/mail.svg" title="Mail this story"></a>
 
@@ -51,7 +52,7 @@
             </div>
 
             <div class="thumb">
-                <img ng-if="s.link" ng-src="{{p.thumbPrefix}}{{s.link}}" title="Click to view">
+                <img ng-if="s.link" ng-src="{{thumbPrefix}}{{s.link}}" title="Click to view">
                 <p ng-hide="s.link" class="note">no image</p>
             </div>
             <hr>

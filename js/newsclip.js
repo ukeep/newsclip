@@ -1,4 +1,5 @@
-var app = angular.module('newsclip', []);
+var app = angular.module('newsclip', ['infiniteScroll']);
+
 var month = new Array("January", "February", "March",
     "April", "May", "June",
     "July", "August", "September",
@@ -10,31 +11,55 @@ var today = new Date();
 var cutoff = new Date();
 cutoff.setDate(today.getDate() - replyBy);
 var sharePrefixRaw = window.location.origin + window.location.pathname + "?s=";
+var storyArchive;
+var nextStory;
+var reset = true;
 
-app.controller('pageController', ['$http', function ($http) {
-    this.paperShortName = "Leader";
-    this.paperName = "Sutherland Shire Leader";
-    this.linkPrefix = "https://drive.google.com/uc?export=view&id=";
-    // this.thumbPrefix = "https://drive.google.com/thumbnail?sz=h200&id=";
-    this.thumbPrefix = this.linkPrefix;
-    this.onlinePrefix = "http://www.theleader.com.au/story/";
-    this.sharePrefix = encodeURIComponent(sharePrefixRaw);
-    this.hashtag = "econews";
+app.controller('pageController', ['$scope', '$http', function ($scope, $http) {
+    $scope.paperShortName = "Leader";
+    $scope.paperName = "Sutherland Shire Leader";
+    $scope.linkPrefix = "https://drive.google.com/uc?export=view&id=";
+    // $scope.thumbPrefix = "https://drive.google.com/thumbnail?sz=h200&id=";
+    $scope.thumbPrefix = $scope.linkPrefix;
+    $scope.onlinePrefix = "http://www.theleader.com.au/story/";
+    $scope.sharePrefix = encodeURIComponent(sharePrefixRaw);
+    $scope.hashtag = "econews";
+    $scope.bucket = 6;
+    $scope.moreStories = true;
 
-    var data = this;
+    var page = this;
     $http.get('newsclip.json').success(function (jsonData) {
-        data.topics = jsonData[0];
-        data.people = jsonData[1];
-        data.stories = jsonData[2];
-        //        data.stories.forEach(completeUrls);
-        data.stories.forEach(splitTags);
-        data.stories.forEach(setVars);
+        page.topics = jsonData[0];
+        page.people = jsonData[1];
+        storyArchive = jsonData[2];
+        //        page.stories.forEach(completeUrls);
+        page.stories = [];
+        $scope.addStories($scope.bucket, reset);
+        page.stories.forEach(splitTags);
+        page.stories.forEach(setVars);
     });
 
     //    function completeUrls(s, i, a) {
     //        a[i].thumbUrl = thumbPrefix + s.link;
     //        a[i].online = (s.online) ? onlinePrefix + s.online : "";
     //    };
+
+    $scope.addStories = function (n, reset) {
+        if (reset) {
+            nextStory = 0;
+            page.stories = [];
+        }
+        for (i = nextStory; i < storyArchive.length; i++) {
+            if (true) {
+                page.stories.push(storyArchive[i]);
+                nextStory++;
+                if (nextStory >= n) break;
+            }
+        }
+        if (i === storyArchive.length) {
+            $scope.moreStories = false;
+        }
+    }
 
     function splitTags(s, i, a) {
         if (s.topics) {
@@ -50,9 +75,9 @@ app.controller('pageController', ['$http', function ($http) {
                     initials: init,
                     fullname: ""
                 });
-                for (var k = 0; k < data.people.length; k++) {
-                    if (init === data.people[k].initials) {
-                        a[i].person[j].fullname = data.people[k].fullname;
+                for (var k = 0; k < page.people.length; k++) {
+                    if (init === page.people[k].initials) {
+                        a[i].person[j].fullname = page.people[k].fullname;
                         break;
                     }
                 }
@@ -71,7 +96,7 @@ app.controller('pageController', ['$http', function ($http) {
 
             a[i].tweet = s.title;
             a[i].tweet += (s.author) ? " - " + s.author : "";
-            a[i].tweet += " " + paperTwitterHandle || this.paperName;
+            a[i].tweet += " " + paperTwitterHandle || $scope.paperName;
             a[i].tweet += " " + shortDate;
             a[i].tweet += (d.getFullYear() == today.getFullYear()) ?
                 "" : " " + d.getFullYear(); // Add year if not this year
@@ -79,8 +104,8 @@ app.controller('pageController', ['$http', function ($http) {
 
             var body = '"' + s.title + '"\n';
             body += (s.author) ? s.author + ", " : "";
-            body += this.paperName + " " + a[i].dateString + "\n\n";
-            body = encodeURIComponent(body) + this.sharePrefix + s.link;
+            body += $scope.paperName + " " + a[i].dateString + "\n\n";
+            body = encodeURIComponent(body) + $scope.sharePrefix + s.link;
 
             a[i].mailLink = "mailto:?subject=" +
                 encodeURIComponent(s.title) +
@@ -88,12 +113,12 @@ app.controller('pageController', ['$http', function ($http) {
 
             a[i].copyText = '\"\\"' + s.title + '\\"\\n'; // Escape quote & \n to work in copyTextToClipboard
             a[i].copyText += (s.author) ? s.author + ", " : "";
-            a[i].copyText += this.paperName + " " + a[i].dateString + "\\n\\n" +
+            a[i].copyText += $scope.paperName + " " + a[i].dateString + "\\n\\n" +
                 sharePrefixRaw + s.link + "\"";
 
             if (d >= cutoff) {
                 body = "Dear Editor\n\nRegarding \"" +
-                    s.title + "\" (" + this.paperShortName + ", " +
+                    s.title + "\" (" + $scope.paperShortName + ", " +
                     a[i].dateString.replace(/ [0-9]{4}$/, "") + "), ";
 
                 a[i].replyLink = "mailto:" + encodeURIComponent(paperEmail) + "?subject=" +
@@ -102,7 +127,8 @@ app.controller('pageController', ['$http', function ($http) {
             }
         }
     }
-    }]);
+}]);
+
 
 function copyTextToClipboard(text) {
     var textArea = document.createElement("textarea");
