@@ -1,0 +1,123 @@
+[
+    [
+        {
+        "name": "Climate & energy",
+        "description": "Storms, fires, floods, drought, coal, gas, oil, nuclear, solar, wind"
+    }, {
+        "name": "Coast & marine",
+        "description": "Beaches, estuaries, fishing"
+    }, {
+        "name": "Parks & nature",
+        "description": "Bushland, forest, natural areas, parks, animals, plants"
+    }, {
+        "name": "Planning",
+        "description": "Development, housing"
+    }, {
+        "name": "Politics",
+        "description": "Elections, politicians, political parties"
+    }, {
+        "name": "Refugees",
+        "description": "Asylum seekers"
+    }, {
+        "name": "Transport",
+        "description": "Cycling, walking, buses, trains, roads"
+    }, {
+        "name": "Vegetarianism",
+        "description": "Veganism, healthy eating"
+    }, {
+        "name": "Waste",
+        "description": "Pollution, recycling"
+    }, {
+        "name": "Water",
+        "description": "Rivers, water catchments"
+    }],
+    [
+        {
+        "initials": "AR",
+        "fullname": "Anne Robinson"
+    }, {
+        "initials": "BR",
+        "fullname": "Bill Ryan"
+    }, {
+        "initials": "BW",
+        "fullname": "Bob Walshe"
+    }, {
+        "initials": "BE",
+        "fullname": "Brian Everingham"
+    }, {
+        "initials": "CR",
+        "fullname": "Colin Ryan"
+    }, {
+        "initials": "GS",
+        "fullname": "Gary Schoer"
+    }, {
+        "initials": "GH",
+        "fullname": "Gordon Hocking"
+    }, {
+        "initials": "JG",
+        "fullname": "Jenni Gormley"
+    }, {
+        "initials": "JF",
+        "fullname": "Jenny Fitzgerald"
+    }, {
+        "initials": "JD",
+        "fullname": "Jonathan Doig"
+    }, {
+        "initials": "JW",
+        "fullname": "Judy Walker"
+    }, {
+        "initials": "LH",
+        "fullname": "Lloyd Hodges"
+    }, {
+        "initials": "MDS",
+        "fullname": "Mark Da Silva"
+    }, {
+        "initials": "MS",
+        "fullname": "Murray Scott"
+    }, {
+        "initials": "PS",
+        "fullname": "Phil Smith"
+    }, {
+        "initials": "RC",
+        "fullname": "Rick Cavicchioli"
+    }, {
+        "initials": "SM",
+        "fullname": "Sue McKinnon"
+    }, {
+        "initials": "SSEC",
+        "fullname": "Suth Shire Envt Centre"
+    }, {
+        "initials": "TK",
+        "fullname": "Tassia Kolesnikow"
+    }],
+    [
+        {
+            "date": "2016-03-24",
+            "page": 1,
+            "title": "Woolies hits back",
+            "author": "Murray Trembath",
+            "person": "",
+            "topics": "Planning",
+            "link": "0B-5xeZI7ht6TOGQ3NHB5ZW1PS2c",
+            "online": "3746830/woolies-hits-back-with-new-kirrawee-plan/"
+    }, {
+            "date": "2016-02-24",
+            "page": 2,
+            "title": "Kelly has fight on hands in Hughes",
+            "author": "",
+            "person": "JD, BE",
+            "topics": "Politics, Transport",
+            "link": "",
+            "online": "3745136/kelly-has-fight-on-hands-in-hughes/"
+    }, {
+            "date": "2016-02-24",
+            "page": 4,
+            "title": "Bat land to parkland",
+            "author": "Jim Gainsford",
+            "person": "",
+            "topics": "",
+            "link": "0B-5xeZI7ht6TTVpTajVKcGZxQms",
+            "online": ""
+    }
+]
+]

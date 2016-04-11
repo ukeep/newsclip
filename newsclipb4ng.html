@@ -1,0 +1,182 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title><?=$title?></title>
+
+    <!-- for Google -->
+    <meta name="description" content="<?=$desc?>"/>
+    <!--    <meta name="keywords" content="" />-->
+    <meta name="copyright" content="<?=$copyright?>" />
+    <!--    <meta name="application-name" content="" />-->
+
+    <?php if(!empty($author)): ?>
+        <meta name="author" content="<?=$author?>" />
+    <?php endif; ?>
+
+    <!-- for Facebook -->
+    <meta property="og:title" content="<?=$title?>"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="<?=$url?>"/>
+    <meta property="og:description" content="<?=$desc?>"/>
+    <meta property="og:image" content="<?=$img?>"/>
+
+    <!-- for Twitter -->
+    <!--    <meta name="twitter:card" content="summary" />-->
+    <meta name="twitter:title" content="<?=$title?>"/>
+    <meta name="twitter:description" content="<?=$desc?>"/>
+    <meta name="twitter:image" content="<?=$img?>"/>
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
+    <link rel=stylesheet href="css/newsclip.css">
+
+    <script type="text/javascript" src="js/newsclipb4ng.js" async></script>
+
+    <script type="text/javascript" src="<?=$data_folder?>econews.js" async></script>
+
+    <script type="text/javascript" src="js/infinite-scroll.js" async></script>
+
+</head>
+
+<body onload="init()">
+    <div id="header">
+        <div id="headerBlock">
+            <div id="title">
+                <span class="logo"><a href="/" title="SSEC home page"><img src=images/logo.png width=auto height=35>SSEC </a>Leader ecoNews</span>
+                <div id="headerLinks">
+                    <a href="javascript:;" onclick="dropPennant('subscribe');">Subscribe</a> <span class="divider"> </span><a href="javascript:;" onclick="dropPennant('about');">About</a>
+                </div>
+            </div>
+            <span class="noWrap">
+                <div class="filterCell">
+                    <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range (from - to)"></label>
+                    <input type=date id="fromDate" required onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(bucket, true); setInputs(false);">
+                </div>
+                <div class="filterCell">
+                    <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5 title="To date"></label>
+                    <input type=date id="toDate" required onmouseover="this.style.color=active[col]"  onmouseout="this.style.color = (this.value == lastDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=lastDate; filter.toDate=this.value; writeStories(bucket, true); setInputs(false);">
+                </div>
+            </span>
+            <span class="noWrap">
+                <div class=" filterCell ">
+                    <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
+                    <select id="topic" title="Filter by topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(bucket, true); setInputs(false)">
+
+                    </select>
+                </div>
+                <div class="filterCell">
+                    <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by SSEC member"></label>
+                    <select id="person" title="Filter by SSEC member" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
+                    </select>
+                </div>
+            </span>
+            <span class="noWrap">
+                <div class="filterCell">
+                    <input type=text id=search onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style.color=active[col]; this.style.fontStyle=active[fs]; if(searchStart) {this.value=''; searchStart = false}">
+                </div>
+                <div class="filterCell">
+                    <a href="javascript:;">
+                        <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="searchStories()" title="Search">
+                    </a>
+                </div>
+                <div class="filterCell">
+                    <a href="javascript:clearFilter(); writeStories(bucket, true)">
+                        <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver=this.src='images/clearon.svg' onMouseOut=this.src='images/clear.svg' title="Clear search/filter">
+                    </a>
+                </div>
+            </span>
+        </div>
+    </div>
+
+    <div id="modal" onclick="raisePennant()"></div>
+
+    <!-- Begin MailChimp Signup Form -->
+    <div id="mc_embed_signup" class="pennant">
+        <form action="//ssec.us2.list-manage.com/subscribe/post?u=eb6ab4030129e1d2e792b698e&amp;id=02f3d3fd50" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+            <div id="mc_embed_signup_scroll">
+                <span class="close" onclick="raisePennant()" title="Close">&#10006;</span>
+                <h2>Get Leader ecoNews in your inbox
+                    <span class="noWrap">each week</span>.</h2>
+                <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+                <div class="mc-field-group">
+                    <label for="mce-EMAIL">Email Address <span class="asterisk">*</span>
+                    </label>
+                    <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+                </div>
+                <div class="mc-field-group">
+                    <label for="mce-FNAME">First Name <span class="asterisk">*</span>
+                    </label>
+                    <input type="text" value="" name="FNAME" class="required" id="mce-FNAME">
+                </div>
+                <div class="mc-field-group">
+                    <label for="mce-LNAME">Last Name <span class="asterisk">*</span>
+                    </label>
+                    <input type="text" value="" name="LNAME" class="required" id="mce-LNAME">
+                </div>
+                <div class="mc-field-group input-group">
+                    <strong>Subscribe me to: </strong>
+                    <ul>
+                        <li>
+                            <input type="checkbox" value="1" checked name="group[18357][1]" id="mce-group[18357]-18357-0">
+                            <label for="mce-group[18357]-18357-0">SSEC Newsletter (monthly)</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" value="2" checked name="group[18357][2]" id="mce-group[18357]-18357-1">
+                            <label for="mce-group[18357]-18357-1">Leader ecoNews (weekly)</label>
+                        </li>
+                    </ul>
+                </div>
+                <div id="mce-responses" class="clear">
+                    <div class="response" id="mce-error-response" style="display:none"></div>
+                    <div class="response" id="mce-success-response" style="display:none"></div>
+                </div>
+                <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                    <input type="text" name="b_eb6ab4030129e1d2e792b698e_02f3d3fd50" tabindex="-1" value="">
+                </div>
+                <div class="clear">
+                    <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--End mc_embed_signup-->
+
+    <div id="about" class="pennant">
+        <div>
+            <span class="close" onclick="raisePennant()" title="Close">&#10006;</span>
+            <h2>Leader ecoNews</h2>
+            <h3>Environmental news monitoring for the Shire</h3>
+            <p>Browse and search our catalogue of well over a thousand stories from the Sutherland Shire edition of <span class="noWrap"><i><a href="theleader.com.au" target="_blank">The Leader</a></i></span> newspaper. Stay up-to-date with local news and views on environmental topics:
+            </p>
+            <div id="topicHelp" class="table">
+            </div>
+
+            <p>
+                Our news archive commenced in 2013. We started a weekly mailout to SSEC members and supporters in 2015 &ndash; <a href="javascript:;" onclick="raisePennant(); dropPennant('subscribe');">subscribe here</a>. This web app was launched in 2016.
+            </p>
+            <p>
+                Content: <a href="https://www.facebook.com/sarah.a.roxas" target="_blank">Sarah Roxas</a>.
+                <a href="https://github.com/ukeep/newsclip" target="_blank">Newsclip</a> app: <a href="http://fb.com/jondoig" target="_blank">Jonathan Doig</a>.
+                <a href="http://ssec.org.au/index.php/contact/">Feedback welcome</a>.
+            </p>
+        </div>
+    </div>
+
+    <div id="stories">
+        <div id="loadStories">Loading...</div>
+    </div>
+
+    <div id="show" onClick=closeImg() title="Click anywhere to close">
+        <div id="imgBox">
+            <img id="shownImg">
+        </div>
+    </div>
+    <div id="footer"></div>
+</body>
+
+</html>
