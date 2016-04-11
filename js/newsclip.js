@@ -24,7 +24,7 @@ app.controller('pageController', ['$scope', '$http', function ($scope, $http) {
     $scope.onlinePrefix = "http://www.theleader.com.au/story/";
     $scope.sharePrefix = encodeURIComponent(sharePrefixRaw);
     $scope.hashtag = "econews";
-    $scope.bucket = 6;
+    $scope.bucket = 8;
     $scope.moreStories = true;
 
     var page = this;
