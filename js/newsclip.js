@@ -32,17 +32,9 @@ app.controller('pageController', ['$scope', '$http', function ($scope, $http) {
         page.topics = jsonData[0];
         page.people = jsonData[1];
         storyArchive = jsonData[2];
-        //        page.stories.forEach(completeUrls);
         page.stories = [];
         $scope.addStories($scope.bucket, reset);
-        page.stories.forEach(splitTags);
-        page.stories.forEach(setVars);
     });
-
-    //    function completeUrls(s, i, a) {
-    //        a[i].thumbUrl = thumbPrefix + s.link;
-    //        a[i].online = (s.online) ? onlinePrefix + s.online : "";
-    //    };
 
     $scope.addStories = function (n, reset) {
         if (reset) {
@@ -53,31 +45,33 @@ app.controller('pageController', ['$scope', '$http', function ($scope, $http) {
             if (true) {
                 page.stories.push(storyArchive[i]);
                 nextStory++;
+                splitTags(page.stories[page.stories.length-1]);
+                setVars(page.stories[page.stories.length-1]);
                 if (nextStory >= n) break;
             }
         }
         if (i === storyArchive.length) {
             $scope.moreStories = false;
-        }
+        };
     }
 
-    function splitTags(s, i, a) {
+    function splitTags(s) {
         if (s.topics) {
-            a[i].topics = s.topics.split(", ");
+            s.topics = s.topics.split(", ");
         }
 
         if (s.person) {
             var initArray = s.person.split(", ");
             //            a[i].person.initials = s.person.split(", ");
-            a[i].person = [];
+            s.person = [];
             initArray.forEach(function (init, j) {
-                a[i].person.push({
+                s.person.push({
                     initials: init,
                     fullname: ""
                 });
                 for (var k = 0; k < page.people.length; k++) {
                     if (init === page.people[k].initials) {
-                        a[i].person[j].fullname = page.people[k].fullname;
+                        s.person[j].fullname = page.people[k].fullname;
                         break;
                     }
                 }
@@ -85,43 +79,43 @@ app.controller('pageController', ['$scope', '$http', function ($scope, $http) {
         }
     }
 
-    function setVars(s, i, a) {
+    function setVars(s) {
         var d = new Date(s.date);
-        a[i].dateString = month[d.getMonth()] + " " +
+        s.dateString = month[d.getMonth()] + " " +
             d.getDate() + " " +
             d.getFullYear();
 
-        if (a[i].link) {
+        if (s.link) {
             var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
 
-            a[i].tweet = s.title;
-            a[i].tweet += (s.author) ? " - " + s.author : "";
-            a[i].tweet += " " + paperTwitterHandle || $scope.paperName;
-            a[i].tweet += " " + shortDate;
-            a[i].tweet += (d.getFullYear() == today.getFullYear()) ?
+            s.tweet = s.title;
+            s.tweet += (s.author) ? " - " + s.author : "";
+            s.tweet += " " + paperTwitterHandle || $scope.paperName;
+            s.tweet += " " + shortDate;
+            s.tweet += (d.getFullYear() == today.getFullYear()) ?
                 "" : " " + d.getFullYear(); // Add year if not this year
-            a[i].tweet = a[i].tweet.replace(/\'/g, "%27");
+            s.tweet = s.tweet.replace(/\'/g, "%27");
 
             var body = '"' + s.title + '"\n';
             body += (s.author) ? s.author + ", " : "";
-            body += $scope.paperName + " " + a[i].dateString + "\n\n";
+            body += $scope.paperName + " " + s.dateString + "\n\n";
             body = encodeURIComponent(body) + $scope.sharePrefix + s.link;
 
-            a[i].mailLink = "mailto:?subject=" +
+            s.mailLink = "mailto:?subject=" +
                 encodeURIComponent(s.title) +
                 "&body=" + body;
 
-            a[i].copyText = '\"\\"' + s.title + '\\"\\n'; // Escape quote & \n to work in copyTextToClipboard
-            a[i].copyText += (s.author) ? s.author + ", " : "";
-            a[i].copyText += $scope.paperName + " " + a[i].dateString + "\\n\\n" +
+            s.copyText = '\"\\"' + s.title + '\\"\\n'; // Escape quote & \n to work in copyTextToClipboard
+            s.copyText += (s.author) ? s.author + ", " : "";
+            s.copyText += $scope.paperName + " " + s.dateString + "\\n\\n" +
                 sharePrefixRaw + s.link + "\"";
 
             if (d >= cutoff) {
                 body = "Dear Editor\n\nRegarding \"" +
                     s.title + "\" (" + $scope.paperShortName + ", " +
-                    a[i].dateString.replace(/ [0-9]{4}$/, "") + "), ";
+                    s.dateString.replace(/ [0-9]{4}$/, "") + "), ";
 
-                a[i].replyLink = "mailto:" + encodeURIComponent(paperEmail) + "?subject=" +
+                s.replyLink = "mailto:" + encodeURIComponent(paperEmail) + "?subject=" +
                     encodeURIComponent(s.title) +
                     "&body=" + encodeURIComponent(body);
             }
