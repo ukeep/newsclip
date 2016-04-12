@@ -39,34 +39,18 @@ body {
 
 #title {
     display: inline-block;
-    min-height: 50px;
-    position: relative;
     vertical-align: top;
-}
-
-.logo {
+    color: #405398;
     font: 25px "Pontano Sans", arial, sans-serif;
     letter-spacing: -1px;
-    color: #405398;
-    margin: 5px 0;
-}
-
-.logo img {
-    vertical-align: bottom
+    margin: 0 0 5px 0;
 }
 
 #headerLinks {
-    position: relative;
-    text-align: left;
-    top: -3px;
-    left: 144px;
-    font: 14px "Pontano Sans", arial, sans-serif;
-    letter-spacing: -1px;
-    color: #405398;
+    font-size: 14px;
 }
 
-.logo a,
-#headerLinks a {
+#title a {
     color: #405398;
     text-decoration: none;
     transition: all 200ms ease-in-out;
@@ -79,6 +63,13 @@ body {
 #headerLinks .divider:before {
     /* Bullet */
     content: "\2022";
+}
+
+#logo,
+#titleText {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
 }
 
 .filterCell {
@@ -557,7 +548,7 @@ hr {
 
 #loadStories {
     text-align: center;
-    line-height: 150px;
+    line-height: 250px;
     font-size: 20px;
     font-style: italic;
     color: darkgrey;
