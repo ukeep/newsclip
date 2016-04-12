@@ -9,7 +9,7 @@
 
 function updateWeb() {
     var sheetFileId = "18RO3nsWm1DzWVkDZ70GCRguPRZEpjWLZHOXqpr1EV1s",
-        jsonFileId = "0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk",
+        jsonFileId = "0B4rKiNtdxe1NQTVjREo4SDhWQlE",
         jsonMetaFileId = "0B4rKiNtdxe1NVEFnTmkzYTJlalU";
     var adminEmail = "jonathan.doig@gmail.com, sarah.a.roxas@gmail.com";
     var success = 0,
@@ -60,9 +60,9 @@ function updateWeb() {
     } else {
 
         jsonFile.setContent(
-            "var topics  = " + JSON.stringify(topics) + ";" +
-            "var people  = " + JSON.stringify(people) + ";" +
-            "var stories = " + JSON.stringify(stories) + ";"
+            "[" + JSON.stringify(topics) + "," +
+            JSON.stringify(people) + "," +
+            JSON.stringify(stories) + "]"
         );
 
         jsonMetaFile.setContent(JSON.stringify(meta));

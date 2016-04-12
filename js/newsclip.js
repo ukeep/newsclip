@@ -5,6 +5,8 @@ angular.module('newsclip').config(function (LightboxProvider) {
     LightboxProvider.templateUrl = './lightbox.html';
 });
 
+var data_folder = "https://googledrive.com/host/0B4rKiNtdxe1NZ1NKa3ItTXR0RkU/";
+var jsonFile = data_folder + "econews.json";
 var month = new Array("January", "February", "March",
     "April", "May", "June",
     "July", "August", "September",
@@ -33,7 +35,7 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
     $scope.moreStories = true;
 
     var page = this;
-    $http.get('newsclip.txt').success(function (jsonData) {
+    $http.get(jsonFile).success(function (jsonData) {
         page.topics = jsonData[0];
         page.people = jsonData[1];
         storyArchive = jsonData[2];
@@ -50,12 +52,12 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
         for (i = nextStory; i < storyArchive.length; i++) {
             if (true) {
                 page.stories.push(storyArchive[i]);
-                if (storyArchive[i].link) {
+//                if (storyArchive[i].link) {
                     $scope.images.push({
                         thumbUrl: $scope.thumbPrefix + storyArchive[i].link,
                         url: $scope.linkPrefix + storyArchive[i].link
                     });
-                }
+//                }
                 nextStory++;
                 splitTags(page.stories[page.stories.length - 1]);
                 setVars(page.stories[page.stories.length - 1]);
