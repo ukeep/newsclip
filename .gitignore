@@ -8,6 +8,7 @@ test*
 test/
 old/
 node_modules/
+abl/
 uib/
 angular-bootstrap*.*
 .brackets*

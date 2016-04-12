@@ -15,7 +15,7 @@ var storyArchive;
 var nextStory;
 var reset = true;
 
-app.controller('pageController', ['$scope', '$http', function ($scope, $http, Lightbox) {
+app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scope, $http, Lightbox) {
     $scope.paperShortName = "Leader";
     $scope.paperName = "Sutherland Shire Leader";
     $scope.linkPrefix = "https://drive.google.com/uc?export=view&id=";
@@ -40,10 +40,15 @@ app.controller('pageController', ['$scope', '$http', function ($scope, $http, Li
         if (reset) {
             nextStory = 0;
             page.stories = [];
+            $scope.images = [];
         }
         for (i = nextStory; i < storyArchive.length; i++) {
             if (true) {
                 page.stories.push(storyArchive[i]);
+                $scope.images.push({
+                    thumbUrl: $scope.thumbPrefix + storyArchive[i].link,
+                    url: $scope.linkPrefix + storyArchive[i].link
+                });
                 nextStory++;
                 splitTags(page.stories[page.stories.length - 1]);
                 setVars(page.stories[page.stories.length - 1]);
@@ -56,7 +61,6 @@ app.controller('pageController', ['$scope', '$http', function ($scope, $http, Li
     }
 
     $scope.openLightboxModal = function (index) {
-//        Lightbox.openModal(page.stories, index);
         Lightbox.openModal($scope.images, index);
     };
 

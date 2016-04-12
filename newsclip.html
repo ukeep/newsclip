@@ -1,13 +1,16 @@
 <html ng-app="newsclip">
 
 <head>
-    <link rel="stylesheet" href="node_modules/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="uib/dist/ui-bootstrap-csp.css">
+    <link rel="stylesheet" href="abl/dist/angular-bootstrap-lightbox.css">
     <link rel=stylesheet href="css/newsclip.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
     <script src="js/infinite-scroll.js"></script>
-    
+
     <script src="uib/dist/ui-bootstrap.js"></script>
-    <script src="node_modules/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.js"></script>
+    <script src="abl/dist/angular-bootstrap-lightbox.js"></script>
     <script src="js/newsclip.js"></script>
 </head>
 
@@ -47,7 +50,7 @@
                     <a href="{{s.mailLink}}" target="_blank"><img class="textBtn" src="images/mail.svg" title="Mail this story"></a>
 
                     <a href="javascript:;" class="copyMe puff" tabindex="1"><img class="textBtn puff" src="images/copy.svg" title="Copy story to clipboard"></a>
-<!--                    ng-click="window.setTimeout(function () {copyTextToClipboard('{{s.copyText}}')}, 1000)" -->
+                    <!--                    ng-click="window.setTimeout(function () {copyTextToClipboard('{{s.copyText}}')}, 1000)" -->
 
                     <a ng-if="s.replyLink" href="{{s.replyLink}}" target="_blank"><img class="textBtn" src="images/reply.svg" title="Write to the paper"></a>
 
