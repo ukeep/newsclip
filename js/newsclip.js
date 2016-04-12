@@ -15,7 +15,7 @@ var storyArchive;
 var nextStory;
 var reset = true;
 
-app.controller('pageController', ['$scope', '$http', function ($scope, $http) {
+app.controller('pageController', ['$scope', '$http', function ($scope, $http, Lightbox) {
     $scope.paperShortName = "Leader";
     $scope.paperName = "Sutherland Shire Leader";
     $scope.linkPrefix = "https://drive.google.com/uc?export=view&id=";
@@ -56,6 +56,7 @@ app.controller('pageController', ['$scope', '$http', function ($scope, $http) {
     }
 
     $scope.openLightboxModal = function (index) {
+//        Lightbox.openModal(page.stories, index);
         Lightbox.openModal($scope.images, index);
     };
 

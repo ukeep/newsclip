@@ -4,7 +4,11 @@
 *.lnk
 stories.json
 *.xlsx#
+test*
 test/
 old/
+node_modules/
+uib/
+angular-bootstrap*.*
 .brackets*
 *.min.*
