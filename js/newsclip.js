@@ -1,5 +1,10 @@
 var app = angular.module('newsclip', ['infiniteScroll', 'bootstrapLightbox']);
 
+angular.module('newsclip').config(function (LightboxProvider) {
+  // set a custom template
+  LightboxProvider.templateUrl = './lightbox.html';
+});
+
 var month = new Array("January", "February", "March",
     "April", "May", "June",
     "July", "August", "September",
