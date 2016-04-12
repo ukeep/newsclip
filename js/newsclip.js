@@ -1,4 +1,4 @@
-var app = angular.module('newsclip', ['infiniteScroll']);
+var app = angular.module('newsclip', ['infiniteScroll', 'bootstrapLightbox']);
 
 var month = new Array("January", "February", "March",
     "April", "May", "June",
@@ -45,8 +45,8 @@ app.controller('pageController', ['$scope', '$http', function ($scope, $http) {
             if (true) {
                 page.stories.push(storyArchive[i]);
                 nextStory++;
-                splitTags(page.stories[page.stories.length-1]);
-                setVars(page.stories[page.stories.length-1]);
+                splitTags(page.stories[page.stories.length - 1]);
+                setVars(page.stories[page.stories.length - 1]);
                 if (nextStory >= n) break;
             }
         }
@@ -54,6 +54,11 @@ app.controller('pageController', ['$scope', '$http', function ($scope, $http) {
             $scope.moreStories = false;
         };
     }
+
+    $scope.openLightboxModal = function (index) {
+        Lightbox.openModal($scope.images, index);
+    };
+
 
     function splitTags(s) {
         if (s.topics) {
@@ -121,6 +126,7 @@ app.controller('pageController', ['$scope', '$http', function ($scope, $http) {
             }
         }
     }
+
 }]);
 
 

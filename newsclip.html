@@ -1,9 +1,11 @@
 <html ng-app="newsclip">
 
 <head>
+    <link rel="stylesheet" href="css/angular-bootstrap-lightbox.css">
     <link rel=stylesheet href="css/newsclip.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
     <script src="js/infinite-scroll.js"></script>
+    <script src="js/angular-bootstrap-lightbox.js"></script>
     <script src="js/newsclip.js"></script>
 </head>
 
@@ -52,7 +54,7 @@
             </div>
 
             <div class="thumb">
-                <img ng-if="s.link" ng-src="{{thumbPrefix}}{{s.link}}" title="Click to view">
+                <img ng-if="s.link" ng-click="openLightboxModal($index)" ng-src="{{thumbPrefix}}{{s.link}}" title="Click to view">
                 <p ng-hide="s.link" class="note">no image</p>
             </div>
             <hr>
