@@ -1,8 +1,8 @@
 var app = angular.module('newsclip', ['infiniteScroll', 'bootstrapLightbox']);
 
 angular.module('newsclip').config(function (LightboxProvider) {
-  // set a custom template
-  LightboxProvider.templateUrl = './lightbox.html';
+    // set a custom template
+    LightboxProvider.templateUrl = './lightbox.html';
 });
 
 var month = new Array("January", "February", "March",
@@ -33,7 +33,7 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
     $scope.moreStories = true;
 
     var page = this;
-    $http.get('newsclip.json').success(function (jsonData) {
+    $http.get('newsclip.txt').success(function (jsonData) {
         page.topics = jsonData[0];
         page.people = jsonData[1];
         storyArchive = jsonData[2];
@@ -50,10 +50,12 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
         for (i = nextStory; i < storyArchive.length; i++) {
             if (true) {
                 page.stories.push(storyArchive[i]);
-                $scope.images.push({
-                    thumbUrl: $scope.thumbPrefix + storyArchive[i].link,
-                    url: $scope.linkPrefix + storyArchive[i].link
-                });
+                if (storyArchive[i].link) {
+                    $scope.images.push({
+                        thumbUrl: $scope.thumbPrefix + storyArchive[i].link,
+                        url: $scope.linkPrefix + storyArchive[i].link
+                    });
+                }
                 nextStory++;
                 splitTags(page.stories[page.stories.length - 1]);
                 setVars(page.stories[page.stories.length - 1]);
