@@ -4,41 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title><?=$title?></title>
+    <title>
+        <?=$title?>
+    </title>
 
     <!-- for Google -->
-    <meta name="description" content="<?=$desc?>"/>
-    <!--    <meta name="keywords" content="" />-->
+    <meta name="description" content="<?=$desc?>" />
+    <!--    <meta name="keywords" content=""/>-->
     <meta name="copyright" content="<?=$copyright?>" />
-    <!--    <meta name="application-name" content="" />-->
+    <!--    <meta name="application-name" content=""/>-->
 
     <?php if(!empty($author)): ?>
         <meta name="author" content="<?=$author?>" />
-    <?php endif; ?>
+        <?php endif; ?>
 
-    <!-- for Facebook -->
-    <meta property="og:title" content="<?=$title?>"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:url" content="<?=$url?>"/>
-    <meta property="og:description" content="<?=$desc?>"/>
-    <meta property="og:image" content="<?=$img?>"/>
+            <!-- for Facebook -->
+            <meta property="og:title" content="<?=$title?>" />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="<?=$url?>" />
+            <meta property="og:description" content="<?=$desc?>" />
+            <meta property="og:image" content="<?=$img?>" />
 
-    <!-- for Twitter -->
-    <!--    <meta name="twitter:card" content="summary" />-->
-    <meta name="twitter:title" content="<?=$title?>"/>
-    <meta name="twitter:description" content="<?=$desc?>"/>
-    <meta name="twitter:image" content="<?=$img?>"/>
+            <!-- for Twitter -->
+            <!--    <meta name="twitter:card" content="summary"/>-->
+            <meta name="twitter:title" content="<?=$title?>" />
+            <meta name="twitter:description" content="<?=$desc?>" />
+            <meta name="twitter:image" content="<?=$img?>" />
 
-    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" />
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-    <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
-    <link rel=stylesheet href="css/newsclip.css">
+            <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" />
+            <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+            <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
+            <link rel=stylesheet href="css/newsclip.css">
 
-    <script type="text/javascript" src="js/newsclip.js" async></script>
+            <script type="text/javascript" src="js/newsclip.js" async></script>
 
-    <script type="text/javascript" src="<?=$data_folder?>econews.js" async></script>
+            <script type="text/javascript" src="<?=$data_folder?>econews.js" async></script>
 
-    <script type="text/javascript" src="js/infinite-scroll.js" async></script>
+            <script type="text/javascript" src="js/infinite-scroll.js" async></script>
 
 </head>
 
@@ -46,49 +48,56 @@
     <div id="header">
         <div id="headerBlock">
             <div id="title">
-                <span class="logo"><a href="/" title="SSEC home page"><img src=images/logo.png width=auto height=35>SSEC </a>Leader ecoNews</span>
-                <div id="headerLinks">
-                    <a href="javascript:;" onclick="dropPennant('subscribe');">Subscribe</a> <span class="divider"> </span><a href="javascript:;" onclick="dropPennant('about');">About</a>
+                <div id="logo">
+                    <a href="/" title="SSEC home page">
+                        <img src="images/logo.png"></a>
+                </div>
+                <div id="titleText">
+                    <a href="/" title="SSEC home page">SSEC</a> Leader ecoNews
+                    <br>
+                    <span id="headerLinks">
+                        <a href="javascript:;" onclick="dropPennant('subscribe');">Subscribe</a> <span class="divider"> </span><a href="javascript:;" onclick="dropPennant('about');">About</a>
+                    </span>
                 </div>
             </div>
             <span class="noWrap">
-                <div class="filterCell">
-                    <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range (from - to)"></label>
-                    <input type=date id="fromDate" required onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(bucket, true); setInputs(false);">
-                </div>
-                <div class="filterCell">
-                    <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5 title="To date"></label>
-                    <input type=date id="toDate" required onmouseover="this.style.color=active[col]"  onmouseout="this.style.color = (this.value == lastDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=lastDate; filter.toDate=this.value; writeStories(bucket, true); setInputs(false);">
-                </div>
-            </span>
+                    <div class="filterCell">
+                        <label for="fromDate"><img src=images/date.svg width=auto height=22.5 title="Filter by date range (from - to)"></label>
+                        <input type=date id="fromDate" required onmouseover="this.style.color=active[col]" onmouseout="this.style.color=(this.value == firstDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=firstDate; filter.fromDate=this.value; writeStories(bucket, true); setInputs(false);">
+                    </div>
+                    <div class="filterCell">
+                        <label class="toDate" for="toDate"><img src=images/dash.svg width=auto height=22.5 title="To date"></label>
+                        <input type=date id="toDate" required onmouseover="this.style.color=active[col]"  onmouseout="this.style.color = (this.value == lastDate) ? inactive[col] : active[col]" onchange="if(!this.value) this.value=lastDate; filter.toDate=this.value; writeStories(bucket, true); setInputs(false);">
+                    </div>
+                </span>
             <span class="noWrap">
-                <div class=" filterCell ">
-                    <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
-                    <select id="topic" title="Filter by topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(bucket, true); setInputs(false)">
+                    <div class=" filterCell ">
+                        <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
+                        <select id="topic" title="Filter by topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(bucket, true); setInputs(false)">
 
-                    </select>
-                </div>
-                <div class="filterCell">
-                    <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by SSEC member"></label>
-                    <select id="person" title="Filter by SSEC member" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
-                    </select>
-                </div>
-            </span>
+                        </select>
+                    </div>
+                    <div class="filterCell">
+                        <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by SSEC member"></label>
+                        <select id="person" title="Filter by SSEC member" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
+                        </select>
+                    </div>
+                </span>
             <span class="noWrap">
-                <div class="filterCell">
-                    <input type=text id=search onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style.color=active[col]; this.style.fontStyle=active[fs]; if(searchStart) {this.value=''; searchStart = false}">
-                </div>
-                <div class="filterCell">
-                    <a href="javascript:;">
-                        <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="searchStories()" title="Search">
-                    </a>
-                </div>
-                <div class="filterCell">
-                    <a href="javascript:clearFilter(); writeStories(bucket, true)">
-                        <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver=this.src='images/clearon.svg' onMouseOut=this.src='images/clear.svg' title="Clear search/filter">
-                    </a>
-                </div>
-            </span>
+                    <div class="filterCell">
+                        <input type=text id=search onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style.color=active[col]; this.style.fontStyle=active[fs]; if(searchStart) {this.value=''; searchStart = false}">
+                    </div>
+                    <div class="filterCell">
+                        <a href="javascript:;">
+                            <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="searchStories()" title="Search">
+                        </a>
+                    </div>
+                    <div class="filterCell">
+                        <a href="javascript:clearFilter(); writeStories(bucket, true)">
+                            <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver=this.src='images/clearon.svg' onMouseOut=this.src='images/clear.svg' title="Clear search/filter">
+                        </a>
+                    </div>
+                </span>
         </div>
     </div>
 
