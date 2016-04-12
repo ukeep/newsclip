@@ -39,11 +39,12 @@ body {
 
 #title {
     display: inline-block;
-    vertical-align: top;
     color: #405398;
     font: 25px "Pontano Sans", arial, sans-serif;
     letter-spacing: -1px;
     margin: 0 0 5px 0;
+    line-height: 80%;
+    vertical-align: bottom;
 }
 
 #headerLinks {
