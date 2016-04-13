@@ -480,6 +480,9 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      */
     Lightbox.nextImage = function () {
       Lightbox.setImage((Lightbox.index + 1) % Lightbox.images.length);
+      
+      // Scroll main page to show this story; may trigger infinite-scroll
+      document.getElementById(Lightbox.image.link).scrollIntoView();
     };
 
     /**
