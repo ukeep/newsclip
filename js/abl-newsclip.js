@@ -416,8 +416,10 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         Lightbox.index = properties.index || newIndex;
 
         // Update Lightbox.image properties rather than the object itself so the variable 's' will still point to the image object. 
+//        Lightbox.image = properties.image || image;
         var img = properties.image || image;
         for (var prop in img) {
+            Lightbox.image[prop] = img[prop];
         }
 
         Lightbox.imageUrl = properties.imageUrl || imageUrl;
