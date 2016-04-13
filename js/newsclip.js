@@ -49,18 +49,14 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
             page.stories = [];
             $scope.images = [];
         }
+        var l = page.stories.length - 1;
         for (i = nextStory; i < storyArchive.length; i++) {
             if (true) {
                 page.stories.push(storyArchive[i]);
-//                if (storyArchive[i].link) {
-                    $scope.images.push({
-                        thumbUrl: $scope.thumbPrefix + storyArchive[i].link,
-                        url: $scope.linkPrefix + storyArchive[i].link
-                    });
-//                }
+                l++;
+                splitTags(page.stories[l]);
+                setVars(page.stories[l]);
                 nextStory++;
-                splitTags(page.stories[page.stories.length - 1]);
-                setVars(page.stories[page.stories.length - 1]);
                 if (nextStory >= n) break;
             }
         }
@@ -70,7 +66,7 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
     }
 
     $scope.openLightboxModal = function (index) {
-        Lightbox.openModal($scope.images, index);
+        Lightbox.openModal(page.stories, index);
     };
 
 
@@ -99,6 +95,11 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
     }
 
     function setVars(s) {
+
+        // Add url & thumbUrl to use stories as images in Lightbox
+        s.thumbUrl = $scope.thumbPrefix + s.link;
+        s.url = $scope.linkPrefix + s.link;
+
         var d = new Date(s.date);
         s.dateString = month[d.getMonth()] + " " +
             d.getDate() + " " +

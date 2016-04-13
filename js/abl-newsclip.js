@@ -1,3 +1,5 @@
+//Modified by Jonathan Doig from angular-bootstrap-lightbox.js
+
 /**
  * @namespace bootstrapLightbox
  */
@@ -324,6 +326,12 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.openModal = function (newImages, newIndex, modalParams) {
+      
+      // Give this image its own URL
+      history.pushState("", document.title, "?s=" + newImages[newIndex].link);
+      // Window back event (e.g. back button on mobile) will close Lightbox
+      window.addEventListener("popstate", Lightbox.closeModal, false);
+
       Lightbox.images = newImages;
       Lightbox.setImage(newIndex);
 
@@ -336,6 +344,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
           Lightbox.keyboardNavEnabled = true;
         }],
+        'keyboard': false, // $uibModal will not close Lightbox on Esc key
         'windowClass': 'lightbox-modal'
       }, modalParams || {}));
 
@@ -369,6 +378,10 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.closeModal = function (result) {
+      // Return to base URL
+      window.removeEventListener("popstate", Lightbox.closeModal);
+      history.pushState("", document.title, location.pathname);
+
       return Lightbox.modalInstance.close(result);
     };
 
@@ -498,6 +511,9 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       var method = null;
 
       switch (event.which) {
+      case 27: // Esc key
+        method = 'closeModal';
+        break;
       case 39: // right arrow key
         method = 'nextImage';
         break;
