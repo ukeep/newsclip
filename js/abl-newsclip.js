@@ -325,7 +325,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      * @name     openModal
      * @memberOf bootstrapLightbox.Lightbox
      */
-    Lightbox.openModal = function (newImages, newIndex, modalParams) {
+    Lightbox.openModal = function (newImages, newIndex, modalParams, lbParams) {
       
       // Give this image its own URL
       history.pushState("", document.title, "?s=" + newImages[newIndex].link);
@@ -341,6 +341,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         'controller': ['$scope', function ($scope) {
           // $scope is the modal scope, a child of $rootScope
           $scope.Lightbox = Lightbox;
+          $scope.s = Lightbox.image;
+          $scope.g = lbParams;
 
           Lightbox.keyboardNavEnabled = true;
         }],
@@ -412,7 +414,12 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         // update service properties for the image
         properties = properties || {};
         Lightbox.index = properties.index || newIndex;
-        Lightbox.image = properties.image || image;
+
+        // Update Lightbox.image properties rather than the object itself so the variable 's' will still point to the image object. 
+        var img = properties.image || image;
+        for (var prop in img) {
+        }
+
         Lightbox.imageUrl = properties.imageUrl || imageUrl;
         Lightbox.imageCaption = properties.imageCaption ||
           Lightbox.getImageCaption(image);

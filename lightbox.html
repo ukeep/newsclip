@@ -24,13 +24,16 @@
         <div class="lightbox-nav lb-nav">
             <!-- close button -->
             <button class="close" aria-hidden="true" ng-click="Lightbox.closeModal()">×</button>
+            <ng-include src="'shareBtns'"></ng-include>
         </div>
 
         <!-- Navigation from http://lokeshdhakar.com/projects/lightbox2/-->
+<!--
         <div class="lb-nav" ng-if="Lightbox.images.length > 1" style="display: block;">
             <a class="lb-prev" href="" style="display: block;" ng-click="Lightbox.prevImage()"></a>
             <a class="lb-next" href="" style="display: block;" ng-click="Lightbox.nextImage()"></a>
         </div>
+-->
 
     </div>
 </div>

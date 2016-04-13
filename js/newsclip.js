@@ -23,16 +23,18 @@ var nextStory;
 var reset = true;
 
 app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scope, $http, Lightbox) {
-    $scope.paperShortName = "Leader";
-    $scope.paperName = "Sutherland Shire Leader";
-    $scope.linkPrefix = "https://drive.google.com/uc?export=view&id=";
-    // $scope.thumbPrefix = "https://drive.google.com/thumbnail?sz=h200&id=";
-    $scope.thumbPrefix = $scope.linkPrefix;
-    $scope.onlinePrefix = "http://www.theleader.com.au/story/";
-    $scope.sharePrefix = encodeURIComponent(sharePrefixRaw);
-    $scope.hashtag = "econews";
-    $scope.bucket = 8;
-    $scope.moreStories = true;
+    $scope.g = {
+        paperShortName: "Leader",
+        paperName: "Sutherland Shire Leader",
+        linkPrefix: "https://drive.google.com/uc?export=view&id=",
+        // thumbPrefix: "https://drive.google.com/thumbnail?sz=h200&id=",
+        thumbPrefix: "https://drive.google.com/uc?export=view&id=",
+        onlinePrefix: "http://www.theleader.com.au/story/",
+        sharePrefix: encodeURIComponent(sharePrefixRaw),
+        hashtag: "econews",
+        bucket: 8,
+        moreStories: true
+    }
 
     var page = this;
     $http.get(jsonFile).success(function (jsonData) {
@@ -40,7 +42,7 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
         page.people = jsonData[1];
         storyArchive = jsonData[2];
         page.stories = [];
-        $scope.addStories($scope.bucket, reset);
+        $scope.addStories($scope.g.bucket, reset);
     });
 
     $scope.addStories = function (n, reset) {
@@ -61,12 +63,12 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
             }
         }
         if (i === storyArchive.length) {
-            $scope.moreStories = false;
+            $scope.g.moreStories = false;
         };
     }
 
     $scope.openLightboxModal = function (index) {
-        Lightbox.openModal(page.stories, index);
+        Lightbox.openModal(page.stories, index, null, $scope.g);
     };
 
 
@@ -97,8 +99,8 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
     function setVars(s) {
 
         // Add url & thumbUrl to use stories as images in Lightbox
-        s.thumbUrl = $scope.thumbPrefix + s.link;
-        s.url = $scope.linkPrefix + s.link;
+        s.thumbUrl = $scope.g.thumbPrefix + s.link;
+        s.url = $scope.g.linkPrefix + s.link;
 
         var d = new Date(s.date);
         s.dateString = month[d.getMonth()] + " " +
@@ -110,7 +112,7 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
 
             s.tweet = s.title;
             s.tweet += (s.author) ? " - " + s.author : "";
-            s.tweet += " " + paperTwitterHandle || $scope.paperName;
+            s.tweet += " " + paperTwitterHandle || $scope.g.paperName;
             s.tweet += " " + shortDate;
             s.tweet += (d.getFullYear() == today.getFullYear()) ?
                 "" : " " + d.getFullYear(); // Add year if not this year
@@ -118,8 +120,8 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
 
             var body = '"' + s.title + '"\n';
             body += (s.author) ? s.author + ", " : "";
-            body += $scope.paperName + " " + s.dateString + "\n\n";
-            body = encodeURIComponent(body) + $scope.sharePrefix + s.link;
+            body += $scope.g.paperName + " " + s.dateString + "\n\n";
+            body = encodeURIComponent(body) + $scope.g.sharePrefix + s.link;
 
             s.mailLink = "mailto:?subject=" +
                 encodeURIComponent(s.title) +
@@ -127,12 +129,11 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
 
             s.copyText = '\"\\"' + s.title + '\\"\\n'; // Escape quote & \n to work in copyTextToClipboard
             s.copyText += (s.author) ? s.author + ", " : "";
-            s.copyText += $scope.paperName + " " + s.dateString + "\\n\\n" +
-                sharePrefixRaw + s.link + "\"";
+            s.copyText += $scope.g.paperName + " " + s.dateString + "\\n\\n" + sharePrefixRaw + s.link + "\"";
 
             if (d >= cutoff) {
                 body = "Dear Editor\n\nRegarding \"" +
-                    s.title + "\" (" + $scope.paperShortName + ", " +
+                    s.title + "\" (" + $scope.g.paperShortName + ", " +
                     s.dateString.replace(/ [0-9]{4}$/, "") + "), ";
 
                 s.replyLink = "mailto:" + encodeURIComponent(paperEmail) + "?subject=" +

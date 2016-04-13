@@ -18,11 +18,17 @@
 <!--    <script src="abl/dist/angular-bootstrap-lightbox.js"></script>-->
     <script src="js/abl-newsclip.js"></script>
     <script src="js/newsclip.js"></script>
+    
+    <script type="text/ng-template" id="shareBtns">
+        <div ng-if="true" class="shareBtns">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{g.sharePrefix}}{{s.link}}" target="_blank"><img class="textBtn" src="images/fb_share.svg" title="Share on Facebook"></a><a href="https://twitter.com/intent/tweet?text={{s.tweet}}&url={{g.sharePrefix}}{{s.link}}&hashtags={{g.hashtag}}" target="_blank"><img class="textBtn" src="images/tweet.svg" title="Tweet this story"></a><a href="{{s.mailLink}}" target="_blank"><img class="textBtn" src="images/mail.svg" title="Mail this story"></a><a href="javascript:;" class="copyMe puff" tabindex="1"><img class="textBtn puff" src="images/copy.svg" title="Copy story to clipboard"></a><a ng-if="s.replyLink" href="{{s.replyLink}}" target="_blank"><img class="textBtn" src="images/reply.svg" title="Write to the paper"></a>
+        </div>
+    </script>
 </head>
 
 <body ng-controller="pageController as p">
     <!--    <div id="stories" ng-controller="storyController as storyCtrl">-->
-    <div id="stories" infinite-scroll="addStories({{bucket}})" threshold="100" can-load="moreStories">
+    <div id="stories" infinite-scroll="addStories({{g.bucket}})" threshold="100" can-load="g.moreStories">
         <div class="story" id="{{s.link}}" ng-repeat="s in p.stories">
 
             <div class="details">
@@ -30,7 +36,7 @@
 
                 <!-- byline-->
                 <p class="byline" ng-show="s.author || s.online">
-                    <a ng-show="s.online" href="{{onlinePrefix}}{{s.online}}" target=_blank><img class="textBtn" src="images/online.svg" title="This story is available on the {{paperShortName}} website"></a>
+                    <a ng-show="s.online" href="{{g.onlinePrefix}}{{s.online}}" target=_blank><img class="textBtn" src="images/online.svg" title="This story is available on the {{g.paperShortName}} website"></a>
                     {{s.author}}
                 </p>
 
@@ -44,27 +50,15 @@
                 </p>
 
                 <!-- citeline-->
-                <p class="citeline"><span class="noWrap">{{paperName}}</span>
+                <p class="citeline"><span class="noWrap">{{g.paperName}}</span>
                     <span class="noWrap"><a href="javascript:;">{{s.dateString}}</a></span> &ndash; page {{s.page}}</p>
 
                 <!-- shareBtns-->
-                <div ng-if="s.link" class="shareBtns">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{sharePrefix}}{{s.link}}" target="_blank"><img class="textBtn" src="images/fb_share.svg" title="Share on Facebook"></a>
-
-                    <a href="https://twitter.com/intent/tweet?text={{s.tweet}}&url={{sharePrefix}}{{s.link}}&hashtags={{hashtag}}" target="_blank"><img class="textBtn" src="images/tweet.svg" title="Tweet this story"></a>
-
-                    <a href="{{s.mailLink}}" target="_blank"><img class="textBtn" src="images/mail.svg" title="Mail this story"></a>
-
-                    <a href="javascript:;" class="copyMe puff" tabindex="1"><img class="textBtn puff" src="images/copy.svg" title="Copy story to clipboard"></a>
-                    <!--                    ng-click="window.setTimeout(function () {copyTextToClipboard('{{s.copyText}}')}, 1000)" -->
-
-                    <a ng-if="s.replyLink" href="{{s.replyLink}}" target="_blank"><img class="textBtn" src="images/reply.svg" title="Write to the paper"></a>
-                </div>
-
+                <ng-include src="'shareBtns'"></ng-include>
             </div>
 
             <div class="thumb">
-                <img ng-if="s.link" ng-click="openLightboxModal($index)" ng-src="{{thumbPrefix}}{{s.link}}" title="Click to view">
+                <img ng-if="s.link" ng-click="openLightboxModal($index)" ng-src="{{g.thumbPrefix}}{{s.link}}" title="Click to view">
                 <p ng-hide="s.link" class="note">no image</p>
             </div>
             <hr>

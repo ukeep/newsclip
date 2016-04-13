@@ -350,6 +350,7 @@ hr {
 .textBtn {
     vertical-align: middle;
     height: 22px;
+    margin-left: 5px;
 }
 
 .puff {
