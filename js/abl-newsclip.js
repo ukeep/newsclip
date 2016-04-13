@@ -470,6 +470,9 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.prevImage = function () {
       Lightbox.setImage((Lightbox.index - 1 + Lightbox.images.length) %
         Lightbox.images.length);
+      
+      // Scroll main page to show this story
+      document.getElementById(Lightbox.image.link).scrollIntoView();
     };
 
     /**
