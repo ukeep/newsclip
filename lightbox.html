@@ -1,9 +1,14 @@
 <div class="modal-body" ng-swipe-left="Lightbox.nextImage()" ng-swipe-right="Lightbox.prevImage()">
   <div class="lightbox-image-container">
-    <!-- caption -->
-    <div class="lightbox-image-caption">
-      <span>{{Lightbox.imageCaption}}</span>
-    </div>
+    <!-- citation -->
+<!--    <div class="lightbox-image-caption">-->
+      <p class="citeline">
+        <a ng-show="s.online" href="{{g.onlinePrefix}}{{s.online}}" target=_blank><img class="textBtn" src="images/online.svg" title="This story is available on the {{g.paperShortName}} website"></a>
+        <span class="noWrap">{{g.paperName}}</span>
+        <span class="noWrap">{{s.dateString}}</span> &ndash; page {{s.page}}
+      </p>
+      <!--      <span>{{Lightbox.imageCaption}}</span>-->
+<!--    </div>-->
 
     <div class="lightbox-image-only" lightbox-src="{{Lightbox.imageUrl}}">
 
