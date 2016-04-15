@@ -17,7 +17,7 @@ var replyBy = 20; // Show reply button if story is less than these days old
 var today = new Date();
 var cutoff = new Date();
 cutoff.setDate(today.getDate() - replyBy);
-var sharePrefixRaw = window.location.origin + window.location.pathname + "?s=";
+var sharePrefixRaw = location.origin + location.pathname + "?s=";
 var storyArchive;
 var nextStory;
 var reset = true;
