@@ -328,9 +328,12 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.openModal = function (newImages, newIndex, modalParams, lbParams) {
       
       // Give this image its own URL
-      history.pushState("", document.title, "?s=" + newImages[newIndex].link);
+      setTimeout(function() { // Delay till after angular clears it
+        history.pushState("", document.title, "?s=" + newImages[newIndex].link);
+      },100); // delayNeeded ~= 50 ms
+      
       // Window back event (e.g. back button on mobile) will close Lightbox
-      window.addEventListener("popstate", Lightbox.closeModal, false);
+      addEventListener("popstate", Lightbox.closeModal, false);
 
       Lightbox.images = newImages;
       Lightbox.setImage(newIndex);
@@ -381,7 +384,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      */
     Lightbox.closeModal = function (result) {
       // Return to base URL
-      window.removeEventListener("popstate", Lightbox.closeModal);
+      removeEventListener("popstate", Lightbox.closeModal);
       history.pushState("", document.title, location.pathname);
 
       return Lightbox.modalInstance.close(result);
@@ -473,6 +476,12 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       
       // Scroll main page to show this story
       document.getElementById(Lightbox.image.link).scrollIntoView();
+      
+      // Update URL
+      setTimeout(function() { // Delay till after angular clears it
+        history.pushState("", document.title, "?s=" + Lightbox.image.link);
+      },50); // delayNeeded ~= 50 ms
+
     };
 
     /**
@@ -486,6 +495,12 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       
       // Scroll main page to show this story; may trigger infinite-scroll
       document.getElementById(Lightbox.image.link).scrollIntoView();
+      
+      // Update URL
+      setTimeout(function() { // Delay till after angular clears it
+        history.pushState("", document.title, "?s=" + Lightbox.image.link);
+      },50); // delayNeeded ~= 50 ms
+
     };
 
     /**
