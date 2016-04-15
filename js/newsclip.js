@@ -7,10 +7,10 @@ angular.module('newsclip').config(function (LightboxProvider) {
 
 var data_folder = "https://googledrive.com/host/0B4rKiNtdxe1NZ1NKa3ItTXR0RkU/";
 var jsonFile = data_folder + "econews.json";
-var month = new Array("January", "February", "March",
+var month = ["January", "February", "March",
     "April", "May", "June",
     "July", "August", "September",
-    "October", "November", "December");
+    "October", "November", "December"];
 var paperTwitterHandle = "@theleadernews";
 var paperEmail = "Leader Letters <leaderletters@fairfaxmedia.com.au>";
 var replyBy = 20; // Show reply button if story is less than these days old
@@ -34,7 +34,7 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
         hashtag: "econews",
         bucket: 8,
         moreStories: true
-    }
+    };
 
     var page = this;
     $http.get(jsonFile).success(function (jsonData) {
@@ -46,26 +46,29 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
     });
 
     $scope.addStories = function (n, reset) {
+        var i, l;
         if (reset) {
             nextStory = 0;
             page.stories = [];
             $scope.images = [];
         }
-        var l = page.stories.length - 1;
+        l = page.stories.length - 1;
         for (i = nextStory; i < storyArchive.length; i++) {
-            if (true) {
+            if (true) { // Insert filter condition here
                 page.stories.push(storyArchive[i]);
                 l++;
                 splitTags(page.stories[l]);
                 setVars(page.stories[l]);
                 nextStory++;
-                if (nextStory >= n) break;
+                if (nextStory >= n) {
+                    break;
+                }
             }
         }
         if (i === storyArchive.length) {
             $scope.g.moreStories = false;
-        };
-    }
+        }
+    };
 
     $scope.openLightboxModal = function (index) {
         Lightbox.openModal(page.stories, index, null, $scope.g);
@@ -82,11 +85,12 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
             //            a[i].person.initials = s.person.split(", ");
             s.person = [];
             initArray.forEach(function (init, j) {
+                var k;
                 s.person.push({
                     initials: init,
                     fullname: ""
                 });
-                for (var k = 0; k < page.people.length; k++) {
+                for (k = 0; k < page.people.length; k++) {
                     if (init === page.people[k].initials) {
                         s.person[j].fullname = page.people[k].fullname;
                         break;
@@ -97,28 +101,29 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
     }
 
     function setVars(s) {
-
+        var d = new Date(s.date),
+            shortDate,
+            body;
         // Add url & thumbUrl to use stories as images in Lightbox
         s.thumbUrl = $scope.g.thumbPrefix + s.link;
         s.url = $scope.g.linkPrefix + s.link;
 
-        var d = new Date(s.date);
         s.dateString = month[d.getMonth()] + " " +
             d.getDate() + " " +
             d.getFullYear();
 
         if (s.link) {
-            var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
+            shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
 
             s.tweet = s.title;
             s.tweet += (s.author) ? " - " + s.author : "";
             s.tweet += " " + paperTwitterHandle || $scope.g.paperName;
             s.tweet += " " + shortDate;
-            s.tweet += (d.getFullYear() == today.getFullYear()) ?
-                "" : " " + d.getFullYear(); // Add year if not this year
+            s.tweet += (d.getFullYear() === today.getFullYear()) ?
+                    "" : " " + d.getFullYear(); // Add year if not this year
             s.tweet = s.tweet.replace(/\'/g, "%27");
 
-            var body = '"' + s.title + '"\n';
+            body = '"' + s.title + '"\n';
             body += (s.author) ? s.author + ", " : "";
             body += $scope.g.paperName + " " + s.dateString + "\n\n";
             body = encodeURIComponent(body) + $scope.g.sharePrefix + s.link;
@@ -147,7 +152,9 @@ app.controller('pageController', ['$scope', '$http', 'Lightbox', function ($scop
 
 
 function copyTextToClipboard(text) {
-    var textArea = document.createElement("textarea");
+    var textArea = document.createElement("textarea"),
+        successful,
+        msg;
     // Courtesy Dean Taylor on
     // http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
     //
@@ -194,8 +201,8 @@ function copyTextToClipboard(text) {
     textArea.select();
 
     try {
-        var successful = document.execCommand('copy');
-        var msg = successful ? 'successful' : 'unsuccessful';
+        successful = document.execCommand('copy');
+        msg = successful ? 'successful' : 'unsuccessful';
         console.log('Copying text command was ' + msg);
     } catch (err) {
         console.log('Oops, unable to copy');
