@@ -138,9 +138,14 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         // with the goal of 30px side margins; however, the actual side margins
         // will be slightly less (at 22.5px) due to the vertical scrollbar
         'maxWidth': dimensions.windowWidth - 92,
+        
         // 126px = 92px as above
         //         + 34px outer height of .lightbox-nav
-        'maxHeight': dimensions.windowHeight - 126
+//        'maxHeight': dimensions.windowHeight - 126
+        
+        // 119px = 92px as above
+        //         + 27px outer height of .citeline
+        'maxHeight': dimensions.windowHeight - 119
       };
     } else {
       return {
@@ -148,9 +153,14 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         //             + 1px border of .modal-content
         //             + 15px padding of .modal-body)
         'maxWidth': dimensions.windowWidth - 52,
+
         // 86px = 52px as above
         //        + 34px outer height of .lightbox-nav
-        'maxHeight': dimensions.windowHeight - 86
+//        'maxHeight': dimensions.windowHeight - 86
+
+        // 79px = 52px as above
+        //        + 27px outer height of .citeline
+        'maxHeight': dimensions.windowHeight - 79
       };
     }
   };
@@ -167,28 +177,32 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
    * @memberOf bootstrapLightbox.Lightbox
    */
   this.calculateModalDimensions = function (dimensions) {
-    // 400px = arbitrary min width
+    // 200px = arbitrary min width
     // 32px = 2 * (1px border of .modal-content
     //             + 15px padding of .modal-body)
-    var width = Math.max(400, dimensions.imageDisplayWidth + 32);
+    var width = Math.max(200, dimensions.imageDisplayWidth + 32);
 
     // 200px = arbitrary min height
     // 66px = 32px as above
     //        + 34px outer height of .lightbox-nav
-    var height = Math.max(200, dimensions.imageDisplayHeight + 66);
+//    var height = Math.max(200, dimensions.imageDisplayHeight + 66);
+
+    // 59px = 32px as above
+    //        + 27px outer height of .citeline
+    var height = Math.max(200, dimensions.imageDisplayHeight + 59);
 
     // first case:  the modal width cannot be larger than the window width
     //              20px = arbitrary value larger than the vertical scrollbar
     //                     width in order to avoid having a horizontal scrollbar
     // second case: Bootstrap modals are not centered below 768px
-    if (width >= dimensions.windowWidth - 20 || dimensions.windowWidth < 768) {
-      width = 'auto';
-    }
+//    if (width >= dimensions.windowWidth - 20 || dimensions.windowWidth < 768) {
+//      width = 'auto';
+//    }
 
     // the modal height cannot be larger than the window height
-    if (height >= dimensions.windowHeight) {
-      height = 'auto';
-    }
+//    if (height >= dimensions.windowHeight) {
+//      height = 'auto';
+//    }
 
     return {
       'width': width,
@@ -330,7 +344,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       // Give this image its own URL
       setTimeout(function() { // Delay till after angular clears it
         history.pushState("", document.title, "?s=" + newImages[newIndex].link);
-      },100); // delayNeeded ~= 50 ms
+      },500); // delayNeeded ~= 50 ms
       
       // Window back event (e.g. back button on mobile) will close Lightbox
       addEventListener("popstate", Lightbox.closeModal, false);
@@ -480,7 +494,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       // Update URL
       setTimeout(function() { // Delay till after angular clears it
         history.pushState("", document.title, "?s=" + Lightbox.image.link);
-      },50); // delayNeeded ~= 50 ms
+      },100); // delayNeeded ~= 50 ms
 
     };
 
@@ -499,7 +513,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       // Update URL
       setTimeout(function() { // Delay till after angular clears it
         history.pushState("", document.title, "?s=" + Lightbox.image.link);
-      },50); // delayNeeded ~= 50 ms
+      },100); // delayNeeded ~= 50 ms
 
     };
 
@@ -578,6 +592,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
   // Calculate the dimensions to display the image. The max dimensions override
   // the min dimensions if they conflict.
   var calculateImageDisplayDimensions = function (dimensions, fullScreenMode) {
+    var scrollbarWidth = 17;
     var w = dimensions.width;
     var h = dimensions.height;
     var minW = dimensions.minWidth;
@@ -588,9 +603,9 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
     var displayW = w;
     var displayH = h;
 
-    if (!fullScreenMode) {
+//    if (!fullScreenMode) {
       // resize the image if it is too small
-      if (w < minW && h < minH) {
+/*      if (w < minW && h < minH) {
         // the image is both too thin and short, so compare the aspect ratios to
         // determine whether to min the width or height
         if (w / h > maxW / maxH) {
@@ -608,10 +623,25 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         // the image is too short
         displayH = minH;
         displayW = Math.round(w * minH / h);
+      }*/
+
+      // Account for scrollbar
+      if (w > maxW) {
+        h += scrollbarWidth;
       }
+      if (h > maxH) {
+        w += scrollbarWidth;
+      }
+//    
+//    if (w < 381) {
+//      h += 9;
+//    }
 
       // resize the image if it is too large
-      if (w > maxW && h > maxH) {
+      displayW = Math.min(w,maxW);
+      displayH = Math.min(h,maxH);
+
+      /*      if (w > maxW && h > maxH) {
         // the image is both too tall and wide, so compare the aspect ratios
         // to determine whether to max the width or height
         if (w / h > maxW / maxH) {
@@ -629,17 +659,17 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         // the image is too tall
         displayH = maxH;
         displayW = Math.round(w * maxH / h);
-      }
-    } else {
-      // full screen mode
-      var ratio = Math.min(maxW / w, maxH / h);
-
-      var zoomedW = Math.round(w * ratio);
-      var zoomedH = Math.round(h * ratio);
-
-      displayW = Math.max(minW, zoomedW);
-      displayH = Math.max(minH, zoomedH);
-    }
+      }*/
+//    } else {
+//      // full screen mode
+//      var ratio = Math.min(maxW / w, maxH / h);
+//
+//      var zoomedW = Math.round(w * ratio);
+//      var zoomedH = Math.round(h * ratio);
+//
+//      displayW = Math.max(minW, zoomedW);
+//      displayH = Math.max(minH, zoomedH);
+//    }
 
     return {
       'width': displayW || 0,
@@ -694,10 +724,17 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         });
 
         // resize the image
-        element.css({
+        if (modalDimensions.height >= windowHeight - 75) {
+          element.css({
           'width': imageDisplayDimensions.width + 'px',
           'height': imageDisplayDimensions.height + 'px'
         });
+        } else {
+          element.css({
+          'width': '',
+          'height': ''
+        }); 
+        }
 
         // setting the height on .modal-dialog does not expand the div with the
         // background, which is .modal-content
