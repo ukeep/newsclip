@@ -239,8 +239,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       !this.getImageUrl(image).match(/\.(mp4|ogg|webm)$/);
   };
 
-  this.$get = ['$document', '$injector', '$uibModal', '$timeout', 'ImageLoader',
-      function ($document, $injector, $uibModal, $timeout, ImageLoader) {
+  this.$get = ['$document', '$injector', '$uibModal', '$timeout', '$location', 'ImageLoader',
+      function ($document, $injector, $uibModal, $timeout, $location, ImageLoader) {
     // optional dependency
     var cfpLoadingBar = $injector.has('cfpLoadingBar') ?
       $injector.get('cfpLoadingBar'): null;
@@ -342,9 +342,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.openModal = function (newImages, newIndex, modalParams, lbParams) {
       
       // Give this image its own URL
-      setTimeout(function() { // Delay till after angular clears it
-        history.pushState("", document.title, "?s=" + newImages[newIndex].link);
-      },500); // delayNeeded ~= 50 ms
+      $location.search('s=' + newImages[newIndex].link);
       
       // Window back event (e.g. back button on mobile) will close Lightbox
       addEventListener("popstate", Lightbox.closeModal, false);
@@ -399,7 +397,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.closeModal = function (result) {
       // Return to base URL
       removeEventListener("popstate", Lightbox.closeModal);
-      history.pushState("", document.title, location.pathname);
+      $location.search('');
 
       return Lightbox.modalInstance.close(result);
     };
@@ -438,6 +436,13 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         for (var prop in img) {
             Lightbox.image[prop] = img[prop];
         }
+        
+        // Scroll main page to show this story
+        document.getElementById(Lightbox.image.link).scrollIntoView();
+
+        // Update URL without pushing a new history record so browser
+        // back button will just return to base URL
+        $location.search('s=' + Lightbox.image.link).replace();
 
         Lightbox.imageUrl = properties.imageUrl || imageUrl;
         Lightbox.imageCaption = properties.imageCaption ||
@@ -485,17 +490,9 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.prevImage = function () {
-      Lightbox.setImage((Lightbox.index - 1 + Lightbox.images.length) %
-        Lightbox.images.length);
-      
-      // Scroll main page to show this story
-      document.getElementById(Lightbox.image.link).scrollIntoView();
-      
-      // Update URL
-      setTimeout(function() { // Delay till after angular clears it
-        history.pushState("", document.title, "?s=" + Lightbox.image.link);
-      },100); // delayNeeded ~= 50 ms
-
+//      Lightbox.setImage((Lightbox.index - 1 + Lightbox.images.length) %
+//        Lightbox.images.length);
+      Lightbox.setImage(Lightbox.index - 1);
     };
 
     /**
@@ -505,16 +502,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.nextImage = function () {
-      Lightbox.setImage((Lightbox.index + 1) % Lightbox.images.length);
-      
-      // Scroll main page to show this story; may trigger infinite-scroll
-      document.getElementById(Lightbox.image.link).scrollIntoView();
-      
-      // Update URL
-      setTimeout(function() { // Delay till after angular clears it
-        history.pushState("", document.title, "?s=" + Lightbox.image.link);
-      },100); // delayNeeded ~= 50 ms
-
+//      Lightbox.setImage((Lightbox.index + 1) % Lightbox.images.length);
+      Lightbox.setImage(Lightbox.index + 1);
     };
 
     /**

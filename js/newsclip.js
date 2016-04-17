@@ -1,9 +1,10 @@
 var app = angular.module('newsclip', ['infiniteScroll', 'bootstrapLightbox']);
 
-angular.module('newsclip').config(function (LightboxProvider) {
+angular.module('newsclip').config(['LightboxProvider', '$locationProvider', function (LightboxProvider, $locationProvider) {
     // set a custom template
     LightboxProvider.templateUrl = './lightbox.html';
-});
+    $locationProvider.html5Mode(true);
+}]);
 
 var data_folder = "https://googledrive.com/host/0B4rKiNtdxe1NZ1NKa3ItTXR0RkU/";
 var jsonFile = data_folder + "econews.json";
