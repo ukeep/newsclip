@@ -3,7 +3,10 @@ var app = angular.module('newsclip', ['infiniteScroll', 'bootstrapLightbox']);
 angular.module('newsclip').config(['LightboxProvider', '$locationProvider', function (LightboxProvider, $locationProvider) {
     // set a custom template
     LightboxProvider.templateUrl = './lightbox.html';
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false
+    });
 }]);
 
 var data_folder = "https://googledrive.com/host/0B4rKiNtdxe1NZ1NKa3ItTXR0RkU/";
