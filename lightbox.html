@@ -1,14 +1,11 @@
 <div class="modal-body" ng-swipe-left="Lightbox.nextImage()" ng-swipe-right="Lightbox.prevImage()">
   <div class="lightbox-image-container">
     <!-- citation -->
-<!--    <div class="lightbox-image-caption">-->
       <p class="citeline">
         <a ng-show="s.online" href="{{g.onlinePrefix}}{{s.online}}" target=_blank><img class="textBtn" src="images/online.svg" title="This story is available on the {{g.paperShortName}} website"></a>
         <span class="noWrap">{{g.paperName}}</span>
         <span class="noWrap">{{s.dateString}}</span> &ndash; page {{s.page}}
       </p>
-      <!--      <span>{{Lightbox.imageCaption}}</span>-->
-<!--    </div>-->
 
     <div class="lightbox-image" lightbox-src="{{Lightbox.imageUrl}}">
 
@@ -29,19 +26,20 @@
       </div>
     </div>
 
-<!--    <div class="lightbox-nav lb-nav">
-       close button 
+<!--    <div class="lightbox-nav lb-nav">-->
+<!--       close button -->
+      <button class="zoom" ng-click="" title="Fit to window"></button>
       <button class="close" aria-hidden="true" ng-click="Lightbox.closeModal()">×</button>
-      <ng-include src="'shareBtns'"></ng-include>
-    </div>-->
-
-    <!-- Navigation from http://lokeshdhakar.com/projects/lightbox2/-->
-    <!--
-        <div class="lb-nav" ng-if="Lightbox.images.length > 1" style="display: block;">
-            <a class="lb-prev" href="" style="display: block;" ng-click="Lightbox.prevImage()"></a>
-            <a class="lb-next" href="" style="display: block;" ng-click="Lightbox.nextImage()"></a>
+<!--    </div>-->
+<div class="lb-share-row">
+  <div class="lb-share">
+            <ng-include src="'shareBtns'"></ng-include>
+  </div>
+</div>
+        <div class="lb-nav" ng-if="Lightbox.images.length > 1">
+            <a class="lb-prev" ng-if="Lightbox.index > 0" href="" ng-click="Lightbox.prevImage()"></a>
+            <a class="lb-next" href=""  ng-if="Lightbox.index < Lightbox.images.length - 1" ng-click="Lightbox.nextImage()"></a>
         </div>
--->
 
   </div>
 </div>

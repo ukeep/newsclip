@@ -236,16 +236,16 @@ label.toDate {
 /* The Close Button */
 
 .close {
-    color: #d0daec;
+    /*  color: #d0daec;*/
     position: absolute;
-    right: 20px;
-    top: 0px;
-    font-size: 20px;
+    right: 0;
+    top: -10px;
+    font-size: 36px;
 }
 
 .close:hover,
 .close:focus {
-    color: #405398;
+    /*  color: #405398;*/
     text-decoration: none;
     cursor: pointer;
 }
@@ -278,13 +278,94 @@ label.toDate {
     overflow: auto;
     max-width: 100%;
     max-height: 100%;
- 
+}
+
+button.zoom {
+    position: absolute;
+    right: 20px;
+    top: -10px;
+    background-image: url("../images/fit_to_window.svg");
+    background-repeat: no-repeat;
+    background-color: white;
+    height: 35px;
+    width: 35px;
+    /*  background: transparent;*/
+    border: none;
+    background-position: center;
+    opacity: 0.2;
+}
+
+button.zoom:hover {
+    opacity: 0.5;
+}
+
+.lb-share-row {
+    position: absolute;
+    bottom: 20;
+    margin: auto;
+    width: 100%;
+}
+
+.lb-share {
+    display: inline-block;
+    background-color: white;
+    box-shadow: 0 0 20px 10px white;
+    padding: 5px 5px 0 0;
+}
+
+.lb-prev,
+.lb-next {
+    height: 200px;
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transition: opacity 0.6s;
+    -moz-transition: opacity 0.6s;
+    -o-transition: opacity 0.6s;
+    transition: opacity 0.6s;
+    box-shadow: 0 0 50px 25px rgba(0, 0, 0, 0.30);
+}
+
+.lb-nav {
+    height: 200px;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+}
+
+.lb-nav a.lb-prev {
+    width: 100px;
+    left: -15;
+    float: left;
+    background: url(../images/left_arrow.svg) left 48% no-repeat;
+    background-color: rgba(0, 0, 0, 0.30);
+    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+    opacity: 0;
+    border-top-right-radius: 200px;
+    border-bottom-right-radius: 200px;
+}
+
+.lb-nav a.lb-next {
+    width: 100px;
+    right: -15px;
+    float: right;
+    background: url(../images/right_arrow.svg) right 48% no-repeat;
+    background-color: rgba(0, 0, 0, 0.30);
+    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+    opacity: 0;
+    border-top-left-radius: 200px;
+    border-bottom-left-radius: 200px;
 }
 
 #stories {
     position: absolute;
     width: 100%;
-    overflow: auto;
+    /*    overflow: auto;*/
+    overflow: visible;
     height: 100%;
 }
 
