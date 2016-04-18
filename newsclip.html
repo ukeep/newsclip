@@ -26,8 +26,8 @@
     </script>
 </head>
 
-    <!--    <div id="stories" ng-controller="storyController as storyCtrl">-->
-    <div id="stories" infinite-scroll="addStories({{g.bucket}})" threshold="100" can-load="g.moreStories">
+<body ng-controller="pageController as p" infinite-scroll="addStories({{g.bucket}})" threshold="100" can-load="g.moreStories">
+    <div id="stories">
         <div class="story" id="{{s.link}}" ng-repeat="s in p.stories">
 
             <div class="details">
