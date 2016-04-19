@@ -7,38 +7,26 @@
         <span class="noWrap">{{s.dateString}}</span> &ndash; page {{s.page}}
       </p>
 
-    <div class="lightbox-image" lightbox-src="{{Lightbox.imageUrl}}">
+    <div class="lightbox-image" lightbox-size="{{Lightbox.imageUrl}}">
 
       <!-- image -->
-      <img ng-if="!Lightbox.isVideo(Lightbox.image)" ng-src="{{Lightbox.imageUrl}}">
-
-      <!-- video -->
-      <div ng-if="Lightbox.isVideo(Lightbox.image)" class="embed-responsive embed-responsive-16by9">
-        <!-- video file embedded directly -->
-        <video ng-if="!Lightbox.isSharedVideo(Lightbox.image)" lightbox-src="{{Lightbox.imageUrl}}" controls autoplay="true">
-        </video>
-
-        <!-- video embedded with an external service using
-           `ng-videosharing-embed` -->
-        <embed-video ng-if="Lightbox.isSharedVideo(Lightbox.image)" lightbox-src="{{Lightbox.imageUrl}}" ng-href="{{Lightbox.imageUrl}}" iframe-id="lightbox-video" class="embed-responsive-item">
-          <a ng-href="{{Lightbox.imageUrl}}">Watch video</a>
-        </embed-video>
-      </div>
+      <img ng-class="{true: 'fit', false: 'unfit'}[Lightbox.fit]" ng-src="{{Lightbox.imageUrl}}" ng-dblclick="{true: Lightbox.fit = !Lightbox.fit} [Lightbox.overSize]">
     </div>
 
-<!--    <div class="lightbox-nav lb-nav">-->
-<!--       close button -->
-      <button class="zoom" ng-click="" title="Fit to window"></button>
+    <!-- fit-to-window button -->
+      <button ng-if="Lightbox.overSize" ng-class="{true: 'zoom fit', false: 'zoom unfit'}[Lightbox.fit]" ng-click="Lightbox.fit = !Lightbox.fit" title="{{{true: 'Actual size', false: 'Fit to window'}[Lightbox.fit]}}"></button>
+
+    <!--       close button -->
       <button class="close" aria-hidden="true" ng-click="Lightbox.closeModal()">×</button>
-<!--    </div>-->
-<div class="lb-share-row">
+
+    <div class="lb-share-row">
   <div class="lb-share">
             <ng-include src="'shareBtns'"></ng-include>
   </div>
 </div>
         <div class="lb-nav" ng-if="Lightbox.images.length > 1">
-            <a class="lb-prev" ng-if="Lightbox.index > 0" href="" ng-click="Lightbox.prevImage()"></a>
-            <a class="lb-next" href=""  ng-if="Lightbox.index < Lightbox.images.length - 1" ng-click="Lightbox.nextImage()"></a>
+            <a class="lb-prev" ng-if="Lightbox.images.length > 1 && Lightbox.index > 0" href="" ng-click="Lightbox.prevImage()"></a>
+            <a class="lb-next" href=""  ng-if="Lightbox.images.length > 1 && Lightbox.index < Lightbox.images.length - 1" ng-click="Lightbox.nextImage()"></a>
         </div>
 
   </div>

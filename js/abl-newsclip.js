@@ -86,6 +86,12 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
    * @memberOf bootstrapLightbox.Lightbox
    */
   this.templateUrl = 'lightbox.html';
+  
+  // Whether Lightbox should fit oversize image to window
+  this.fit = false;
+
+  // Image is larger than window size
+  this.overSize = false;
 
   /**
    * Whether images should be scaled to the maximum possible dimensions.
@@ -268,6 +274,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     // defined above
     Lightbox.templateUrl = this.templateUrl;
     Lightbox.fullScreenMode = this.fullScreenMode;
+    Lightbox.fit = this.fit;
+    Lightbox.overSize = this.overSize;
     Lightbox.getImageUrl = this.getImageUrl;
     Lightbox.getImageCaption = this.getImageCaption;
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
@@ -570,13 +578,13 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
   }];
 });
 /**
- * @class     lightboxSrc
+ * @class     lightboxSize
  * @classdesc This attribute directive is used in an `<img>` element in the
  *   modal template in place of `src`. It handles resizing both the `<img>`
  *   element and its relevant parent elements within the modal.
  * @memberOf  bootstrapLightbox
  */
-angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
+angular.module('bootstrapLightbox').directive('lightboxSize', ['$window',
     'ImageLoader', 'Lightbox', function ($window, ImageLoader, Lightbox) {
   // Calculate the dimensions to display the image. The max dimensions override
   // the min dimensions if they conflict.
@@ -594,7 +602,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
 
 //    if (!fullScreenMode) {
       // resize the image if it is too small
-/*      if (w < minW && h < minH) {
+      if (w < minW && h < minH) {
         // the image is both too thin and short, so compare the aspect ratios to
         // determine whether to min the width or height
         if (w / h > maxW / maxH) {
@@ -612,23 +620,26 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         // the image is too short
         displayH = minH;
         displayW = Math.round(w * minH / h);
-      }*/
-
-      // Account for scrollbar
-      if (w > maxW) {
-        h += scrollbarWidth;
       }
-      if (h > maxH) {
-        w += scrollbarWidth;
+
+      Lightbox.overSize = false;
+      // Account for scrollbar
+      if (displayW > maxW) {
+        displayH += scrollbarWidth;
+        Lightbox.overSize = true;
+      }
+      if (displayH > maxH) {
+        displayW += scrollbarWidth;
+        Lightbox.overSize = true;
       }
 //    
-//    if (w < 381) {
-//      h += 9;
+//    if (displayW < 381) {
+//      displayH += 9;
 //    }
 
       // resize the image if it is too large
-      displayW = Math.min(w,maxW);
-      displayH = Math.min(h,maxH);
+      displayW = Math.min(displayW,maxW);
+      displayH = Math.min(displayH,maxH);
 
       /*      if (w > maxW && h > maxH) {
         // the image is both too tall and wide, so compare the aspect ratios
@@ -662,7 +673,9 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
 
     return {
       'width': displayW || 0,
-      'height': displayH || 0 // NaN is possible when dimensions.width is 0
+      'height': displayH || 0, // NaN is possible when dimensions.width is 0
+      'fullWidth': dimensions.width || 0,
+      'fullHeight': dimensions.height || 0
     };
   };
 
@@ -696,8 +709,8 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
           angular.extend({
             'width': imageWidth,
             'height': imageHeight,
-            'minWidth': 1,
-            'minHeight': 1,
+            'minWidth': 331,
+            'minHeight': 200,
             'maxWidth': 3000,
             'maxHeight': 3000,
           }, imageDimensionLimits),
@@ -716,12 +729,16 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         if (modalDimensions.height >= windowHeight - 75) {
           element.css({
           'width': imageDisplayDimensions.width + 'px',
-          'height': imageDisplayDimensions.height + 'px'
+          'height': imageDisplayDimensions.height + 'px',
+          'max-width': imageDisplayDimensions.fullWidth + 'px',
+          'max-height': imageDisplayDimensions.fullHeight + 'px'
         });
         } else {
           element.css({
           'width': '',
-          'height': ''
+          'height': '',
+          'max-width': '',
+          'max-height': ''
         }); 
         }
 
@@ -745,7 +762,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
 
       // load the new image and/or resize the video whenever the attr changes
       scope.$watch(function () {
-        return attrs.lightboxSrc;
+        return attrs.lightboxSize;
       }, function (src) {
         // do nothing if there's no image
         if (!Lightbox.image) {
