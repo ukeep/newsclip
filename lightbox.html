@@ -24,7 +24,7 @@
             <ng-include src="'shareBtns'"></ng-include>
   </div>
 </div>
-        <div class="lb-nav" ng-if="Lightbox.images.length > 1">
+        <div class="lb-nav" ng-if="Lightbox.images.length > 1"  ng-dblclick="{true: Lightbox.fit = !Lightbox.fit} [Lightbox.overSize]">
             <a class="lb-prev" ng-if="Lightbox.images.length > 1 && Lightbox.index > 0" href="" ng-click="Lightbox.prevImage()"></a>
             <a class="lb-next" href=""  ng-if="Lightbox.images.length > 1 && Lightbox.index < Lightbox.images.length - 1" ng-click="Lightbox.nextImage()"></a>
         </div>
