@@ -10,7 +10,7 @@
     <div class="lightbox-image" lightbox-size="{{Lightbox.imageUrl}}">
 
       <!-- image -->
-      <img ng-class="{true: 'fit', false: 'unfit'}[Lightbox.fit]" ng-src="{{Lightbox.imageUrl}}" ng-dblclick="{true: Lightbox.fit = !Lightbox.fit} [Lightbox.overSize]">
+      <img ng-class="{true: 'fit', false: 'unfit'}[Lightbox.fit]" ng-src="{{Lightbox.imageUrl}}" ng-dblclick="Lightbox.overSize && (Lightbox.fit = !Lightbox.fit)">
     </div>
 
     <!-- fit-to-window button -->
