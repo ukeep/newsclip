@@ -9,3 +9,4 @@ abl/
 uib/
 .brackets*
 *.min.*
+node_modules/

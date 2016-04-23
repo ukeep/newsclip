@@ -81,10 +81,12 @@ body {
     padding: 11px 0 15px 0;
 }
 
+/*
 input[type="date"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+*/
 
 label,
 #clearBtn {
@@ -93,6 +95,12 @@ label,
 
 label.toDate {
     margin-left: 0;
+}
+
+#fromDate,
+#toDate {
+    width: 120px;
+    padding: 0 5px;
 }
 
 #fromDate,

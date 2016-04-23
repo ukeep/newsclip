@@ -20,19 +20,19 @@ initVars: {
     var paperTwitterHandle = "@theleadernews";
     var hashtag = "econews";
 
-    function dayString(d) {
-        var t = d.getFullYear() + "-";
-        t += (d.getMonth() < 9) ? "0" : "";
-        t += d.getMonth() + 1 + "-";
-        t += (d.getDate() < 10) ? "0" : "";
-        t += d.getDate();
-        return t
+//    function dayString(d) {
+//        var t = d.getFullYear() + "-";
+//        t += (d.getMonth() < 9) ? "0" : "";
+//        t += d.getMonth() + 1 + "-";
+//        t += (d.getDate() < 10) ? "0" : "";
+//        t += d.getDate();
+//        return t
+//
+//    }
 
-    }
-
-    var firstDate = "2013-01-01";
-    var lastDate = dayString(new Date()); // If a fixed last date, use "yyyy-mm-dd"
-    var replyBy = 20; // Show reply button if story is less than these days old
+    var firstDate = new Date(2013, 0, 1);
+    var lastDate = new Date();
+    var replyBy = 20; // Show reply button if story less than replyBy days old
     var today = new Date();
     var cutoff = new Date();
     cutoff.setDate(today.getDate() - replyBy);
@@ -110,11 +110,11 @@ function init() {
 }
 
 function setDates() {
-    filterElem[iFromDate].min = firstDate;
-    filterElem[iFromDate].max = lastDate;
+//    filterElem[iFromDate].min = firstDate;
+//    filterElem[iFromDate].max = lastDate;
     filterElem[iFromDate].title = "Filter from date (default: start of archive)";
-    filterElem[iToDate].min = firstDate;
-    filterElem[iToDate].max = lastDate;
+//    filterElem[iToDate].min = firstDate;
+//    filterElem[iToDate].max = lastDate;
     filterElem[iToDate].title = "Filter to date (default: today)";
 }
 
@@ -159,8 +159,10 @@ function clearFilter() {
 
 function setInputs(fromFilter) {
     if (fromFilter) {
-        filterElem[iFromDate].value = filter.fromDate;
-        filterElem[iToDate].value = filter.toDate;
+        filterElem[iFromDate].value =
+            moment(filter.fromDate).format("D MMMM YYYY");
+        filterElem[iToDate].value =
+            moment(filter.toDate).format("D MMMM YYYY");
         filterElem[iTopic].value = filter.topics;
         filterElem[iPerson].value = filter.person;
         filterElem[iSearch].value = (searchStart) ? searchHint : filter.search;
@@ -169,21 +171,21 @@ function setInputs(fromFilter) {
     if (filter.fromDate == firstDate) {
         filterElem[iFromDate].style.color = inactive[col];
         filterElem[iFromDate].style.backgroundColor = inactive[bg];
-        if (!filterElem[iFromDate].required) filterElem[iFromDate].setAttribute("required", true);
+//        if (!filterElem[iFromDate].required) filterElem[iFromDate].setAttribute("required", true);
     } else {
         filterElem[iFromDate].style.color = active[col];
         filterElem[iFromDate].style.backgroundColor = active[bg];
-        if (filterElem[iFromDate].required) filterElem[iFromDate].removeAttribute("required");
+//        if (filterElem[iFromDate].required) filterElem[iFromDate].removeAttribute("required");
     }
 
     if (filter.toDate == lastDate) {
         filterElem[iToDate].style.color = inactive[col];
         filterElem[iToDate].style.backgroundColor = inactive[bg];
-        if (!filterElem[iToDate].required) filterElem[iToDate].setAttribute("required", true);
+//        if (!filterElem[iToDate].required) filterElem[iToDate].setAttribute("required", true);
     } else {
         filterElem[iToDate].style.color = active[col];
         filterElem[iToDate].style.backgroundColor = active[bg];
-        if (filterElem[iToDate].required) filterElem[iToDate].removeAttribute("required");
+//        if (filterElem[iToDate].required) filterElem[iToDate].removeAttribute("required");
     }
 
     filterElem[iTopic].style.color = (filter.topics) ? active[col] : inactive[col];
@@ -265,8 +267,8 @@ function writeStories(n, reset) {
 }
 
 function fitsThru(s) {
-    return s.date.substr(0, 10) >= filter.fromDate &&
-        s.date.substr(0, 10) <= filter.toDate &&
+    var d = new Date(s.date);
+    return d >= filter.fromDate && d <= filter.toDate &&
         (filter.person == "" || s.person.search(filter.person) > -1) &&
         (filter.topics == "" || s.topics.search(filter.topics) > -1) &&
         (filter.search == "" ||
