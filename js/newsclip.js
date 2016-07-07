@@ -317,7 +317,7 @@ function writeStories(n, reset) {
 }
 
 function fitsThru(s) {
-    var d = new Date(s.date);
+    var d = new Date(s.date + " 00:00");
     //    return d >= filter.fromDate && d <= filter.toDate &&
     return d <= filter.toDate &&
         (filter.person == "" || s.person.search(filter.person) > -1) &&
@@ -387,10 +387,12 @@ function formatStory(s) {
                 d.getFullYear();
 
             var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
+            
+            var dateObjString = "new Date(" + d.getFullYear() +","+ d.getMonth()+","+ d.getDate()+")";
 
             //            storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" + s.date + "\"; filter.toDate=\"" +
-            storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.toDate=\"" +
-                s.date + "\"; setInputs(true); writeStories(bucket, true)'>" +
+            storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.toDate= " +
+                dateObjString + "; setInputs(true); writeStories(bucket, true)'>" +
                 dateString + "</a></span>";
 
             storyDiv += " &ndash; page " + s.page + "</p>";
