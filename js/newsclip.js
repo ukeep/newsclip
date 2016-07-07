@@ -38,11 +38,16 @@ initVars: {
     cutoff.setDate(today.getDate() - replyBy);
 
     var filterElem = []; // Will reference the filter elements in header
-    var iFromDate = 0,
-        iToDate = 1,
-        iTopic = 2,
-        iPerson = 3,
-        iSearch = 4 // Indices to filterElem array
+    //    var iFromDate = 0,
+    //        iToDate = 1,
+    //        iTopic = 2,
+    //        iPerson = 3,
+    //        iSearch = 4 // Indices to filterElem array
+
+    var iToDate = 0,
+        iTopic = 1,
+        iPerson = 2,
+        iSearch = 3 // Indices to filterElem array
 
     var searchHint = "Search title or author";
 
@@ -72,16 +77,17 @@ initVars: {
 
     var writeNotice = true;
 
+    var fromPicker, toPicker;
 }
 
 function init() {
-    window.filterElem[iFromDate] = document.getElementById("fromDate");
+    //    window.filterElem[iFromDate] = document.getElementById("fromDate");
     window.filterElem[iToDate] = document.getElementById("toDate");
     window.filterElem[iTopic] = document.getElementById("topic");
     window.filterElem[iPerson] = document.getElementById("person");
     window.filterElem[iSearch] = document.getElementById("search");
 
-    setDates();
+    setDate();
     setTopics();
     setPeople();
 
@@ -107,14 +113,58 @@ function init() {
     infiniteScroll(scrollOptions); // setup infinite scroll
 
     window.addEventListener("resize", checkHeight, false);
+
+    //  fromPicker = new Pikaday({
+    //    defaultDate: firstDate,
+    //    field: document.getElementById("fromDate"),
+    //    format: "D MMMM YYYY",
+    //    maxDate: lastDate,
+    //    minDate: firstDate,
+    //    onOpen: function () {
+    //      window.setTimeout(function () {
+    //        if (!document.getElementById("fromDate").value) {
+    //          fromPicker.setDate(firstDate);
+    //          fromPicker.hide();
+    //        };
+    //      }, 250);
+    //    },
+    //    onSelect: function () {
+    //      filter.fromDate = this.getDate();
+    //      writeStories(bucket, true);
+    //      setInputs(false);
+    //    },
+    //    setDefaultDate: true
+    //  });
+
+    toPicker = new Pikaday({
+        defaultDate: lastDate,
+        field: document.getElementById("toDate"),
+        format: "D MMMM YYYY",
+        maxDate: lastDate,
+        minDate: firstDate,
+        onOpen: function () {
+            window.setTimeout(function () {
+                if (!document.getElementById("toDate").value) {
+                    toPicker.setDate(lastDate);
+                    toPicker.hide();
+                };
+            }, 250);
+        },
+        onSelect: function () {
+            filter.toDate = this.getDate();
+            writeStories(bucket, true);
+            setInputs(false);
+        },
+        setDefaultDate: true
+    });
 }
 
-function setDates() {
-//    filterElem[iFromDate].min = firstDate;
-//    filterElem[iFromDate].max = lastDate;
-    filterElem[iFromDate].title = "Filter from date (default: start of archive)";
-//    filterElem[iToDate].min = firstDate;
-//    filterElem[iToDate].max = lastDate;
+function setDate() {
+    //    filterElem[iFromDate].min = firstDate;
+    //    filterElem[iFromDate].max = lastDate;
+    //    filterElem[iFromDate].title = "Filter from date (default: start of archive)";
+    //    filterElem[iToDate].min = firstDate;
+    //    filterElem[iToDate].max = lastDate;
     filterElem[iToDate].title = "Filter to date (default: today)";
 }
 
@@ -148,7 +198,7 @@ function setPeople() {
 }
 
 function clearFilter() {
-    filter.fromDate = firstDate;
+    //    filter.fromDate = firstDate;
     filter.toDate = lastDate;
     filter.person = "";
     filter.topics = "";
@@ -159,8 +209,8 @@ function clearFilter() {
 
 function setInputs(fromFilter) {
     if (fromFilter) {
-        filterElem[iFromDate].value =
-            moment(filter.fromDate).format("D MMMM YYYY");
+        //        filterElem[iFromDate].value =
+        //            moment(filter.fromDate).format("D MMMM YYYY");
         filterElem[iToDate].value =
             moment(filter.toDate).format("D MMMM YYYY");
         filterElem[iTopic].value = filter.topics;
@@ -168,24 +218,24 @@ function setInputs(fromFilter) {
         filterElem[iSearch].value = (searchStart) ? searchHint : filter.search;
     }
 
-    if (filter.fromDate == firstDate) {
-        filterElem[iFromDate].style.color = inactive[col];
-        filterElem[iFromDate].style.backgroundColor = inactive[bg];
-//        if (!filterElem[iFromDate].required) filterElem[iFromDate].setAttribute("required", true);
-    } else {
-        filterElem[iFromDate].style.color = active[col];
-        filterElem[iFromDate].style.backgroundColor = active[bg];
-//        if (filterElem[iFromDate].required) filterElem[iFromDate].removeAttribute("required");
-    }
+    //    if (filter.fromDate == firstDate) {
+    //        filterElem[iFromDate].style.color = inactive[col];
+    //        filterElem[iFromDate].style.backgroundColor = inactive[bg];
+    ////        if (!filterElem[iFromDate].required) filterElem[iFromDate].setAttribute("required", true);
+    //    } else {
+    //        filterElem[iFromDate].style.color = active[col];
+    //        filterElem[iFromDate].style.backgroundColor = active[bg];
+    ////        if (filterElem[iFromDate].required) filterElem[iFromDate].removeAttribute("required");
+    //    }
 
     if (filter.toDate == lastDate) {
         filterElem[iToDate].style.color = inactive[col];
         filterElem[iToDate].style.backgroundColor = inactive[bg];
-//        if (!filterElem[iToDate].required) filterElem[iToDate].setAttribute("required", true);
+        //        if (!filterElem[iToDate].required) filterElem[iToDate].setAttribute("required", true);
     } else {
         filterElem[iToDate].style.color = active[col];
         filterElem[iToDate].style.backgroundColor = active[bg];
-//        if (filterElem[iToDate].required) filterElem[iToDate].removeAttribute("required");
+        //        if (filterElem[iToDate].required) filterElem[iToDate].removeAttribute("required");
     }
 
     filterElem[iTopic].style.color = (filter.topics) ? active[col] : inactive[col];
@@ -212,7 +262,7 @@ function showOnPageLoad(id) {
         return;
     }
 
-    filter.fromDate = stories[j].date;
+    //    filter.fromDate = stories[j].date;
     filter.toDate = stories[j].date;
     setInputs(true);
 
@@ -268,7 +318,8 @@ function writeStories(n, reset) {
 
 function fitsThru(s) {
     var d = new Date(s.date);
-    return d >= filter.fromDate && d <= filter.toDate &&
+    //    return d >= filter.fromDate && d <= filter.toDate &&
+    return d <= filter.toDate &&
         (filter.person == "" || s.person.search(filter.person) > -1) &&
         (filter.topics == "" || s.topics.search(filter.topics) > -1) &&
         (filter.search == "" ||
@@ -337,8 +388,8 @@ function formatStory(s) {
 
             var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
 
-            storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" +
-                s.date + "\"; filter.toDate=\"" +
+            //            storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" + s.date + "\"; filter.toDate=\"" +
+            storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.toDate=\"" +
                 s.date + "\"; setInputs(true); writeStories(bucket, true)'>" +
                 dateString + "</a></span>";
 

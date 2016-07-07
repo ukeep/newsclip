@@ -81,6 +81,7 @@ body {
     padding: 11px 0 15px 0;
 }
 
+
 /*
 input[type="date"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -97,13 +98,12 @@ label.toDate {
     margin-left: 0;
 }
 
-#fromDate,
 #toDate {
-    width: 120px;
+    width: 135px;
     padding: 0 5px;
+    height: 22.5px;
 }
 
-#fromDate,
 #toDate,
 #topic,
 #person {
