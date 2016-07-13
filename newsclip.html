@@ -62,33 +62,32 @@
                     </span>
                 </div>
             </div>
-            <div class="filterCell">
+            <div class="filterCell" class="noWrap">
                 <label class="toDate" for="toDate"><img src=images/date.svg title="Date"></label>
-                <input type=search id="toDate" onmouseover="this.style.color=active[col]" onmouseout="if (this.value == moment(lastDate).format('D MMMM YYYY')) {this.style.color = inactive[col]; this.style.backgroundColor = inactive[bg]} else {this.style.color = active[col]; this.style.backgroundColor = active[bg]}">
+                <input type="text" id="toDate" onmouseover="this.parentElement.classList.add('active')" onmouseout="if (!this.value || this.value == moment(lastDate).format('D MMMM YYYY')) {this.parentElement.classList.remove('active')} else {this.parentElement.classList.add('active')}"><button class="innerClear" onclick="clearDate()">✖</button>
             </div>
-            <div class=" filterCell ">
+            <div class="filterCell">
                 <label for="topic"><img src=images/topic.svg width=auto height=20 title="Filter by topic"></label>
-                <select id="topic" title="Filter by topic" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.topics=this.value; writeStories(bucket, true); setInputs(false)">
-
+                <select id="topic" title="Filter by topic" onmouseover="this.classList.add('active')" onmouseout="if (this.value) {this.classList.add('active')} else {this.classList.remove('active')}" onchange="filter.topics=this.value; writeStories(bucket, true); setInputs(false)">
                 </select>
             </div>
             <div class="filterCell">
                 <label for="person"><img src=images/person.svg width=auto height=20 title="Filter by SSEC member"></label>
-                <select id="person" title="Filter by SSEC member" onmouseover="this.style.color=active[col]" onmouseout="this.style.color = (this.value) ? active[col] : inactive[col];" onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
+                <select id="person" title="Filter by SSEC member" onmouseover="this.classList.add('active')" onmouseout="if (this.value) {this.classList.add('active')} else {this.classList.remove('active')}" onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
                 </select>
             </div>
             <span class="noWrap">
         <div class="filterCell">
-          <input type=text id=search onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.style.color=active[col]; this.style.fontStyle=active[fs]; if(searchStart) {this.value=''; searchStart = false}">
+          <input type=text id=search onkeydown="if (event.keyCode == 13) {document.getElementById('searchBtn').click()}" onClick=" this.classList.add('active'); if(searchStart) {this.value=''; searchStart = false}">
         </div>
         <div class="filterCell">
           <a href="javascript:;">
-          <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver=this.src='images/searchon.svg' onMouseOut=this.src='images/search.svg' onClick="searchStories()" title="Search">
+          <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver="this.src='images/searchon.svg'" onMouseOut="this.src='images/search.svg'" onClick="searchStories()" title="Search">
           </a>
         </div>
         <div class="filterCell">
           <a href="javascript:clearFilter(); writeStories(bucket, true)">
-          <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver=this.src='images/clearon.svg' onMouseOut=this.src='images/clear.svg' title="Clear search/filter">
+          <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver="this.src='images/clearon.svg'" onMouseOut="this.src='images/clear.svg'" title="Clear search/filter">
           </a>
         </div>
       </span>

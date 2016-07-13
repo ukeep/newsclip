@@ -20,15 +20,15 @@ initVars: {
     var paperTwitterHandle = "@theleadernews";
     var hashtag = "econews";
 
-//    function dayString(d) {
-//        var t = d.getFullYear() + "-";
-//        t += (d.getMonth() < 9) ? "0" : "";
-//        t += d.getMonth() + 1 + "-";
-//        t += (d.getDate() < 10) ? "0" : "";
-//        t += d.getDate();
-//        return t
-//
-//    }
+    //    function dayString(d) {
+    //        var t = d.getFullYear() + "-";
+    //        t += (d.getMonth() < 9) ? "0" : "";
+    //        t += d.getMonth() + 1 + "-";
+    //        t += (d.getDate() < 10) ? "0" : "";
+    //        t += d.getDate();
+    //        return t
+    //
+    //    }
 
     var firstDate = new Date(2013, 0, 1);
     var lastDate = new Date();
@@ -51,11 +51,11 @@ initVars: {
 
     var searchHint = "Search title or author";
 
-    var active = ["black", "#f8ecb9", "normal"];
-    var inactive = ["grey", "white", "italic"];
-    var col = 0,
-        bg = 1,
-        fs = 2;
+    //    var active = ["black", "#f8ecb9", "normal"];
+    //    var inactive = ["grey", "white", "italic"];
+    //    var col = 0,
+    //        bg = 1,
+    //        fs = 2;
 
     var view = "";
 
@@ -168,6 +168,13 @@ function setDate() {
     filterElem[iToDate].title = "Filter to date (default: today)";
 }
 
+function clearDate() {
+    filterElem[iToDate].value = moment(lastDate).format('D MMMM YYYY');
+    filter.toDate = moment(lastDate);
+    writeStories(bucket, true);
+    setInputs(false);
+}
+
 function setTopics() {
     var options = "<option value='' selected>(all)</option>";
     for (var i = 0; i < topics.length; i++) {
@@ -229,21 +236,30 @@ function setInputs(fromFilter) {
     //    }
 
     if (filter.toDate == lastDate) {
-        filterElem[iToDate].style.color = inactive[col];
-        filterElem[iToDate].style.backgroundColor = inactive[bg];
+        filterElem[iToDate].classList.remove("active");
         //        if (!filterElem[iToDate].required) filterElem[iToDate].setAttribute("required", true);
     } else {
-        filterElem[iToDate].style.color = active[col];
-        filterElem[iToDate].style.backgroundColor = active[bg];
+        filterElem[iToDate].classList.add("active");
         //        if (filterElem[iToDate].required) filterElem[iToDate].removeAttribute("required");
     }
 
-    filterElem[iTopic].style.color = (filter.topics) ? active[col] : inactive[col];
-    filterElem[iTopic].style.backgroundColor = (filter.topics) ? active[bg] : inactive[bg];
-    filterElem[iPerson].style.color = (filter.person) ? active[col] : inactive[col];
-    filterElem[iPerson].style.backgroundColor = (filter.person) ? active[bg] : inactive[bg];
-    filterElem[iSearch].style.color = (filter.search && !searchStart) ? active[col] : inactive[col];
-    filterElem[iSearch].style.backgroundColor = (filter.search && !searchStart) ? active[bg] : inactive[bg];
+    if (filter.topics) {
+        filterElem[iTopic].classList.add("active");
+    } else {
+        filterElem[iTopic].classList.remove("active");
+    };
+
+    if (filter.person) {
+        filterElem[iPerson].classList.add("active");
+    } else {
+        filterElem[iPerson].classList.remove("active");
+    };
+
+    if (filter.search && !searchStart) {
+        filterElem[iSearch].classList.add("active");
+    } else {
+        filterElem[iSearch].classList.remove("active");
+    };
 }
 
 function showOnPageLoad(id) {
@@ -387,8 +403,8 @@ function formatStory(s) {
                 d.getFullYear();
 
             var shortDate = month[d.getMonth()].substr(0, 3) + " " + d.getDate();
-            
-            var dateObjString = "new Date(" + d.getFullYear() +","+ d.getMonth()+","+ d.getDate()+")";
+
+            var dateObjString = "new Date(" + d.getFullYear() + "," + d.getMonth() + "," + d.getDate() + ")";
 
             //            storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" + s.date + "\"; filter.toDate=\"" +
             storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.toDate= " +
@@ -537,12 +553,9 @@ function searchStories() {
         writeStories(bucket, true);
     }
     if (s && !searchStart) {
-        sStyle.backgroundColor = active[bg];
-        sStyle.color = active[col];
-        sStyle.fontStyle = active[fs];
+        sStyle.classList.add("active");
     } else {
-        sStyle.color = inactive[col];
-        sStyle.backgroundColor = inactive[bg];
+        sStyle.classList.remove("active");
     }
 }
 
