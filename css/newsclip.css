@@ -79,6 +79,15 @@ body {
     font-size: small;
     vertical-align: bottom;
     padding: 11px 0 15px 0;
+    color: grey;
+    font-style: italic;
+}
+
+.filterCell img {
+    height: 20px;
+    width: auto;
+    vertical-align: middle;
+    margin-bottom: 2px;
 }
 
 input,
@@ -87,18 +96,27 @@ button {
     color: grey;
     background-color: white;
     font-style: italic;
+    border: 1px solid grey;
 }
 
 input.active,
 select.active,
 .active input,
 .active select,
-.active button
-{
+.active button {
     color: black;
-    background-color: #f8ecb9;
     font-style: normal;
-    border: 1px solid grey;
+    background-color: white;
+}
+
+input.set,
+select.set,
+.set input,
+.set select,
+.set button {
+    color: black;
+    font-style: normal;
+    background-color: #f8ecb9;
 }
 
 button.innerClear {
@@ -107,7 +125,7 @@ button.innerClear {
     height: 25px;
     font-style: normal;
 }
-    
+
 label,
 #clearBtn {
     margin-left: 8px;
@@ -128,14 +146,11 @@ label.toDate {
 #toDate,
 #topic,
 #person {
-    color: grey;
     height: 25;
     vertical-align: bottom;
 }
 
 #search {
-    color: grey;
-    font-style: italic;
     height: 24;
     width: 148;
     margin-left: 10px;

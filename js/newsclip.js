@@ -170,7 +170,7 @@ function setDate() {
 
 function clearDate() {
     filterElem[iToDate].value = moment(lastDate).format('D MMMM YYYY');
-    filter.toDate = moment(lastDate);
+    filter.toDate = lastDate;
     writeStories(bucket, true);
     setInputs(false);
 }
@@ -236,29 +236,29 @@ function setInputs(fromFilter) {
     //    }
 
     if (filter.toDate == lastDate) {
-        filterElem[iToDate].classList.remove("active");
+        filterElem[iToDate].parentElement.classList.remove("set");
         //        if (!filterElem[iToDate].required) filterElem[iToDate].setAttribute("required", true);
     } else {
-        filterElem[iToDate].classList.add("active");
+        filterElem[iToDate].parentElement.classList.add("set");
         //        if (filterElem[iToDate].required) filterElem[iToDate].removeAttribute("required");
     }
 
     if (filter.topics) {
-        filterElem[iTopic].classList.add("active");
+        filterElem[iTopic].classList.add("set");
     } else {
-        filterElem[iTopic].classList.remove("active");
+        filterElem[iTopic].classList.remove("set");
     };
 
     if (filter.person) {
-        filterElem[iPerson].classList.add("active");
+        filterElem[iPerson].classList.add("set");
     } else {
-        filterElem[iPerson].classList.remove("active");
+        filterElem[iPerson].classList.remove("set");
     };
 
     if (filter.search && !searchStart) {
-        filterElem[iSearch].classList.add("active");
+        filterElem[iSearch].classList.add("set");
     } else {
-        filterElem[iSearch].classList.remove("active");
+        filterElem[iSearch].classList.remove("set");
     };
 }
 
@@ -547,15 +547,15 @@ function copyTextToClipboard(text) {
 
 function searchStories() {
     var s = document.getElementById('search').value.trim().replace('\n', '');
-    var sStyle = document.getElementById('search').style;
+    var sElem = document.getElementById('search');
     if (!searchStart) {
         filter.search = RegExp(s, 'i');
         writeStories(bucket, true);
     }
     if (s && !searchStart) {
-        sStyle.classList.add("active");
+        sElem.classList.add("set");
     } else {
-        sStyle.classList.remove("active");
+        sElem.classList.remove("set");
     }
 }
 
