@@ -47,7 +47,9 @@ initVars: {
     var iToDate = 0,
         iTopic = 1,
         iPerson = 2,
-        iSearch = 3 // Indices to filterElem array
+        iSearch = 3,
+        iSearchBtn = 4,
+        iClearBtn = 5 // Indices to filterElem array
 
     var searchHint = "Search title or author";
 
@@ -86,6 +88,8 @@ function init() {
     window.filterElem[iTopic] = document.getElementById("topic");
     window.filterElem[iPerson] = document.getElementById("person");
     window.filterElem[iSearch] = document.getElementById("search");
+    window.filterElem[iSearchBtn] = document.getElementById("searchBtn");
+    window.filterElem[iClearBtn] = document.getElementById("clearBtn");
 
     setDate();
     setTopics();
@@ -211,10 +215,12 @@ function clearFilter() {
     filter.topics = "";
     filter.search = "";
     setInputs(true);
-
 };
 
 function setInputs(fromFilter) {
+    document.body.focus();
+    var filtered = false;
+
     if (fromFilter) {
         //        filterElem[iFromDate].value =
         //            moment(filter.fromDate).format("D MMMM YYYY");
@@ -240,26 +246,38 @@ function setInputs(fromFilter) {
         //        if (!filterElem[iToDate].required) filterElem[iToDate].setAttribute("required", true);
     } else {
         filterElem[iToDate].parentElement.classList.add("set");
+        filtered = true;
         //        if (filterElem[iToDate].required) filterElem[iToDate].removeAttribute("required");
     }
 
     if (filter.topics) {
         filterElem[iTopic].classList.add("set");
+        filtered = true;
     } else {
         filterElem[iTopic].classList.remove("set");
     };
 
     if (filter.person) {
         filterElem[iPerson].classList.add("set");
+        filtered = true;
     } else {
         filterElem[iPerson].classList.remove("set");
     };
 
     if (filter.search && !searchStart) {
         filterElem[iSearch].classList.add("set");
+        filterElem[iSearchBtn].classList.add("set");
+        filtered = true;
     } else {
         filterElem[iSearch].classList.remove("set");
+        filterElem[iSearchBtn].classList.remove("set");
     };
+
+    if (filtered) {
+        filterElem[iClearBtn].parentElement.classList.add("set", "notice");
+    } else {
+        filterElem[iClearBtn].parentElement.classList.remove("set", "notice");
+    }
 }
 
 function showOnPageLoad(id) {
@@ -552,11 +570,7 @@ function searchStories() {
         filter.search = RegExp(s, 'i');
         writeStories(bucket, true);
     }
-    if (s && !searchStart) {
-        sElem.classList.add("set");
-    } else {
-        sElem.classList.remove("set");
-    }
+    setInputs(false);
 }
 
 function showImg(id) {

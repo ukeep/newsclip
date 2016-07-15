@@ -106,14 +106,14 @@ select.active,
 .active button {
     color: black;
     font-style: normal;
-    background-color: white;
+/*    background-color: white;*/
 }
 
+/*div.set,*/
 input.set,
 select.set,
 .set input,
-.set select,
-.set button {
+.set select {
     color: black;
     font-style: normal;
     background-color: #f8ecb9;
@@ -126,8 +126,7 @@ button.innerClear {
     font-style: normal;
 }
 
-label,
-#clearBtn {
+label {
     margin-left: 8px;
 }
 
@@ -150,10 +149,63 @@ label.toDate {
     vertical-align: bottom;
 }
 
+.btnBg {
+    background-color: white;
+/*
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    margin: 0 0 15px 0;
+*/
+}
+
 #search {
     height: 24;
     width: 148;
     margin-left: 10px;
+}
+
+#searchBtn,
+#clearBtn {
+    background-color: white;
+    background-size: contain;
+    /*    width:auto;*/
+    width: 25px;
+    height: 25px;
+    border: 0;
+    opacity: .5;
+}
+
+#searchBtn {
+    background: url("../images/search.svg");
+    background-size: contain;
+}
+
+.btnBg + .btnBg {
+    margin-left: 8px;
+}
+
+#clearBtn {
+    background: url("../images/clear.svg");
+    background-size: contain;
+    opacity: 0.5;
+}
+
+#clearBtn:hover {
+    background: url("../images/clearon.svg");
+    background-size: contain;
+    opacity: 1;
+}
+
+#searchBtn:hover {
+    background: url("../images/searchon.svg");
+    background-size: contain;
+    opacity: 1;
+}
+
+#searchBtn.set,
+.set #clearBtn {
+    opacity: 1;
 }
 
 

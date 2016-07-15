@@ -64,7 +64,7 @@
             </div>
             <div class="filterCell" class="noWrap">
                 <label class="toDate" for="toDate"><img src=images/date.svg title="Date"></label>
-                <input type="text" id="toDate" onmouseover="this.parentElement.classList.add('active')" onmouseout="this.parentElement.classList.remove('active')"><button class="innerClear" onclick="clearDate()">✖</button>
+                <span><input type="text" id="toDate" onmouseover="this.parentElement.classList.add('active')" onmouseout="this.parentElement.classList.remove('active')"><button class="innerClear" onclick="clearDate()">✖</button></span>
             </div>
             <div class="filterCell">
                 <label for="topic"><img src=images/topic.svg title="Filter by topic"></label>
@@ -78,17 +78,16 @@
             </div>
             <span class="noWrap">
         <div class="filterCell">
-          <input type=text id=search onkeydown="if (event.keyCode == 13) {searchStories()}" onClick=" this.classList.add('active'); if(searchStart) {this.value=''; searchStart = false}">
+          <input type=text id=search onkeydown="if (event.keyCode == 13) {searchStories()}" onkeyup="if (this.value) {filterElem[iSearchBtn].classList.add('set')} else {filterElem[iSearchBtn].classList.remove('set')}" onClick=" this.classList.add('active'); if(searchStart) {this.value=''; searchStart = false}">
         </div>
         <div class="filterCell">
-          <a href="javascript:;">
-          <img id=searchBtn src=images/search.svg width=auto height=25 onMouseOver="this.src='images/searchon.svg'" onMouseOut="this.src='images/search.svg'" onClick="searchStories()" title="Search">
-          </a>
+            <div class="btnBg">
+          <button id=searchBtn onClick="searchStories(); window.setTimeout(function() {this.blur(); window.focus()},500)" title="Search"></button></div>
         </div>
         <div class="filterCell">
-          <a href="javascript:clearFilter(); writeStories(bucket, true)">
-          <img id="clearBtn" src=images/clear.svg width=auto height=25 onMouseOver="this.src='images/clearon.svg'" onMouseOut="this.src='images/clear.svg'" title="Clear search/filter">
-          </a>
+            <div class="btnBg">
+              <button id="clearBtn" onClick="clearFilter(); writeStories(bucket, true)" title="Clear search/filter"></button>
+            </div>
         </div>
       </span>
         </div>
