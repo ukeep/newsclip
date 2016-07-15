@@ -493,7 +493,8 @@ function formatStory(s) {
             storyDiv += "<img src='" +
                 thumbPrefix + s.link + "' title='Click to view' onclick=showImg('" + s.link + "')>";
         } else {
-            storyDiv += "<p class='note'>no image</p>"
+            var readOnline = (s.online) ? "<br><a href='" + onlinePrefix + s.online + "' target=_blank>Read online</a>" : "";
+            storyDiv += "<p class='note'>no image" + readOnline + "</p>"
         }
         storyDiv += "</div>";
     }
