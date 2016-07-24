@@ -368,14 +368,6 @@ label.toDate {
 }
 
 #imgBox {
-/*
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-*/
     transition: opacity 300ms ease-out;
     -webkit-transition: opacity 300ms ease-out;
     opacity: 0;
@@ -390,18 +382,10 @@ label.toDate {
 #shownImg {
     transition: max-width 0.6s, max-height 0.6s ease-out;
     -webkit-transition: max-width 0.6s, max-height 0.6s ease-out;
-
-/*    Size of a double-page spread on a 1920 x 1080 px display */
-    max-height: 2600px;
-    max-width: 3800px;
-}
-
-#shownImg.fit {
-    max-height: 100%;
-    max-width: 100%;
 }
 
 #zoomDiv {
+    display: block;
     position: absolute;
     right: 40px;
     top: 10px;
@@ -411,6 +395,10 @@ label.toDate {
     opacity: 0.5;
     background-color: white;
     border-radius: 3px;
+}
+
+#zoomDiv.hidden {
+    display: none;
 }
 
 #zoomBtn {
