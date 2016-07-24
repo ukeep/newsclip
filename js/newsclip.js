@@ -610,6 +610,26 @@ function showImg(id) {
     window.addEventListener("popstate", closeImg, false);
 }
 
+function zoomImg(clkEv) {
+    clkEv.stopPropagation();
+//    console.log("event propagation halted like a CHAMPION");
+    var imgElem = document.getElementById("shownImg");
+    var zoomElem = document.getElementById("zoomBtn");
+    if (hasClass(imgElem, "fit")) {
+        imgElem.classList.remove("fit");
+        zoomElem.classList.remove("fit");
+        zoomElem.title = "Fit to window";
+    } else {
+        imgElem.classList.add("fit");
+        zoomElem.classList.add("fit");
+        zoomElem.title = "Actual size";
+    }
+}
+
+function hasClass(element, cls) {
+    return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+}
+
 function closeImg() {
     var imgBox = document.getElementById("imgBox");
     var show = document.getElementById("show").style;
@@ -737,7 +757,7 @@ function dropPennant(f) {
     }
     pennantDown = f;
     document.body.style.top = -bodyTop + "px";
-    document.body.className += " noscroll";
+    document.body.classList.add("noscroll");
 }
 
 function raisePennant() {
@@ -749,7 +769,7 @@ function raisePennant() {
     document.getElementById("modal").style.transition = "top 500ms ease-out";;
     document.getElementById("modal").style.top = "-100%";
     pennantDown = "";
-    document.body.className = document.body.className.replace(" noscroll", "");
+    document.body.classList.remove("noscroll");
     dontScrollHeaderThisTime = hideHeader; // Tell scrollHeader not to run
     document.body.scrollTop = bodyTop;
 }
