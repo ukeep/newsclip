@@ -600,6 +600,22 @@ function showImg(id) {
     document.getElementById("shownImg").src =
         linkPrefix + id;
 
+    shownImg.addEventListener("load", checkImgSize, false);
+
+    imgBox.scrollTop = 0;
+    imgBox.scrollLeft = 0;
+
+    imgBox.style.opacity = 1;
+    window.addEventListener("keyup", showKey, false);
+    window.addEventListener("resize", checkHeight, false);
+    window.onbeforeunload = function () {
+        return "Click anywhere to close the image."
+    };
+    history.pushState("", document.title, "?s=" + id);
+    window.addEventListener("popstate", closeImg, false);
+}
+
+function checkImgSize() {
     if (shownImg.naturalHeight > window.innerHeight ||
         shownImg.naturalWidth > window.innerWidth) {
         oversize = true;
@@ -613,18 +629,6 @@ function showImg(id) {
         shownImg.addEventListener("touchend", touchImg, false);
         zoomDiv.classList.remove("hidden");
     }
-
-    imgBox.scrollTop = 0;
-    imgBox.scrollLeft = 0;
-
-    imgBox.style.opacity = 1;
-    window.addEventListener("keyup", showKey, false);
-    window.addEventListener("resize", checkHeight, false);
-    window.onbeforeunload = function () {
-        return "Click anywhere to close the image."
-    };
-    history.pushState("", document.title, "?s=" + id);
-    window.addEventListener("popstate", closeImg, false);
 }
 
 function touchImg(e) {
