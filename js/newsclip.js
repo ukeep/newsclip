@@ -103,12 +103,6 @@ function init() {
 
     document.getElementById("loadStories").style.display = "none";
 
-    if (window.location.search) {
-        showOnPageLoad(window.location.search);
-    } else {
-        writeStories(bucket, true);
-    }
-
     var scrollOptions = {
         distance: scrollSensor,
         callback: function (done) {
@@ -164,6 +158,12 @@ function init() {
         },
         setDefaultDate: true
     });
+
+    if (window.location.search) {
+        showOnPageLoad(window.location.search);
+    } else {
+        writeStories(bucket, true);
+    }
 }
 
 function setDate() {
@@ -284,11 +284,19 @@ function setInputs(fromFilter) {
 }
 
 function showOnPageLoad(id) {
+    var dStr = "";
+    var dateStory1 = -1;
 
     id = id.replace(/^\?s=/, "");
     // find story with that link(id)
     for (var j = 0; j < stories.length; j++) {
+        // Count from first story for the target date 
+        if (stories[j].date != dStr) {
+            dStr = stories[j].date;
+            dateStory1 = j;
+        }
         if (stories[j].link == id) {
+            dStr = stories[j].date;
             break;
         }
     }
@@ -300,10 +308,11 @@ function showOnPageLoad(id) {
     }
 
     //    filter.fromDate = stories[j].date;
-    filter.toDate = stories[j].date;
+    filter.toDate = new Date(stories[j].date + " 00:00");
+    //    filter.fromDate = new Date(stories[j].date + " 00:00");
     setInputs(true);
 
-    writeStories(Infinity, true); // Write all stories in filter
+    writeStories(j - dateStory1 + bucket + 1, true); // Write stories to target plus a few
     window.setTimeout(function () {
         document.getElementById(id).scrollIntoView();
     }, 250);
