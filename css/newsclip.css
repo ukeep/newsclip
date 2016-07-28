@@ -115,7 +115,8 @@ select.active,
 input.set,
 select.set,
 .set input,
-.set select {
+.set select,
+.set button {
     color: black;
     font-style: normal;
     background-color: #f8ecb9;
