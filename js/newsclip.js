@@ -316,6 +316,7 @@ function showOnPageLoad(id) {
     writeStories(j - dateStory1 + bucket + 1, true); // Write stories to target plus a few
     window.setTimeout(function () {
         document.getElementById(id).scrollIntoView();
+        window.scrollBy(0, -window.innerHeight/2); // Scroll element to middle of screen
     }, 250);
 
     showImg(id);
