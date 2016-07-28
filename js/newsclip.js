@@ -606,8 +606,8 @@ function showImg(id) {
     window.setTimeout(function () {
         document.body.style.overflow = "hidden";
     }, 250);
-    document.getElementById("shownImg").src =
-        linkPrefix + id;
+    document.getElementById("shownImg").src = "";
+    document.getElementById("shownImg").src = linkPrefix + id;
 
     shownImg.addEventListener("load", checkImgSize, false);
 
@@ -629,6 +629,9 @@ function checkImgSize() {
         shownImg.naturalWidth > window.innerWidth) {
         oversize = true;
         vscrollOutside();
+        if (shownImg.naturalHeight > window.innerHeight) {
+            shownImg.classList.add("overHeight");
+        }
         imgHeight = shownImg.naturalHeight;
         imgWidth = shownImg.naturalWidth;
         shownImg.style.maxHeight = imgHeight;
@@ -730,6 +733,7 @@ function closeImg() {
         zoomDiv.classList.add("hidden");
         shownImg.style.maxHeight = "";
         shownImg.style.maxWidth = "";
+        shownImg.classList.remove("overHeight");
     }
 
     if (view != "fullscreen") {
