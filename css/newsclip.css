@@ -625,6 +625,7 @@ hr {
         min-height: 130px;
         display: inline-block;
         width: 100%;
+        text-align: center;
     }
     .thumb img {
         max-height: 200px;
