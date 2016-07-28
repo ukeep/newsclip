@@ -308,7 +308,7 @@ function showOnPageLoad(id) {
     }
 
     if (dateStory1 > 0) {
-        filter.toDate = new Date(stories[j].date + " 00:00");
+        filter.toDate = new Date(stories[j].date + "T00:00");
     }
 
     setInputs(true);
@@ -365,7 +365,7 @@ function writeStories(n, reset) {
 }
 
 function fitsThru(s) {
-    var d = new Date(s.date + " 00:00");
+    var d = new Date(s.date + "T00:00");
     //    return d >= filter.fromDate && d <= filter.toDate &&
     return d <= filter.toDate &&
         (filter.person == "" || s.person.search(filter.person) > -1) &&
