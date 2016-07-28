@@ -307,9 +307,10 @@ function showOnPageLoad(id) {
         return;
     }
 
-    //    filter.fromDate = stories[j].date;
-    filter.toDate = new Date(stories[j].date + " 00:00");
-    //    filter.fromDate = new Date(stories[j].date + " 00:00");
+    if (dateStory1 > 0) {
+        filter.toDate = new Date(stories[j].date + " 00:00");
+    }
+
     setInputs(true);
 
     writeStories(j - dateStory1 + bucket + 1, true); // Write stories to target plus a few
