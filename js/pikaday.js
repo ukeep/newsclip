@@ -960,7 +960,9 @@
                     left - width + field.offsetWidth > 0
                 )
             ) {
-                left = left - width + field.offsetWidth;
+                // JD: Fix picker shifted left off screen on iPhone & Samsung Android
+                var myMargin = 10;
+                left = Math.max(myMargin, left - width + field.offsetWidth);
             }
             if ((this._o.reposition && top + height > viewportHeight + scrollTop) ||
                 (
@@ -968,7 +970,8 @@
                     top - height - field.offsetHeight > 0
                 )
             ) {
-                top = top - height - field.offsetHeight;
+                // JD: Equivalent to above fix in Y-dimension for consistency
+                top = Math.max(myMargin, top - height - field.offsetHeight);
             }
 
             this.el.style.left = left + 'px';
