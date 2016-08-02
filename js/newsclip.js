@@ -365,7 +365,8 @@ function writeStories(n, reset) {
 }
 
 function fitsThru(s) {
-    var d = new Date(s.date + "T00:00");
+    var d = new Date(s.date);
+    d.setHours(0,0,0,0);
     //    return d >= filter.fromDate && d <= filter.toDate &&
     return d <= filter.toDate &&
         (filter.person == "" || s.person.search(filter.person) > -1) &&
