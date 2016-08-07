@@ -76,20 +76,17 @@
                 <select id="person" title="Filter by SSEC member" onmouseover="this.classList.add('active')" onmouseout="this.classList.remove('active'); if (this.value) {this.classList.add('set')} else {this.classList.remove('set')}" onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
                 </select>
             </div>
-            <span class="noWrap">
-        <div class="filterCell">
-          <input type=text id=search onkeydown="if (event.keyCode == 13) {searchStories()}" onkeyup="if (this.value) {filterElem[iSearchBtn].classList.add('set')} else {filterElem[iSearchBtn].classList.remove('set')}" onClick=" this.classList.add('active'); if(searchStart) {this.value=''; searchStart = false}">
-        </div>
-        <div class="filterCell">
-            <div class="btnBg">
-          <button id=searchBtn onClick="searchStories(); window.setTimeout(function() {this.blur(); window.focus()},500)" title="Search"></button></div>
-        </div>
-        <div class="filterCell">
-            <div class="btnBg">
-              <button id="clearBtn" onClick="clearFilter(); writeStories(bucket, true)" title="Clear search/filter"></button>
+            <div class="filterCell">
+<!--                <span class="btnBg">-->
+                    <button id=searchBtn onClick="searchStories(); window.setTimeout(function() {this.blur(); window.focus()},500)" title="Search"></button>
+<!--                </span>-->
+                <input type=text id=search onkeydown="if (event.keyCode == 13) {searchStories()}" onkeyup="if (this.value) {filterElem[iSearchBtn].classList.add('set')} else {filterElem[iSearchBtn].classList.remove('set')}" onClick=" this.classList.add('active'); if(searchStart) {this.value=''; searchStart = false}">
             </div>
-        </div>
-      </span>
+            <div class="filterCell">
+                <div class="btnBg">
+                  <button id="clearBtn" onClick="clearFilter(); writeStories(bucket, true)" title="Clear search/filter"></button>
+                </div>
+            </div>
         </div>
     </div>
 

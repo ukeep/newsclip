@@ -73,6 +73,13 @@ body {
     vertical-align: middle;
 }
 
+.filterBlock {
+    text-align: left;
+    margin: auto;
+    /* PROBLEM */
+    width: 70%;
+}
+
 .filterCell {
     display: inline-block;
     font-weight: bold;
@@ -81,6 +88,7 @@ body {
     padding: 11px 0 15px 0;
     color: grey;
     font-style: italic;
+    margin-right: 8px;
 }
 
 .filterCell img {
@@ -129,6 +137,7 @@ button.innerClear {
     font-style: normal;
 }
 
+/*
 label {
     margin-left: 8px;
 }
@@ -136,6 +145,7 @@ label {
 label.toDate {
     margin-left: 0;
 }
+*/
 
 #toDate {
     width: 135px;
@@ -163,25 +173,27 @@ label.toDate {
 }
 
 #search {
-    height: 24;
-    width: 148;
-    margin-left: 10px;
+    height: 24px;
+/*    width: 148;*/
+/*    margin-left: 10px;*/
 }
 
 #searchBtn,
 #clearBtn {
     background-color: white;
     background-size: contain;
-    /*    width:auto;*/
+    background-repeat: no-repeat;
     width: 25px;
     height: 25px;
     border: 0;
-    opacity: .5;
 }
 
 #searchBtn {
-    background: url("../images/search.svg");
-    background-size: contain;
+    background-image: url("../images/search_label.svg");
+    vertical-align: bottom;
+    width: 20px;
+    height: 20px;
+    opacity: 1;
 }
 
 .btnBg + .btnBg {
@@ -189,20 +201,17 @@ label.toDate {
 }
 
 #clearBtn {
-    background: url("../images/clear.svg");
-    background-size: contain;
+    background-image: url("../images/clear.svg");
     opacity: 0.5;
 }
 
 #clearBtn:hover {
-    background: url("../images/clearon.svg");
-    background-size: contain;
+    background-image: url("../images/clearon.svg");
     opacity: 1;
 }
 
 #searchBtn:hover {
-    background: url("../images/searchon.svg");
-    background-size: contain;
+    background-image: url("../images/searchon.svg");
     opacity: 1;
 }
 
@@ -612,7 +621,14 @@ hr {
     }
     .filterCell {
         padding: 0 0 5px 0;
+        float: left;
     }
+/*
+    label {
+        margin-left: 0;
+        margin-right: 8px;
+    }
+*/
     .pennant {
         width: 325px;
     }
