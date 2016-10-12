@@ -1,7 +1,8 @@
 <?
     
 define('BASE_URL', 'http://ssec.org.au/dev/econews/');
-$data_folder = "https://googledrive.com/host/0B4rKiNtdxe1NZ1NKa3ItTXR0RkU/";
+// $data_folder = "https://googledrive.com/host/0B4rKiNtdxe1NZ1NKa3ItTXR0RkU/";
+$data_folder = "js/";
 $copyright = 'Fairfax Media Limited';
 
 $crawler = (preg_match('/facebookexternalhit|bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT']));
