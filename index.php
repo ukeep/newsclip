@@ -2,7 +2,16 @@
     
 define('BASE_URL', 'http://ssec.org.au/dev/econews/');
 // $data_folder = "https://googledrive.com/host/0B4rKiNtdxe1NZ1NKa3ItTXR0RkU/";
-$data_folder = "js/";
+// $data_folder = "js/";
+// $meta_json = 'econews_meta.json';
+// $img_prefix = 'https://drive.google.com/uc?id=';
+$data_path = 'https://drive.google.com/uc?id=';
+$meta_json_id = '0B4rKiNtdxe1NVEFnTmkzYTJlalU';
+$econews_js_id = '0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk';
+$econews_js = $data_path.$econews_js_id;
+$img_prefix = $data_path;
+$paperName = 'Sutherland Shire Leader';
+
 $copyright = 'Fairfax Media Limited';
 
 $crawler = (preg_match('/facebookexternalhit|bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT']));
@@ -23,11 +32,8 @@ if ($crawler) {
         set_defaults($title, $desc, $url, $img, $author);
     } else {
         $story_id = $_GET['s'];
-        $meta_json = 'econews_meta.json';
-        $img_prefix = 'https://drive.google.com/uc?id=';
-        $paperName = 'Sutherland Shire Leader';
 
-        $json = file_get_contents("$data_folder/$meta_json");
+        $json = file_get_contents($data_path.$meta_json_id);
         $meta = json_decode($json, true);
 
         $author = $meta[$story_id]['author'];
