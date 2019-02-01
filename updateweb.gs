@@ -8,9 +8,6 @@
 // Jonathan Doig jon@doig.net 15/2/2016
 
 function updateWeb() {
-    var sheetFileId = "18RO3nsWm1DzWVkDZ70GCRguPRZEpjWLZHOXqpr1EV1s",
-        jsonFileId = "0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk",
-        jsonMetaFileId = "0B4rKiNtdxe1NVEFnTmkzYTJlalU";
     var adminEmail = "jonathan.doig@gmail.com, sarah.a.roxas@gmail.com";
     var success = 0,
         fail = -1;
@@ -21,31 +18,8 @@ function updateWeb() {
         meta = {};
     var mail = true;
 
-    try {
-        var sheetFile = SpreadsheetApp.openById(sheetFileId);
-    } catch (e) {
-        errString = "Cannot open spreadsheet with ID '" + sheetFileId + "'\n" +
-            "Error: " + e.message + "\n";
-    }
 
-    try {
-        var jsonFile = DriveApp.getFileById(jsonFileId);
-    } catch (e) {
-        errString += (errString) ? "\n" : "";
-        errString += "Cannot open JSON data file with ID '" + jsonFileId +
-            "'\n" +
-            "Error: " + e.message + "\n";
-    }
-
-    try {
-        var jsonMetaFile = DriveApp.getFileById(jsonMetaFileId);
-    } catch (e) {
-        errString += (errString) ? "\n" : "";
-        errString += "Cannot open JSON metadata file with ID '" + jsonMetaFileId +
-            "'\n" +
-            "Error: " + e.message + "\n";
-    }
-
+    errString = openFiles();
     if (errString) {
         rtn(fail);
     };
@@ -69,6 +43,58 @@ function updateWeb() {
 
         rtn(success);
     }
+
+    function openFiles() {
+      var sheetFileId = "18RO3nsWm1DzWVkDZ70GCRguPRZEpjWLZHOXqpr1EV1s",
+          jsonFileId = "0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk",
+          jsonMetaFileId = "0B4rKiNtdxe1NVEFnTmkzYTJlalU";
+          jsonPrevMetaFileId = "1o5MOt0GUaHIMP_tAyiFbPnyjlhyXytN-";
+          jsonPrevStoriesFileId = "1outwVCT1UWNTSSJzSOcXjHPHS0SnXTBQ";
+
+      try {
+        sheetFile = SpreadsheetApp.openById(sheetFileId);
+      } catch (e) {
+          errString = "Cannot open spreadsheet with ID '" + sheetFileId + "'\n" +
+              "Error: " + e.message + "\n";
+      }
+
+      try {
+        jsonFile = DriveApp.getFileById(jsonFileId);
+      } catch (e) {
+          errString += (errString) ? "\n" : "";
+          errString += "Cannot open JSON data file with ID '" + jsonFileId +
+              "'\n" +
+              "Error: " + e.message + "\n";
+      }
+
+      try {
+        jsonMetaFile = DriveApp.getFileById(jsonMetaFileId);
+      } catch (e) {
+          errString += (errString) ? "\n" : "";
+          errString += "Cannot open JSON metadata file with ID '" + jsonMetaFileId +
+              "'\n" +
+              "Error: " + e.message + "\n";
+      }
+
+      try {
+        jsonPrevMetaFile = DriveApp.getFileById(jsonPrevMetaFileId);
+      } catch (e) {
+          errString += (errString) ? "\n" : "";
+          errString += "Cannot open JSON previous metadata file with ID '" + jsonPrevMetaFileId + "'\n" +
+              "Error: " + e.message + "\n";
+      }
+
+      try {
+        jsonPrevStoriesFile = DriveApp.getFileById(jsonPrevStoriesFileId);
+      } catch (e) {
+          errString += (errString) ? "\n" : "";
+          errString += "Cannot open JSON previous stories file with ID '" + jsonPrevStoriesFileId + "'\n" +
+              "Error: " + e.message + "\n";
+      }
+
+      return errString;
+    }
+
 
     // Perhaps these three functions could be one,
     // by passing all the differences as arguments...
