@@ -182,7 +182,7 @@ function updateWeb() {
             titleCol = 4,
             authorCol = 5,
             personCol = 6,
-            topicsCol = 14,
+            topicsCol = 15,
             linkCol = 7,
             onlineCol = 9;
 
