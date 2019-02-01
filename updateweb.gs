@@ -280,8 +280,8 @@ function updateWeb() {
         if (mail) {
             MailApp.sendEmail(adminEmail, heading, msg);
         } else {
-            document.getElementById("result").innerHTML =
-                "<h2>" + heading + "/h2><p>" + msg + "<\p>";
+            Logger.log(heading);
+            Logger.log(msg);
         }
 
     }
