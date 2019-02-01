@@ -4,10 +4,11 @@
 // * JSON file with story metadata. Read by PHP script to set meta tags for social media crawlers
 //
 // This script should be run after the spreadsheet is updated or edited.
-//   
+//
 // Jonathan Doig jon@doig.net 15/2/2016
 
 function updateWeb() {
+    var sheetFile, jsonFile, jsonMetaFile, jsonPrevMetaFile, jsonPrevStoriesFile;
     var adminEmail = "jonathan.doig@gmail.com, sarah.a.roxas@gmail.com";
     var success = 0,
         fail = -1;
@@ -27,11 +28,13 @@ function updateWeb() {
     if (Math.min(
             getTopics(topics),
             getPeople(people),
-            getStories(stories, meta)) == fail) {
+            getNewStories(stories, meta)) == fail) {
 
         rtn(fail);
 
     } else {
+        var stories = stories.concat(JSON.parse(jsonPrevStoriesFile));
+        var meta = meta.concat(JSON.parse(jsonPrevMetaFile));
 
         jsonFile.setContent(
             "var topics  = " + JSON.stringify(topics) + ";" +
@@ -168,8 +171,8 @@ function updateWeb() {
         return success;
     }
 
-    function getStories(tStories, tMeta) {
-        var startYear = 2013;
+    function getNewStories(tStories, tMeta) {
+        var startYear = 2019;
         var endYear = new Date().getFullYear();
         var startRow = 1; // = row 2
 
