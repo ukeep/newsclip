@@ -15,8 +15,8 @@ function updateWeb() {
     var errString = "";
     var topics = [],
         people = [],
-        stories = [],
-        meta = {};
+        newStories = [],
+        newMeta = {};
     var mail = true;
 
     ObjectAssignPolyfill(); // Object.Assign() is not supported by Google App Script
@@ -26,16 +26,26 @@ function updateWeb() {
         rtn(fail);
     };
 
+    // This actually returns Blob not JSON
+    var prevStories = jsonPrevStoriesFile.getAs('application/json');
+    var prevMeta = jsonPrevMetaFile.getAs('application/json');
+
+    // No idea why I need to do this conversion but couldn't find another way
+    prevStories = JSON.parse(prevStories.getDataAsString());
+    prevMeta = JSON.parse(prevMeta.getDataAsString());
+    // Logger.log("Date of first prev story: " + prevStories[0].date);
+    // Logger.log("Title of first prev meta: " + prevMeta["1oYUt_TFQLfBgYH4rm8XJmgZf4qtnFU93"].title);
+
     if (Math.min(
             getTopics(topics),
             getPeople(people),
-            getNewStories(stories, meta)) == fail) {
+            getNewStories(newStories, newMeta)) == fail) {
 
         rtn(fail);
 
     } else {
-        var stories = stories.concat(JSON.parse(jsonPrevStoriesFile));
-        var meta = meta.concat(JSON.parse(jsonPrevMetaFile));
+        var stories = newStories.concat(prevStories);
+        var meta = Object.assign(newMeta, prevMeta);
 
         jsonFile.setContent(
             "var topics  = " + JSON.stringify(topics) + ";" +
