@@ -61,8 +61,8 @@ function updateWeb() {
     function openFiles() {
       var sheetFileId = "18RO3nsWm1DzWVkDZ70GCRguPRZEpjWLZHOXqpr1EV1s",
           jsonFileId = "0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk",
-          jsonMetaFileId = "0B4rKiNtdxe1NVEFnTmkzYTJlalU";
-          jsonPrevMetaFileId = "1o5MOt0GUaHIMP_tAyiFbPnyjlhyXytN-";
+          jsonMetaFileId = "0B4rKiNtdxe1NVEFnTmkzYTJlalU",
+          jsonPrevMetaFileId = "1o5MOt0GUaHIMP_tAyiFbPnyjlhyXytN-",
           jsonPrevStoriesFileId = "1outwVCT1UWNTSSJzSOcXjHPHS0SnXTBQ";
 
       try {
