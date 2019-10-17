@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Times New Roman', serif;
     width: 100%;
 }
 
@@ -39,8 +39,8 @@ body {
 
 #title {
     display: inline-block;
-    color: #405398;
-    font: 25px "Pontano Sans", arial, sans-serif;
+    color: white;
+    font: 25px "Times New Roman", arial, serif;
     letter-spacing: -1px;
     margin: 0 0 5px 0;
     line-height: 80%;
@@ -52,7 +52,7 @@ body {
 }
 
 #title a {
-    color: #405398;
+    color: white;
     text-decoration: none;
     transition: all 200ms ease-in-out;
 }
@@ -237,7 +237,7 @@ label.toDate {
 }
 
 .pennant {
-    font: 14px "Pontano Sans", arial, sans-serif;
+    font: 14px "Times New Roman", arial, serif;
     color: #26315a;
     max-width: 395px;
     min-width: 300px;
