@@ -13,7 +13,6 @@ initVars: {
     var dontScrollHeaderThisTime = false;
     var bodyTop;
 
-    var onlinePrefix = "http://www.theleader.com.au/story/";
     var paperName = "Sutherland Shire Leader";
     var paperEmail = "Leader Letters <leaderletters@fairfaxmedia.com.au>";
     var paperShortName = "Leader";
@@ -66,7 +65,7 @@ initVars: {
 
     var showMargin = 10; // Margin between edge of window and full size news image
 
-    var next = 0; // Next story to display when scrolling to end of page 
+    var next = 0; // Next story to display when scrolling to end of page
     var bucket = 7; // Number of stories loaded to page at a time
     var scrollSensor = 50; // Add more content if within this distance of page end
     var filter = {};
@@ -290,7 +289,7 @@ function showOnPageLoad(id) {
     id = id.replace(/^\?s=/, "");
     // find story with that link(id)
     for (var j = 0; j < stories.length; j++) {
-        // Count from first story for the target date 
+        // Count from first story for the target date
         if (stories[j].date != dStr) {
             dStr = stories[j].date;
             dateStory1 = j;
@@ -393,7 +392,7 @@ function formatStory(s) {
             if (s.author || s.online) {
                 storyDiv += "<p class='byline'>";
                 if (s.online != "") {
-                    storyDiv += "<a href='" + onlinePrefix + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' title='This story is available on the " + paperShortName + " website'></a> ";
+                    storyDiv += "<a href='" + s.online + "' target=_blank><img class='textBtn' src='images/online.svg' title='This story is available on the " + paperShortName + " website'></a> ";
                 }
                 storyDiv += s.author + "</p>";
             }
@@ -508,7 +507,7 @@ function formatStory(s) {
             storyDiv += "<img src='" +
                 thumbPrefix + s.link + "' title='Click to view' onclick=showImg('" + s.link + "')>";
         } else {
-            var readOnline = (s.online) ? "<br><a href='" + onlinePrefix + s.online + "' target=_blank>Read online</a>" : "";
+            var readOnline = (s.online) ? "<br><a href='" + s.online + "' target=_blank>Read online</a>" : "";
             storyDiv += "<p class='note'>no image" + readOnline + "</p>"
         }
         storyDiv += "</div>";
