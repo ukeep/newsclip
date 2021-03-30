@@ -1,10 +1,7 @@
 initVars: {
     var linkPrefix = "https://drive.google.com/uc?export=view&id=";
-    //        var thumbPrefix = "https://drive.google.com/thumbnail?sz=h200&id=";
     var thumbPrefix = linkPrefix;
-    //            var sharePrefix = "https://drive.google.com/file/d/";
-    //            var shareSuffix = "/view?usp=sharing";
-    var maxheaderPercent = 0.10; // 0.07;
+    var maxheaderPercent = 0.10;
     var headerHeight, hideHeader, lastScrollTop;
     var headerShown = true;
     var subscribeHeight = 440;
@@ -22,16 +19,6 @@ initVars: {
     var oversize = false;
     var imgWidth, imgHeight;
 
-    //    function dayString(d) {
-    //        var t = d.getFullYear() + "-";
-    //        t += (d.getMonth() < 9) ? "0" : "";
-    //        t += d.getMonth() + 1 + "-";
-    //        t += (d.getDate() < 10) ? "0" : "";
-    //        t += d.getDate();
-    //        return t
-    //
-    //    }
-
     var firstDate = new Date(2013, 0, 1);
     var lastDate = new Date();
     var replyBy = 20; // Show reply button if story less than replyBy days old
@@ -40,11 +27,6 @@ initVars: {
     cutoff.setDate(today.getDate() - replyBy);
 
     var filterElem = []; // Will reference the filter elements in header
-    //    var iFromDate = 0,
-    //        iToDate = 1,
-    //        iTopic = 2,
-    //        iPerson = 3,
-    //        iSearch = 4 // Indices to filterElem array
 
     var iToDate = 0,
         iTopic = 1,
@@ -54,12 +36,6 @@ initVars: {
         iClearBtn = 5 // Indices to filterElem array
 
     var searchHint = "Search title or author";
-
-    //    var active = ["black", "#f8ecb9", "normal"];
-    //    var inactive = ["grey", "white", "italic"];
-    //    var col = 0,
-    //        bg = 1,
-    //        fs = 2;
 
     var view = "";
 
@@ -77,7 +53,6 @@ initVars: {
         "October", "November", "December");
 
     var scrollbarWidth = 17;
-    //            var justShown = false;
 
     var writeNotice = true;
 
@@ -85,7 +60,6 @@ initVars: {
 }
 
 function init() {
-    //    window.filterElem[iFromDate] = document.getElementById("fromDate");
     window.filterElem[iToDate] = document.getElementById("toDate");
     window.filterElem[iTopic] = document.getElementById("topic");
     window.filterElem[iPerson] = document.getElementById("person");
@@ -113,28 +87,6 @@ function init() {
     infiniteScroll(scrollOptions); // setup infinite scroll
 
     window.addEventListener("resize", checkHeight, false);
-
-    //  fromPicker = new Pikaday({
-    //    defaultDate: firstDate,
-    //    field: document.getElementById("fromDate"),
-    //    format: "D MMMM YYYY",
-    //    maxDate: lastDate,
-    //    minDate: firstDate,
-    //    onOpen: function () {
-    //      window.setTimeout(function () {
-    //        if (!document.getElementById("fromDate").value) {
-    //          fromPicker.setDate(firstDate);
-    //          fromPicker.hide();
-    //        };
-    //      }, 250);
-    //    },
-    //    onSelect: function () {
-    //      filter.fromDate = this.getDate();
-    //      writeStories(bucket, true);
-    //      setInputs(false);
-    //    },
-    //    setDefaultDate: true
-    //  });
 
     toPicker = new Pikaday({
         defaultDate: lastDate,
@@ -166,11 +118,6 @@ function init() {
 }
 
 function setDate() {
-    //    filterElem[iFromDate].min = firstDate;
-    //    filterElem[iFromDate].max = lastDate;
-    //    filterElem[iFromDate].title = "Filter from date (default: start of archive)";
-    //    filterElem[iToDate].min = firstDate;
-    //    filterElem[iToDate].max = lastDate;
     filterElem[iToDate].title = "Filter to date (default: today)";
 }
 
@@ -211,7 +158,6 @@ function setPeople() {
 }
 
 function clearFilter() {
-    //    filter.fromDate = firstDate;
     filter.toDate = lastDate;
     filter.person = "";
     filter.topics = "";
@@ -224,8 +170,6 @@ function setInputs(fromFilter) {
     var filtered = false;
 
     if (fromFilter) {
-        //        filterElem[iFromDate].value =
-        //            moment(filter.fromDate).format("D MMMM YYYY");
         filterElem[iToDate].value =
             moment(filter.toDate).format("D MMMM YYYY");
         filterElem[iTopic].value = filter.topics;
@@ -233,23 +177,11 @@ function setInputs(fromFilter) {
         filterElem[iSearch].value = (searchStart) ? searchHint : filter.search;
     }
 
-    //    if (filter.fromDate == firstDate) {
-    //        filterElem[iFromDate].style.color = inactive[col];
-    //        filterElem[iFromDate].style.backgroundColor = inactive[bg];
-    ////        if (!filterElem[iFromDate].required) filterElem[iFromDate].setAttribute("required", true);
-    //    } else {
-    //        filterElem[iFromDate].style.color = active[col];
-    //        filterElem[iFromDate].style.backgroundColor = active[bg];
-    ////        if (filterElem[iFromDate].required) filterElem[iFromDate].removeAttribute("required");
-    //    }
-
     if (filter.toDate == lastDate) {
         filterElem[iToDate].parentElement.classList.remove("set");
-        //        if (!filterElem[iToDate].required) filterElem[iToDate].setAttribute("required", true);
     } else {
         filterElem[iToDate].parentElement.classList.add("set");
         filtered = true;
-        //        if (filterElem[iToDate].required) filterElem[iToDate].removeAttribute("required");
     }
 
     if (filter.topics) {
@@ -366,7 +298,6 @@ function writeStories(n, reset) {
 function fitsThru(s) {
     var d = new Date(s.date);
     d.setHours(0,0,0,0);
-    //    return d >= filter.fromDate && d <= filter.toDate &&
     return d <= filter.toDate &&
         (filter.person == "" || s.person.search(filter.person) > -1) &&
         (filter.topics == "" || s.topics.search(filter.topics) > -1) &&
@@ -438,7 +369,6 @@ function formatStory(s) {
 
             var dateObjString = "new Date(" + d.getFullYear() + "," + d.getMonth() + "," + d.getDate() + ")";
 
-            //            storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.fromDate=\"" + s.date + "\"; filter.toDate=\"" +
             storyDiv += "<span class='noWrap'>" + "<a href='javascript:;' onClick='clearFilter(); filter.toDate= " +
                 dateObjString + "; setInputs(true); writeStories(bucket, true)'>" +
                 dateString + "</a></span>";
@@ -500,10 +430,6 @@ function formatStory(s) {
     thumbDiv: {
         storyDiv += "<div class='thumb'>";
         if (s.link) {
-
-            // Drop loadImg: not appearing till main image loads anyway
-            // storyDiv += "<img class='loadImg' src='images/loadimg.svg'>";
-
             storyDiv += "<img src='" +
                 thumbPrefix + s.link + "' title='Click to view' onclick=showImg('" + s.link + "')>";
         } else {
@@ -560,7 +486,6 @@ function copyTextToClipboard(text) {
     // Avoid flash of white box if rendered for any reason.
     textArea.style.background = 'transparent';
 
-
     textArea.value = text;
 
     document.body.appendChild(textArea);
@@ -570,7 +495,6 @@ function copyTextToClipboard(text) {
     try {
         var successful = document.execCommand('copy');
         var msg = successful ? 'successful' : 'unsuccessful';
-        //        console.log('Copying text command was ' + msg);
     } catch (err) {
         console.error('Oops, unable to copy');
     }
@@ -752,7 +676,6 @@ function closeImg() {
     imgBox.style.width = "auto";
     imgBox.style.opacity = 0;
     window.removeEventListener("keyup", showKey);
-    //    window.removeEventListener("resize", vscrollOutside);
     window.onbeforeunload = "";
 
     window.removeEventListener("popstate", closeImg);
