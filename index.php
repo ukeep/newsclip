@@ -1,10 +1,6 @@
 <?
     
 define('BASE_URL', 'http://ssec.org.au/dev/econews/');
-// $data_folder = "https://googledrive.com/host/0B4rKiNtdxe1NZ1NKa3ItTXR0RkU/";
-// $data_folder = "js/";
-// $meta_json = 'econews_meta.json';
-// $img_prefix = 'https://drive.google.com/uc?id=';
 $data_path = 'https://drive.google.com/uc?id=';
 $meta_json_id = '0B4rKiNtdxe1NVEFnTmkzYTJlalU';
 $econews_js_id = '0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk';
