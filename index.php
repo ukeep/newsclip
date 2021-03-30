@@ -8,7 +8,7 @@ $econews_js = $data_path.$econews_js_id;
 $img_prefix = $data_path;
 $paperName = 'Sutherland Shire Leader';
 
-$copyright = 'Fairfax Media Limited';
+$copyright = 'Australian Community Media Pty Ltd';
 
 $crawler = (preg_match('/facebookexternalhit|bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT']));
 
