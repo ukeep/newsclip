@@ -16,33 +16,33 @@
     <!--    <meta name="application-name" content=""/>-->
 
     <?php if(!empty($author)): ?>
-        <meta name="author" content="<?=$author?>" />
-        <?php endif; ?>
+    <meta name="author" content="<?=$author?>" />
+    <?php endif; ?>
 
-            <!-- for Facebook -->
-            <meta property="og:title" content="<?=$title?>" />
-            <meta property="og:type" content="website" />
-            <meta property="og:url" content="<?=$url?>" />
-            <meta property="og:description" content="<?=$desc?>" />
-            <meta property="og:image" content="<?=$img?>" />
+    <!-- for Facebook -->
+    <meta property="og:title" content="<?=$title?>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<?=$url?>" />
+    <meta property="og:description" content="<?=$desc?>" />
+    <meta property="og:image" content="<?=$img?>" />
 
-            <!-- for Twitter -->
-            <!--    <meta name="twitter:card" content="summary"/>-->
-            <meta name="twitter:title" content="<?=$title?>" />
-            <meta name="twitter:description" content="<?=$desc?>" />
-            <meta name="twitter:image" content="<?=$img?>" />
+    <!-- for Twitter -->
+    <!--    <meta name="twitter:card" content="summary"/>-->
+    <meta name="twitter:title" content="<?=$title?>" />
+    <meta name="twitter:description" content="<?=$desc?>" />
+    <meta name="twitter:image" content="<?=$img?>" />
 
-            <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" />
-            <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-            <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
-            <link rel=stylesheet href="css/newsclip.css">
-            <link rel=stylesheet href="css/pikaday.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
+    <link rel=stylesheet href="css/newsclip.css">
+    <link rel=stylesheet href="css/pikaday.css">
 
-            <script type="text/javascript" src="js/newsclip.js" async></script>
+    <script type="text/javascript" src="js/newsclip.js" async></script>
 
-            <script type="text/javascript" src="<?=$econews_js?>" async></script>
+    <script type="text/javascript" src="<?=$econews_js?>" async></script>
 
-            <script type="text/javascript" src="js/infinite-scroll.js" async></script>
+    <script type="text/javascript" src="js/infinite-scroll.js" async></script>
 
 </head>
 
@@ -58,38 +58,52 @@
                     <a href="/" title="SSEC home page">SSEC</a> Leader ecoNews
                     <br>
                     <span id="headerLinks">
-<a href="javascript:;" onclick="dropPennant('subscribe');">Subscribe</a> <span class="divider"> </span><a href="javascript:;" onclick="dropPennant('about');">About</a>
+                        <a href="javascript:;" onclick="dropPennant('subscribe');">Subscribe</a> <span class="divider">
+                        </span><a href="javascript:;" onclick="dropPennant('about');">About</a>
                     </span>
                 </div>
             </div>
             <div class="filterCell" class="noWrap">
                 <label class="toDate" for="toDate"><img src=images/date.svg title="Date"></label>
-                <span><input type="text" id="toDate" readonly="true" onmouseover="this.parentElement.classList.add('active')" onmouseout="this.parentElement.classList.remove('active')"><button class="innerClear" onclick="clearDate()">✖</button></span>
+                <span><input type="text" id="toDate" readonly="true"
+                        onmouseover="this.parentElement.classList.add('active')"
+                        onmouseout="this.parentElement.classList.remove('active')"><button class="innerClear"
+                        onclick="clearDate()">✖</button></span>
             </div>
             <div class="filterCell">
                 <label for="topic"><img src=images/topic.svg title="Filter by topic"></label>
-                <select id="topic" title="Filter by topic" onmouseover="this.classList.add('active')" onmouseout="this.classList.remove('active'); if (this.value) {this.classList.add('set')} else {this.classList.remove('set')}" onchange="filter.topics=this.value; writeStories(bucket, true); setInputs(false)">
+                <select id="topic" title="Filter by topic" onmouseover="this.classList.add('active')"
+                    onmouseout="this.classList.remove('active'); if (this.value) {this.classList.add('set')} else {this.classList.remove('set')}"
+                    onchange="filter.topics=this.value; writeStories(bucket, true); setInputs(false)">
                 </select>
             </div>
             <div class="filterCell">
                 <label for="person"><img src=images/person.svg title="Filter by SSEC member"></label>
-                <select id="person" title="Filter by SSEC member" onmouseover="this.classList.add('active')" onmouseout="this.classList.remove('active'); if (this.value) {this.classList.add('set')} else {this.classList.remove('set')}" onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
+                <select id="person" title="Filter by SSEC member" onmouseover="this.classList.add('active')"
+                    onmouseout="this.classList.remove('active'); if (this.value) {this.classList.add('set')} else {this.classList.remove('set')}"
+                    onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
                 </select>
             </div>
             <span class="noWrap">
-        <div class="filterCell">
-          <input type=text id=search onkeydown="if (event.keyCode == 13) {searchStories()}" onkeyup="if (this.value) {filterElem[iSearchBtn].classList.add('set')} else {filterElem[iSearchBtn].classList.remove('set')}" onClick=" this.classList.add('active'); if(searchStart) {this.value=''; searchStart = false}">
-        </div>
-        <div class="filterCell">
-            <div class="btnBg">
-          <button id=searchBtn onClick="searchStories(); window.setTimeout(function() {this.blur(); window.focus()},500)" title="Search"></button></div>
-        </div>
-        <div class="filterCell">
-            <div class="btnBg">
-              <button id="clearBtn" onClick="clearFilter(); writeStories(bucket, true)" title="Clear search/filter"></button>
-            </div>
-        </div>
-      </span>
+                <div class="filterCell">
+                    <input type=text id=search onkeydown="if (event.keyCode == 13) {searchStories()}"
+                        onkeyup="if (this.value) {filterElem[iSearchBtn].classList.add('set')} else {filterElem[iSearchBtn].classList.remove('set')}"
+                        onClick=" this.classList.add('active'); if(searchStart) {this.value=''; searchStart = false}">
+                </div>
+                <div class="filterCell">
+                    <div class="btnBg">
+                        <button id=searchBtn
+                            onClick="searchStories(); window.setTimeout(function() {this.blur(); window.focus()},500)"
+                            title="Search"></button>
+                    </div>
+                </div>
+                <div class="filterCell">
+                    <div class="btnBg">
+                        <button id="clearBtn" onClick="clearFilter(); writeStories(bucket, true)"
+                            title="Clear search/filter"></button>
+                    </div>
+                </div>
+            </span>
         </div>
     </div>
 
@@ -97,11 +111,14 @@
 
     <!-- Begin MailChimp Signup Form -->
     <div id="mc_embed_signup" class="pennant">
-        <form action="//ssec.us2.list-manage.com/subscribe/post?u=eb6ab4030129e1d2e792b698e&amp;id=02f3d3fd50" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+        <form action="//ssec.us2.list-manage.com/subscribe/post?u=eb6ab4030129e1d2e792b698e&amp;id=02f3d3fd50"
+            method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+            target="_blank" novalidate>
             <div id="mc_embed_signup_scroll">
                 <span class="close" onclick="raisePennant()" title="Close">&#10006;</span>
                 <h2>Get Leader ecoNews in your inbox
-<span class="noWrap">each week</span>.</h2>
+                    <span class="noWrap">each week</span>.
+                </h2>
                 <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
                 <div class="mc-field-group">
                     <label for="mce-EMAIL">Email Address <span class="asterisk">*</span>
@@ -122,11 +139,13 @@
                     <strong>Subscribe me to: </strong>
                     <ul>
                         <li>
-                            <input type="checkbox" value="1" checked name="group[18357][1]" id="mce-group[18357]-18357-0">
+                            <input type="checkbox" value="1" checked name="group[18357][1]"
+                                id="mce-group[18357]-18357-0">
                             <label for="mce-group[18357]-18357-0">SSEC Newsletter (monthly)</label>
                         </li>
                         <li>
-                            <input type="checkbox" value="2" checked name="group[18357][2]" id="mce-group[18357]-18357-1">
+                            <input type="checkbox" value="2" checked name="group[18357][2]"
+                                id="mce-group[18357]-18357-1">
                             <label for="mce-group[18357]-18357-1">Leader ecoNews (weekly)</label>
                         </li>
                     </ul>
@@ -152,17 +171,22 @@
             <span class="close" onclick="raisePennant()" title="Close">&#10006;</span>
             <h2>Leader ecoNews</h2>
             <h3>Environmental news monitoring for the Shire</h3>
-            <p>Browse and search our catalogue of well over a thousand stories from the Sutherland Shire edition of <span class="noWrap"><i><a href="theleader.com.au" target="_blank">The Leader</a></i></span> newspaper. Stay up-to-date with local news and views on environmental topics:
+            <p>Browse and search our catalogue of well over a thousand stories from the Sutherland Shire edition of
+                <span class="noWrap"><i><a href="theleader.com.au" target="_blank">The Leader</a></i></span> newspaper.
+                Stay up-to-date with local news and views on environmental topics:
             </p>
             <div id="topicHelp" class="table">
             </div>
 
             <p>
-                Our news archive commenced in 2013. We started a weekly mailout to SSEC members and supporters in 2015 &ndash; <a href="javascript:;" onclick="raisePennant(); dropPennant('subscribe');">subscribe here</a>. This web app was launched in 2016.
+                Our news archive commenced in 2013. We started a weekly mailout to SSEC members and supporters in 2015
+                &ndash; <a href="javascript:;" onclick="raisePennant(); dropPennant('subscribe');">subscribe here</a>.
+                This web app was launched in 2016.
             </p>
             <p>
                 Content: <a href="https://www.facebook.com/sarah.a.roxas" target="_blank">Sarah Roxas</a>.
-                <a href="https://github.com/ukeep/newsclip" target="_blank">Newsclip</a> app: <a href="http://fb.com/jondoig" target="_blank">Jonathan Doig</a>.
+                <a href="https://github.com/ukeep/newsclip" target="_blank">Newsclip</a> app: <a
+                    href="http://fb.com/jondoig" target="_blank">Jonathan Doig</a>.
                 <a href="http://ssec.org.au/index.php/contact/">Feedback welcome</a>.
             </p>
         </div>
@@ -175,7 +199,8 @@
     <div id="show" onClick=closeImg() title="Click anywhere to close">
         <div id="imgBox">
             <img id="shownImg">
-            <div id="zoomDiv" class="whiteBg hidden"><button id="zoomBtn" onclick="toggleZoom(event)" title="Fit to window"></button></div>
+            <div id="zoomDiv" class="whiteBg hidden"><button id="zoomBtn" onclick="toggleZoom(event)"
+                    title="Fit to window"></button></div>
             <span class="close" title="Close">&#10006;</span>
         </div>
     </div>
