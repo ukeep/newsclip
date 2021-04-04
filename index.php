@@ -1,4 +1,4 @@
-<?
+<?php
     
 define('BASE_URL', 'http://ssec.org.au/dev/econews/');
 $data_path = 'https://drive.google.com/uc?id=';
@@ -45,3 +45,5 @@ if ($crawler) {
     set_defaults($title, $desc, $url, $img, $author);
     include('newsclip.html');
 }
+
+?>
