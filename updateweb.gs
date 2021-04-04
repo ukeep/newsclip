@@ -196,6 +196,7 @@ function updateWeb() {
 
         // These constant strings will be stripped from URLs to save space and I/O time
         var linkPrefix = /https:\/\/d(rive|ocs).google.com\/file\/d\//;
+        var linkSuffix = /\/(view|edit)\?usp=[a-z_]*/;
         // var onlinePrefix = "http://www.theleader.com.au/story/";
         var onlinePrefix = "";
 
