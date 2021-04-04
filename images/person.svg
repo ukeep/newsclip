@@ -14,7 +14,7 @@
    viewBox="0 0 30.658671 29.999998"
    id="svg2"
    version="1.1"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="person.svg">
   <defs
      id="defs4" />
@@ -36,9 +36,9 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:window-width="1920"
-     inkscape:window-height="1000"
-     inkscape:window-x="-11"
-     inkscape:window-y="1285"
+     inkscape:window-height="1005"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -60,20 +60,20 @@
     <g
        id="g4229"
        transform="matrix(0.0597528,0,0,0.0597528,108.60584,630.45899)"
-       style="fill:#ffffff;fill-opacity:1">
+       style="fill:#405398;fill-opacity:1">
       <path
          inkscape:connector-curvature="0"
          id="path3362"
          transform="translate(115.01556,167.97785)"
          d="m 257.01367,236.86719 a 256.58829,266.68982 0 0 1 18.94336,0.8164 256.58829,266.68982 0 0 0 -18.92578,-0.8164 256.58829,266.68982 0 0 0 -0.0176,0 z m -1.12305,0.0586 a 256.58829,266.68982 0 0 0 -115.53124,29.42969 256.58829,266.68982 0 0 1 115.53124,-29.42969 z m 29.72657,1.9375 a 256.58829,266.68982 0 0 1 16.39648,2.25586 256.58829,266.68982 0 0 0 -16.39648,-2.25586 z m 22.81445,3.72656 a 256.58829,266.68982 0 0 1 18.95703,4.64649 256.58829,266.68982 0 0 0 -18.95703,-4.64649 z m 22.56445,5.87696 a 256.58829,266.68982 0 0 1 21.01758,7.51758 256.58829,266.68982 0 0 0 -21.01758,-7.51758 z m 22.09766,8.01562 A 256.58829,266.68982 0 0 1 375.47266,267.19336 177.68271,173.84845 0 0 1 256.99414,311.73047 177.68271,173.84845 0 0 1 138.60547,267.23633 256.58829,266.68982 0 0 0 0.4921875,502.54688 l 513.0917925,0 A 256.58829,266.68982 0 0 0 353.09375,256.48242 Z"
-         style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.98091358px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" />
+         style="opacity:1;fill:#405398;fill-rule:evenodd;stroke:none;stroke-width:0.98091358px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" />
       <ellipse
          ry="137.40326"
          rx="140.43372"
          cy="305.8595"
          cx="372.04724"
          id="path3358"
-         style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.95495909px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" />
+         style="opacity:1;fill:#405398;fill-rule:evenodd;stroke:none;stroke-width:0.95495909px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" />
     </g>
   </g>
 </svg>
