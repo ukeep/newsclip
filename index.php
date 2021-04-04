@@ -1,10 +1,9 @@
-<?
+<?php
     
 define('BASE_URL', 'http://ssec.org.au/dev/econews/');
 $data_path = 'https://drive.google.com/uc?id=';
-$meta_json_id = '0B4rKiNtdxe1NVEFnTmkzYTJlalU';
-$econews_js_id = '0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk';
-$econews_js = $data_path.$econews_js_id;
+$meta_json_id = '0B4rKiNtdxe1NVEFnTmkzYTJlalU';  // econews_meta.json
+$data_json_id = '0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk'; // econews.json
 $img_prefix = $data_path;
 $paperName = 'Sutherland Shire Leader';
 
@@ -42,6 +41,9 @@ if ($crawler) {
 
     include "scraper_template.php";
 } else {
+    $data = file_get_contents($data_path.$data_json_id);
     set_defaults($title, $desc, $url, $img, $author);
     include('newsclip.html');
 }
+
+?>

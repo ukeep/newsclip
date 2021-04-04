@@ -4,6 +4,8 @@
 // * JSON file with story metadata. Read by PHP script to set meta tags for social media crawlers
 //
 // This script should be run after the spreadsheet is updated or edited.
+//
+// Jon Doig 15/2/2016
 
 function updateWeb() {
     var sheetFile, jsonFile, jsonMetaFile, jsonPrevMetaFile, jsonPrevStoriesFile;
@@ -46,9 +48,9 @@ function updateWeb() {
         var meta = Object.assign(newMeta, prevMeta);
 
         jsonFile.setContent(
-            "var topics  = " + JSON.stringify(topics) + ";" +
-            "var people  = " + JSON.stringify(people) + ";" +
-            "var stories = " + JSON.stringify(stories) + ";"
+            "{\"topiclist\":" + JSON.stringify(topics) + "," +
+             "\"people\":" + JSON.stringify(people) + "," +
+             "\"stories\":" + JSON.stringify(stories) + "}"
         );
 
         jsonMetaFile.setContent(JSON.stringify(meta));
@@ -57,11 +59,11 @@ function updateWeb() {
     }
 
     function openFiles() {
-      var sheetFileId = "18RO3nsWm1DzWVkDZ70GCRguPRZEpjWLZHOXqpr1EV1s",
-          jsonFileId = "0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk",
-          jsonMetaFileId = "0B4rKiNtdxe1NVEFnTmkzYTJlalU",
-          jsonPrevMetaFileId = "1o5MOt0GUaHIMP_tAyiFbPnyjlhyXytN-",
-          jsonPrevStoriesFileId = "1outwVCT1UWNTSSJzSOcXjHPHS0SnXTBQ";
+      var sheetFileId = "18RO3nsWm1DzWVkDZ70GCRguPRZEpjWLZHOXqpr1EV1s", // Leader ecoNews - EDIT
+          jsonFileId = "0B4rKiNtdxe1Nd2ZtLUU2a3gxMEk",                  // econews.json
+          jsonMetaFileId = "0B4rKiNtdxe1NVEFnTmkzYTJlalU",              // econews_meta.json
+          jsonPrevMetaFileId = "1ApSeU5wtT5flZi6x9znJ3YtXKAeFmsAn",     // econews_meta_2013-2020.json
+          jsonPrevStoriesFileId = "1TfkXIhj1qoNDQRNipGZ0Op0uY8FqbOuF";  // econews_stories_2013-2020.json
 
       try {
         sheetFile = SpreadsheetApp.openById(sheetFileId);
@@ -181,7 +183,7 @@ function updateWeb() {
     }
 
     function getNewStories(tStories, tMeta) {
-        var startYear = 2019;
+        var startYear = 2021;
         var endYear = new Date().getFullYear();
         var startRow = 1; // = row 2
 
@@ -196,8 +198,9 @@ function updateWeb() {
 
         // These constant strings will be stripped from URLs to save space and I/O time
         var linkPrefix = /https:\/\/d(rive|ocs).google.com\/file\/d\//;
-        var linkSuffix = /\/(view|edit)\?usp=sharing/;
-        var onlinePrefix = "http://www.theleader.com.au/story/";
+        var linkSuffix = /\/(view|edit)\?usp=[a-z_]*/;
+        // var onlinePrefix = "http://www.theleader.com.au/story/";
+        var onlinePrefix = "";
 
         var sheet, sheetName, values, r;
 

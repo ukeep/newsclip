@@ -11,7 +11,7 @@ initVars: {
     var bodyTop;
 
     var paperName = "Sutherland Shire Leader";
-    var paperEmail = "Leader Letters <leaderletters@fairfaxmedia.com.au>";
+    var paperEmail = "Leader Letters <craig.thomson@austcommunitymedia.com.au>";
     var paperShortName = "Leader";
     var paperTwitterHandle = "@theleadernews";
     var hashtag = "econews";
