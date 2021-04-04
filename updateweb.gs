@@ -4,6 +4,8 @@
 // * JSON file with story metadata. Read by PHP script to set meta tags for social media crawlers
 //
 // This script should be run after the spreadsheet is updated or edited.
+//
+// Jon Doig 15/2/2016
 
 function updateWeb() {
     var sheetFile, jsonFile, jsonMetaFile, jsonPrevMetaFile, jsonPrevStoriesFile;
