@@ -41,6 +41,7 @@ if ($crawler) {
 
     include "scraper_template.php";
 } else {
+    $data = file_get_contents($data_path.$data_json_id);
     set_defaults($title, $desc, $url, $img, $author);
     include('newsclip.html');
 }

@@ -38,9 +38,14 @@
     <link rel=stylesheet href="css/newsclip.css">
     <link rel=stylesheet href="css/pikaday.css">
 
-    <script type="text/javascript" src="js/newsclip.js" async></script>
+    <script type="text/javascript" async>
+        data = <?=$data?>;
+        topics = data["topiclist"];
+        people = data["people"];
+        stories = data["stories"]
+    </script>
 
-    <!-- <script type="text/javascript" src="<?=$econews_js?>" async></script> -->
+    <script type="text/javascript" src="js/newsclip.js" async></script>
 
     <script type="text/javascript" src="js/infinite-scroll.js" async></script>
 

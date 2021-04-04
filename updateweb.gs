@@ -48,9 +48,9 @@ function updateWeb() {
         var meta = Object.assign(newMeta, prevMeta);
 
         jsonFile.setContent(
-            "var topics  = " + JSON.stringify(topics) + ";" +
-            "var people  = " + JSON.stringify(people) + ";" +
-            "var stories = " + JSON.stringify(stories) + ";"
+            "{\"topiclist\":" + JSON.stringify(topics) + "," +
+             "\"people\":" + JSON.stringify(people) + "," +
+             "\"stories\":" + JSON.stringify(stories) + "}"
         );
 
         jsonMetaFile.setContent(JSON.stringify(meta));
