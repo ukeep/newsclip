@@ -43,7 +43,7 @@ initVars: {
 
     var next = 0; // Next story to display when scrolling to end of page
     var bucket = 7; // Number of stories loaded to page at a time
-    var scrollSensor = 50; // Add more content if within this distance of page end
+    var scrollSensor = 100; // Add more content if within this distance of page end
     var filter = {};
     var searchStart = true;
 

@@ -56,7 +56,7 @@
         var pageHeight = document.body.scrollHeight;
         var clientHeight = document.body.clientHeight;
 
-        // Check if scroll bar position is just 50px above the max, if yes, initiate an update
+        // If scroll position is less than threshold distance from bottom of page, initiate an update
         if (pageHeight - (scrollPos + clientHeight) < scroller.options.distance) {
             scroller.updateInitiated = true;
             scroller.options.callback(function () {
