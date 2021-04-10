@@ -14,12 +14,17 @@ body {
     transition: top 200ms ease-out;
     -webkit-transition: top 200ms ease-out;
     margin: auto;
-    background-image: url("../images/bg.jpg");
+    /* background-image: url("../images/bg.jpg");
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; */
+    background: #fff;
     position: fixed;
     z-index: 3;
     box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.4);
+    padding: 10px;
+    margin: auto;
+    overflow: auto;
+    text-align: center;
 }
 
 #header a:hover:not(#clearBtn,
@@ -31,46 +36,49 @@ body {
 }
 
 #headerBlock {
-    padding: 5px 5px 0 5px;
-    margin: auto;
-    overflow: auto;
-    text-align: center;
+    position: relative;
+    max-width: 600px;
 }
 
-#title {
-    display: inline-block;
-    color: white;
-    font: 25px "Times New Roman", arial, serif;
-    letter-spacing: -1px;
-    margin: 0 0 5px 0;
-    line-height: 80%;
-    vertical-align: bottom;
+#headerBlock .overlay {
+    position: absolute;
+    overflow: hidden;
+    bottom: 0;
+    left: 10%;
+    opacity: 1;
+    width: 88%;
+    height: 40%;
+    padding: 0;
+    max-width: 490px;
+}
+  
+.titleText {
+    font-size: 5vw;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #3b3c3d;
+  }
+  
+.headerLinks {
+    float: right;
+    padding: 2%;
+    font-size: 3vw;
+    height: 100%;
 }
 
-#headerLinks {
-    font-size: 14px;
+.headerLinks a {
+    text-decoration-style: dotted;
+    color: #3b3c3d
 }
 
-#title a {
-    color: white;
-    text-decoration: none;
-    transition: all 200ms ease-in-out;
-}
-
-#headerLinks .divider {
-    margin: 0 5px;
-}
-
-#headerLinks .divider:before {
-    /* Bullet */
-    content: "\2022";
-}
-
-#logo,
-#titleText {
-    display: inline-block;
-    text-align: left;
-    vertical-align: middle;
+/* Max font size in header */
+@media screen and (min-width: 600px) {
+    .titleText {
+       font-size: 30px;
+    }
+    .headerLinks {
+       font-size: 16px;
+    }
 }
 
 .filterCell {
@@ -229,11 +237,11 @@ label.toDate {
 }
 
 #mc_embed_signup {
-    left: 160px;
+    left: 10px;
 }
 
 #about {
-    left: 232px;
+    left: 10px;
 }
 
 .pennant {
@@ -583,7 +591,12 @@ hr {
 
 /* Desktop or landscape mobile */
 
-@media screen and (min-width: 10cm) {
+@media screen and (min-width: 12cm) {
+    .img-responsive {
+        width:100%;
+        max-width: 600px;
+    }
+    
     .story {
         width: 85%;
         margin: 10px auto;
@@ -606,7 +619,11 @@ hr {
 
 /* Portrait mobile */
 
-@media not screen and (min-width: 10cm) {
+@media not screen and (min-width: 12cm) {
+    .img-responsive {
+        width:85%;
+    }
+    
     #headerLinks {
         left: 10px;
     }
