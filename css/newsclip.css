@@ -10,7 +10,7 @@ body {
 }
 
 #header {
-    width: 100%;
+    /* width: 100%; */
     transition: top 200ms ease-out;
     -webkit-transition: top 200ms ease-out;
     margin: auto;
@@ -37,19 +37,19 @@ body {
 
 #headerBlock {
     position: relative;
-    max-width: 600px;
+    /* max-width: 600px; */
 }
 
 #headerBlock .overlay {
     position: absolute;
     overflow: hidden;
     bottom: 0;
-    left: 10%;
+    left: 10px;
     opacity: 1;
-    width: 88%;
+    width: calc(100% - 20px);
     height: 40%;
     padding: 0;
-    max-width: 490px;
+    max-width: 550px;
 }
   
 .titleText {
@@ -71,15 +71,21 @@ body {
     color: #3b3c3d
 }
 
-/* Max font size in header */
-@media screen and (min-width: 600px) {
+/* Adjust header for screens wider than logo.png + padding */
+@media screen and (min-width: 620px) {
+    #header {
+        width: calc(100% - 20px);
+    }
+    #headerBlock .overlay {
+        left: calc(50% - 250px);
+    }
     .titleText {
-       font-size: 30px;
-    }
+        font-size: 30px;
+     }
     .headerLinks {
-       font-size: 16px;
-    }
-}
+        font-size: 16px;
+     }
+ }
 
 .filterCell {
     display: inline-block;
