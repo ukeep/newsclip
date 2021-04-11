@@ -136,6 +136,7 @@ button.innerClear {
     outline: none;
     height: 25px;
     font-style: normal;
+    padding-bottom: 3;
 }
 
 label {
