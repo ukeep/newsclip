@@ -54,7 +54,7 @@
 <body onload="init()">
     <div id="header">
         <div id="headerBlock">
-            <a href="/"><img class="img-responsive" src="https://ssec.org.au/wp-content/uploads/2020/07/logo.png" alt="Sutherland Shire Environment Centre"></a>
+            <a href="/" class="logo"><img class="img-responsive" src="https://ssec.org.au/wp-content/uploads/2020/07/logo.png" alt="Sutherland Shire Environment Centre"></a>
             <div class="overlay">
                 <span class="titleText">Leader EcoNews</span>
                 <div class="headerLinks">
@@ -65,47 +65,49 @@
                 </div>
             </div>
         </div>
-        <div class="filterCell" class="noWrap">
-            <label class="toDate" for="toDate"><img src=images/date.svg title="Date"></label>
-            <span><input type="text" id="toDate" readonly="true"
-                    onmouseover="this.parentElement.classList.add('active')"
-                    onmouseout="this.parentElement.classList.remove('active')"><button class="innerClear"
-                    onclick="clearDate()">✖</button></span>
-        </div>
-        <div class="filterCell">
-            <label for="topic"><img src=images/topic.svg title="Filter by topic"></label>
-            <select id="topic" title="Filter by topic" onmouseover="this.classList.add('active')"
-                onmouseout="this.classList.remove('active'); if (this.value) {this.classList.add('set')} else {this.classList.remove('set')}"
-                onchange="filter.topics=this.value; writeStories(bucket, true); setInputs(false)">
-            </select>
-        </div>
-        <div class="filterCell">
-            <label for="person"><img src=images/person.svg title="Filter by SSEC member"></label>
-            <select id="person" title="Filter by SSEC member" onmouseover="this.classList.add('active')"
-                onmouseout="this.classList.remove('active'); if (this.value) {this.classList.add('set')} else {this.classList.remove('set')}"
-                onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
-            </select>
-        </div>
-        <span class="noWrap">
-            <div class="filterCell">
-                <input type=text id=search onkeydown="if (event.keyCode == 13) {searchStories()}"
-                    onkeyup="if (this.value) {filterElem[iSearchBtn].classList.add('set')} else {filterElem[iSearchBtn].classList.remove('set')}"
-                    onClick=" this.classList.add('active'); if(searchStart) {this.value=''; searchStart = false}">
+        <div id="filterBlock">
+            <div class="filterCell" class="noWrap">
+                <label class="toDate" for="toDate"><img src=images/date.svg title="Date"></label>
+                <span><input type="text" id="toDate" readonly="true"
+                        onmouseover="this.parentElement.classList.add('active')"
+                        onmouseout="this.parentElement.classList.remove('active')"><button class="innerClear"
+                        onclick="clearDate()">✖</button></span>
             </div>
             <div class="filterCell">
-                <div class="btnBg">
-                    <button id=searchBtn
-                        onClick="searchStories(); window.setTimeout(function() {this.blur(); window.focus()},500)"
-                        title="Search"></button>
+                <label for="topic"><img src=images/topic.svg title="Filter by topic"></label>
+                <select id="topic" title="Filter by topic" onmouseover="this.classList.add('active')"
+                    onmouseout="this.classList.remove('active'); if (this.value) {this.classList.add('set')} else {this.classList.remove('set')}"
+                    onchange="filter.topics=this.value; writeStories(bucket, true); setInputs(false)">
+                </select>
+            </div>
+            <div class="filterCell">
+                <label for="person"><img src=images/person.svg title="Filter by SSEC member"></label>
+                <select id="person" title="Filter by SSEC member" onmouseover="this.classList.add('active')"
+                    onmouseout="this.classList.remove('active'); if (this.value) {this.classList.add('set')} else {this.classList.remove('set')}"
+                    onchange="filter.person=this.value; writeStories(bucket, true); setInputs(false)">
+                </select>
+            </div>
+            <span class="noWrap">
+                <div class="filterCell">
+                    <input type=text id=search onkeydown="if (event.keyCode == 13) {searchStories()}"
+                        onkeyup="if (this.value) {filterElem[iSearchBtn].classList.add('set')} else {filterElem[iSearchBtn].classList.remove('set')}"
+                        onClick=" this.classList.add('active'); if(searchStart) {this.value=''; searchStart = false}">
                 </div>
-            </div>
-            <div class="filterCell">
-                <div class="btnBg">
-                    <button id="clearBtn" onClick="clearFilter(); writeStories(bucket, true)"
-                        title="Clear search/filter"></button>
+                <div class="filterCell">
+                    <div class="btnBg">
+                        <button id=searchBtn
+                            onClick="searchStories(); window.setTimeout(function() {this.blur(); window.focus()},500)"
+                            title="Search"></button>
+                    </div>
                 </div>
-            </div>
-        </span>
+                <div class="filterCell">
+                    <div class="btnBg">
+                        <button id="clearBtn" onClick="clearFilter(); writeStories(bucket, true)"
+                            title="Clear search/filter"></button>
+                    </div>
+                </div>
+            </span>
+        </div>
     </div>
 
     <div id="modal" onclick="raisePennant()"></div>

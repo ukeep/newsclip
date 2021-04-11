@@ -19,12 +19,12 @@ body {
     box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.4);
     padding: 10px;
     margin: auto;
-    overflow: auto;
+    overflow: hidden;
     text-align: center;
 }
 
 #header a:hover:not(#clearBtn,
-#searchBtn) {
+#searchBtn, .logo) {
     background-color: #d0daec;
     padding: 2px 0;
     border-radius: 5px;
@@ -82,6 +82,10 @@ body {
      }
  }
 
+#filterBlock {
+    transition: height 250ms, opacity 250ms;
+ }
+
 .filterCell {
     display: inline-block;
     font-weight: bold;
@@ -132,6 +136,7 @@ button.innerClear {
     outline: none;
     height: 25px;
     font-style: normal;
+    padding-bottom: 3;
 }
 
 label {
@@ -162,7 +167,7 @@ label.toDate {
 }
 
 #search {
-    height: 24;
+    height: 25;
     width: 148;
     margin-left: 10px;
 }
@@ -226,12 +231,21 @@ label.toDate {
     background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.1));
 }
 
-#mc_embed_signup {
-    left: 10px;
+#mc_embed_signup,
+#about {
+    left: auto;
+    right: 10px;
 }
 
-#about {
-    left: 10px;
+@media screen and (min-width: 620px) {
+    #about {
+        left: calc(min(50% + 145px, 100% - 310px));
+        right: auto;
+    }
+    #mc_embed_signup {
+        left: calc(min(50% + 215px, 100% - 310px));
+        right: auto;
+    }
 }
 
 .pennant {
@@ -632,10 +646,6 @@ hr {
     }
     .thumb img {
         max-height: 200px;
-    }
-    #mc_embed_signup,
-    #about {
-        left: 10px;
     }
 }
 
