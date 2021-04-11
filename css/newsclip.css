@@ -82,6 +82,10 @@ body {
      }
  }
 
+#filterBlock {
+    transition: height 250ms, opacity 250ms;
+ }
+
 .filterCell {
     display: inline-block;
     font-weight: bold;

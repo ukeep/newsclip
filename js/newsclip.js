@@ -761,11 +761,17 @@ function dropPennant(f) {
             raisePennant();
         }
     }
+    document.getElementById("filterBlock").style.height = 0;
+    document.getElementById("filterBlock").style.opacity = 0;
+
     document.getElementById("modal").style.transition =
         "top 500ms ease-in";
     document.getElementById("modal").style.top = 0;
 
     bodyTop = document.body.scrollTop;
+
+    var hdr = document.getElementById("header");
+    headerHeight = hdr.clientHeight;
 
     switch (f) {
         case "subscribe":
@@ -793,6 +799,9 @@ function raisePennant() {
     document.getElementById("about").style.top = -aboutHeight - subscribeHeight;
     document.getElementById("mc_embed_signup").style.bottom = "auto";
     document.getElementById("about").style.bottom = "auto";
+
+    document.getElementById("filterBlock").style.height = "auto";
+    document.getElementById("filterBlock").style.opacity = 1;
 
     document.getElementById("modal").style.transition = "top 500ms ease-out";;
     document.getElementById("modal").style.top = "-100%";
