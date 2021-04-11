@@ -231,12 +231,21 @@ label.toDate {
     background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.1));
 }
 
-#mc_embed_signup {
-    left: 10px;
+#mc_embed_signup,
+#about {
+    left: auto;
+    right: 10px;
 }
 
-#about {
-    left: 10px;
+@media screen and (min-width: 620px) {
+    #about {
+        left: calc(min(50% + 145px, 100% - 310px));
+        right: auto;
+    }
+    #mc_embed_signup {
+        left: calc(min(50% + 215px, 100% - 310px));
+        right: auto;
+    }
 }
 
 .pennant {
@@ -637,10 +646,6 @@ hr {
     }
     .thumb img {
         max-height: 200px;
-    }
-    #mc_embed_signup,
-    #about {
-        left: 10px;
     }
 }
 
