@@ -13,7 +13,7 @@ $crawler = (preg_match('/facebookexternalhit|bot|crawl|slurp|spider/i', $_SERVER
 
 // Set meta vars to default
 function set_defaults(&$t, &$d, &$u, &$i, &$a) {    
-    $t = 'SSEC Leader ecoNews';
+    $t = 'SSEC Leader EcoNews';
     $d = 'Environmental news monitoring for the Shire. Browse and search over a thousand stories from the Sutherland Shire edition of The Leader newspaper. Stay up-to-date with local environmental news and views.';
     $u = BASE_URL;
     $i = $u.'images/screenshot.jpg';
