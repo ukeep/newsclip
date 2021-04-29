@@ -16,3 +16,5 @@ Newsclip is a web app to display news stories catalogued in a Google spreadsheet
 * View full-screen
 * Infinite scroll (thanks [alexblack](https://github.com/alexblack/infinite-scroll))
 * Header auto-hides on smaller screens
+
+Here's how to [transfer your newsclip data](ChangingDrives.md) to a new Google Drive.
